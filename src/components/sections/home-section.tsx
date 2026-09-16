@@ -52,10 +52,12 @@ export function HomeSection() {
   const { data: news, loading: newsLoading } = useFetch<NewsItem[]>('/api/public/news?limit=4');
   const { data: announcements } = useFetch<Announcement[]>('/api/public/announcements');
   const { data: gallery } = useFetch<GalleryItem[]>('/api/public/gallery');
+  const { data: studentSummary } = useFetch<{ total: number; male: number; female: number }>('/api/public/students/summary');
 
   const [openNews, setOpenNews] = useState<NewsItem | null>(null);
   const galleryPreview = (gallery || []).slice(0, 6);
   const announcementsTop = (announcements || []).slice(0, 3);
+  const studentCount = studentSummary?.total ?? 40;
 
   return (
     <div>
@@ -117,7 +119,7 @@ export function HomeSection() {
                 />
               </div>
               <div className="absolute -bottom-5 -left-5 bg-white text-foreground rounded-2xl shadow-xl p-4 w-44">
-                <p className="text-3xl font-bold text-primary">84</p>
+                <p className="text-3xl font-bold text-primary">{studentCount}</p>
                 <p className="text-xs text-muted-foreground">Siswa Aktif</p>
               </div>
             </div>
