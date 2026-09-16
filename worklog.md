@@ -768,3 +768,41 @@ Stage Summary:
 - The signboard shows the school name "SEKOLAH DASAR NEGERI 5 GESING" prominently
 - Warm orange signboard creates nice contrast against the blue ice gradient background
 - Both the background overlay (subtle) and the main side image card use the new photo
+
+---
+Task ID: navbar-elegant-lines
+Agent: Z.ai Code (main)
+Task: Add elegant line/column design to the navigation bar.
+
+Work Log:
+- Redesigned navbar.tsx with elegant line elements:
+  1. **Vertical separator lines** between sections:
+     - Logo section: `lg:border-r border-border/50` (right border after logo)
+     - Admin section: `lg:border-l border-border/50` (left border before admin button)
+     - Creates 3 distinct columns: Logo | Navigation | Admin
+  2. **Underline indicators** for nav items (replacing filled background):
+     - Active item: gradient underline `from-primary to-gold` with `w-[70%] opacity-100`
+     - Hover: underline animates from `w-0 opacity-0` to `w-[50%] opacity-50`
+     - Smooth transition: `transition-all duration-300`
+     - Active text color: `text-primary` (no filled background)
+  3. **Gradient bottom line**:
+     - `h-[2.5px] bg-gradient-to-r from-primary/0 via-primary/50 to-primary/0`
+     - Fades from transparent → blue → transparent (elegant gradient)
+     - Opacity increases when scrolled (100%) vs not scrolled (70%)
+  4. **Mobile menu active indicator**:
+     - Gold left accent line: `w-1 h-6 rounded-full bg-gold` on active items
+     - Gradient bottom line on mobile header: `from-gold via-white/60 to-gold`
+- Verified via VLM:
+  - "Vertical separator lines: Yes, subtle light gray vertical lines separating sections"
+  - "Underline indicators: Yes, active item Beranda has distinct blue underline"
+  - "Gradient bottom line: visible blue gradient fading from left and right"
+- Lint clean
+
+Stage Summary:
+- Navbar redesigned with elegant line/column design:
+  - 3-column layout with vertical separators (Logo | Nav | Admin)
+  - Active nav items show gradient underline (blue→gold) instead of filled background
+  - Hover shows animated underline indicator
+  - Gradient bottom line (transparent→blue→transparent)
+  - Mobile: gold accent line for active items + gradient header line
+- More elegant, modern, and professional look

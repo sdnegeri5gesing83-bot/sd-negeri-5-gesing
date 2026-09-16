@@ -61,18 +61,18 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 w-full border-b transition-all duration-300',
+        'sticky top-0 z-50 w-full transition-all duration-300',
         scrolled
-          ? 'bg-background/90 backdrop-blur-md border-border shadow-sm'
-          : 'bg-background/70 backdrop-blur-sm border-transparent'
+          ? 'bg-background/90 backdrop-blur-md shadow-sm'
+          : 'bg-background/70 backdrop-blur-sm'
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 lg:h-20 items-center justify-between gap-4">
-          {/* Logo + name */}
+          {/* Logo + name — with elegant right separator */}
           <button
             onClick={() => go('beranda')}
-            className="flex items-center gap-3 group shrink-0"
+            className="flex items-center gap-3 group shrink-0 lg:pr-6 lg:mr-2 lg:border-r border-border/50"
             aria-label="Beranda SD Negeri 5 Gesing"
           >
             <img
@@ -90,8 +90,8 @@ export function Navbar() {
             </div>
           </button>
 
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          {/* Desktop nav — elegant underline indicators */}
+          <nav className="hidden lg:flex items-center gap-0.5">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
               const active = page === item.key;
@@ -100,21 +100,30 @@ export function Navbar() {
                   key={item.key}
                   onClick={() => go(item.key)}
                   className={cn(
-                    'relative px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5',
+                    'relative px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 group/nav',
                     active
-                      ? 'text-primary-foreground bg-primary shadow-sm'
-                      : 'text-foreground/80 hover:text-primary hover:bg-teal-soft/60'
+                      ? 'text-primary'
+                      : 'text-foreground/70 hover:text-primary'
                   )}
                 >
                   <Icon className="h-4 w-4" />
                   {item.label}
+                  {/* Elegant underline indicator */}
+                  <span
+                    className={cn(
+                      'absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-primary to-gold transition-all duration-300',
+                      active
+                        ? 'w-[70%] opacity-100'
+                        : 'w-0 opacity-0 group-hover/nav:w-[50%] group-hover/nav:opacity-50'
+                    )}
+                  />
                 </button>
               );
             })}
           </nav>
 
-          {/* Right: admin button */}
-          <div className="hidden lg:flex items-center gap-2">
+          {/* Right: admin button — with elegant left separator */}
+          <div className="hidden lg:flex items-center gap-2 lg:pl-6 lg:ml-2 lg:border-l border-border/50">
             <Button
               size="sm"
               variant={session?.user ? 'default' : 'outline'}
@@ -142,7 +151,7 @@ export function Navbar() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[360px] p-0">
               <div className="flex flex-col h-full">
-                <div className="flex items-center gap-3 p-5 border-b bg-primary text-primary-foreground">
+                <div className="flex items-center gap-3 p-5 border-b bg-primary text-primary-foreground relative">
                   <img
                     src="/logo-school.png"
                     alt="Logo"
@@ -152,6 +161,8 @@ export function Navbar() {
                     <p className="font-bold text-sm">SD Negeri 5 Gesing</p>
                     <p className="text-[11px] opacity-90">Buleleng, Bali</p>
                   </div>
+                  {/* Elegant gradient line at bottom of mobile header */}
+                  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-gold via-white/60 to-gold" />
                 </div>
                 <nav className="flex-1 overflow-y-auto custom-scroll p-3 space-y-1">
                   {NAV_ITEMS.map((item) => {
@@ -162,12 +173,16 @@ export function Navbar() {
                         <button
                           onClick={() => go(item.key)}
                           className={cn(
-                            'w-full flex items-center gap-3 px-3.5 py-3 rounded-lg text-sm font-medium transition-all',
+                            'w-full flex items-center gap-3 px-3.5 py-3 rounded-lg text-sm font-medium transition-all relative',
                             active
                               ? 'bg-primary text-primary-foreground shadow-sm'
                               : 'text-foreground/80 hover:bg-teal-soft/60'
                           )}
                         >
+                          {/* Elegant left accent line for active */}
+                          {active && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-full bg-gold" />
+                          )}
                           <Icon className="h-5 w-5" />
                           {item.label}
                         </button>
@@ -191,6 +206,14 @@ export function Navbar() {
           </Sheet>
         </div>
       </div>
+
+      {/* Elegant gradient bottom line */}
+      <div
+        className={cn(
+          'h-[2.5px] bg-gradient-to-r from-primary/0 via-primary/50 to-primary/0 transition-opacity duration-300',
+          scrolled ? 'opacity-100' : 'opacity-70'
+        )}
+      />
     </header>
   );
 }
