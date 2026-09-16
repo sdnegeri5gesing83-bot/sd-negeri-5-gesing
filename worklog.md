@@ -78,3 +78,33 @@ Stage Summary:
 - Photos appear on: GTK page cards, Profile page Sambutan & Struktur Organisasi sections, Home page Sambutan section
 - Headmaster photo in SchoolProfile updated to real principal photo (Nyoman Astawa)
 - Script `update-teacher-photos.ts` created for future re-updates
+
+---
+Task ID: profile-image
+Agent: Z.ai Code (main)
+Task: Add official "Profil Sekolah SD Negeri 5 Gesing" image and update identity data from it.
+
+Work Log:
+- Analyzed the uploaded "profil sekolah sd negeri 5 gesing.png" (1202x570 PNG) using VLM (z-ai vision)
+- Extracted all text from the official profile card: NPSN 50100616, Bentuk Pendidikan SD, Status Negeri, Alamat Banjar Dinas Waru, Desa Gesing, Kec. Banjar, Kab. Buleleng, Prov. Bali, SK Pendirian 4212/760/Srt.Ket/SD5.GS/VIII/2022, Tanggal SK 01/07/83
+- Discovered the NPSN in the database (50203456) was a placeholder — corrected to the real NPSN 50100616
+- Copied the profile image to public/uploads/profil-sekolah.png
+- Created `scripts/update-profile-data.ts` that updates SchoolProfile:
+  - npsn: 50100616 (corrected)
+  - address/village/district/regency/province verified
+  - history updated to include SK Pendirian & SK Izin Operasional info, founding year 1983
+- Ran the script successfully
+- Updated `profile-section.tsx`:
+  - Added 5 new identity rows: Bentuk Pendidikan, Status Sekolah, SK Pendirian Sekolah, Tanggal SK Pendirian, SK Izin Operasional
+  - Added new icon imports (FileText, Calendar, GraduationCap)
+  - Added "Profil Resmi Sekolah" card below the identity table that displays the official profile image with a green header
+- Verified via Agent Browser: NPSN shows 50100616, SK Pendirian fields visible, Profil Resmi Sekolah image card displays correctly (VLM confirmed)
+- Verified via API: NPSN=50100616, history contains SK Pendirian and 1983
+- No console errors, lint clean
+
+Stage Summary:
+- Official school profile image (Identitas Sekolah card) successfully added to the Profile page
+- NPSN corrected to the real value 50100616 (was placeholder)
+- 5 new identity fields added (Bentuk Pendidikan, Status, SK Pendirian, Tanggal SK, SK Izin Operasional)
+- School history updated with founding year 1983 and SK Pendirian details
+- Script `update-profile-data.ts` created for future re-updates

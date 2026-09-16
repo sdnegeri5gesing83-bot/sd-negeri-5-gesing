@@ -16,6 +16,9 @@ import {
   Compass,
   Network,
   Phone,
+  FileText,
+  Calendar,
+  GraduationCap,
 } from 'lucide-react';
 import type { SchoolProfile, OrganizationMember } from '@/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
@@ -40,12 +43,17 @@ export function ProfileSection() {
     { label: 'NPSN', value: profile.npsn || '-', icon: Hash },
     { label: 'NSS', value: profile.nss || '-', icon: Hash },
     { label: 'Akreditasi', value: profile.accreditation || '-', icon: Award },
+    { label: 'Bentuk Pendidikan', value: 'Sekolah Dasar (SD)', icon: GraduationCap },
+    { label: 'Status Sekolah', value: 'Negeri', icon: Award },
     { label: 'Alamat', value: profile.address, icon: MapPin },
-    { label: 'Desa', value: profile.village, icon: MapPin },
+    { label: 'Desa/Kelurahan', value: profile.village, icon: MapPin },
     { label: 'Kecamatan', value: profile.district, icon: Building },
-    { label: 'Kabupaten', value: profile.regency, icon: Building },
+    { label: 'Kabupaten/Kota', value: profile.regency, icon: Building },
     { label: 'Provinsi', value: profile.province, icon: MapPin },
     { label: 'Kode Pos', value: profile.postalCode || '-', icon: Hash },
+    { label: 'SK Pendirian Sekolah', value: '4212/760/Srt.Ket/SD5.GS/VIII/2022', icon: FileText },
+    { label: 'Tanggal SK Pendirian', value: '01 Juli 1983', icon: Calendar },
+    { label: 'SK Izin Operasional', value: '4212/760/Srt.Ket/SD5.GS/VIII/2022', icon: FileText },
   ];
 
   return (
@@ -99,6 +107,22 @@ export function ProfileSection() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Official Profil Sekolah image */}
+        <div className="mb-14 rounded-2xl overflow-hidden border border-border shadow-sm bg-card">
+          <div className="bg-primary text-primary-foreground px-5 py-3 flex items-center gap-2">
+            <FileText className="h-4 w-4" />
+            <span className="text-sm font-semibold">Profil Resmi Sekolah</span>
+          </div>
+          <div className="p-4 sm:p-6 bg-muted/30">
+            <img
+              src="/uploads/profil-sekolah.png"
+              alt="Profil Resmi SD Negeri 5 Gesing - Identitas Sekolah"
+              className="w-full h-auto rounded-lg shadow-sm"
+              loading="lazy"
+            />
+          </div>
+        </div>
 
         {/* Sejarah */}
         <section className="mb-14">
