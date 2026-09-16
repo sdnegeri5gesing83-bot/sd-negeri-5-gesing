@@ -19,6 +19,7 @@ import {
   Menu,
   X,
   Home,
+  Shield,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -38,6 +39,7 @@ import { AnnouncementsPanel } from './panels/announcements-panel';
 import { MessagesPanel } from './panels/messages-panel';
 import { StatsPanel } from './panels/stats-panel';
 import { OrganizationPanel } from './panels/organization-panel';
+import { AccountPanel } from './panels/account-panel';
 
 type Panel =
   | 'overview'
@@ -50,7 +52,8 @@ type Panel =
   | 'announcements'
   | 'messages'
   | 'stats'
-  | 'organization';
+  | 'organization'
+  | 'account';
 
 const NAV: { key: Panel; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { key: 'overview', label: 'Ringkasan', icon: LayoutDashboard },
@@ -64,6 +67,7 @@ const NAV: { key: Panel; label: string; icon: React.ComponentType<{ className?: 
   { key: 'messages', label: 'Pesan Masuk', icon: Mail },
   { key: 'stats', label: 'Statistik', icon: BarChart3 },
   { key: 'organization', label: 'Struktur Organisasi', icon: Network },
+  { key: 'account', label: 'Pengaturan Akun', icon: Shield },
 ];
 
 export function AdminDashboard() {
@@ -191,6 +195,7 @@ export function AdminDashboard() {
           {active === 'messages' && <MessagesPanel />}
           {active === 'stats' && <StatsPanel />}
           {active === 'organization' && <OrganizationPanel />}
+          {active === 'account' && <AccountPanel />}
         </div>
       </main>
     </div>

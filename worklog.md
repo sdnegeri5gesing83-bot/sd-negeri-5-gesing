@@ -597,3 +597,48 @@ Stage Summary:
   - Profile page Sambutan Kepala Sekolah (for principal)
   - Profile page Struktur Organisasi (all members)
 - Tips guide admins on format (JPG/PNG/WebP), size (max 5MB), and aspect ratio (3:4 portrait)
+
+---
+Task ID: account-settings
+Agent: Z.ai Code (main)
+Task: Create a feature to change admin email and password (login credentials).
+
+Work Log:
+- Created API route `/api/admin/account/route.ts`:
+  - GET: returns current admin info (id, email, name, role, createdAt) — no password
+  - PUT: updates name, email, and/or password with validation:
+    - Requires currentPassword for verification (mandatory for any change)
+    - newEmail: validated as email format, checked for uniqueness
+    - newPassword: min 6 characters, must match confirmPassword
+    - newName: min 2 characters
+    - Password hashed with bcrypt (10 rounds)
+    - Returns which fields were changed (changedEmail, changedPassword flags)
+- Created AccountPanel component (`account-panel.tsx`):
+  - "Akun Saat Ini" card: displays current name, email, role, password (masked)
+  - "Profil Admin" card: form to change nama baru and email baru
+  - "Keamanan Password" card: form with current password (required), new password, confirm password
+  - All password fields have show/hide toggle (Eye/EyeOff icons)
+  - Warning notice: "Jika email/password diubah, Anda akan otomatis keluar dan perlu login kembali"
+  - "Keluar dari Akun" button with confirmation dialog
+  - "Simpan Perubahan" button with loading state
+  - After email/password change: auto signOut after 1.5s with toast notification
+  - After name-only change: refetch data and clear form
+- Added "Pengaturan Akun" to admin dashboard sidebar (Shield icon, at the bottom)
+- Added AccountPanel rendering in dashboard
+- Verified end-to-end via Agent Browser:
+  - Name change: "Berhasil memperbarui: nama" ✓ (name updated to "Administrator Sekolah")
+  - Password change: admin123 → sekolah2026 → auto-logout ✓ → login with sekolah2026 ✓
+  - Password change back: sekolah2026 → admin123 → auto-logout ✓ → login with admin123 ✓
+  - All fields with validation, show/hide password toggles working
+  - Auto-logout on email/password change working
+- Lint clean, no errors
+- Reset admin name back to original "Administrator SD Negeri 5 Gesing"
+
+Stage Summary:
+- Admin can now change email, name, and password via Dashboard → Pengaturan Akun
+- Security: current password required for ALL changes (verification)
+- Password hashed with bcrypt, email uniqueness checked
+- Auto-logout when email or password changes (forces re-login with new credentials)
+- All password fields have show/hide toggles
+- Warning notice informs user about auto-logout before changing credentials
+- Default credentials restored: admin@sdn5gesing.sch.id / admin123
