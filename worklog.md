@@ -108,3 +108,34 @@ Stage Summary:
 - 5 new identity fields added (Bentuk Pendidikan, Status, SK Pendirian, Tanggal SK, SK Izin Operasional)
 - School history updated with founding year 1983 and SK Pendirian details
 - Script `update-profile-data.ts` created for future re-updates
+
+---
+Task ID: teacher-roles-update
+Agent: Z.ai Code (main)
+Task: Update teacher positions/roles from the latest daftar-guru Excel file (daftar-guru-...-07_58_55baru.xlsx).
+
+Work Log:
+- Inspected the new Excel file and compared with the previous version
+- Found that the "Jenis PTK" column now contains SPECIFIC role assignments instead of generic "Guru":
+  - Miftahul Jannah: Guru → Guru Kelas 5 (was incorrectly assigned Guru Kelas 1)
+  - Ni Made Rai Maha Putri: Guru → Guru Agama Hindu (was incorrectly assigned Guru Kelas 5)
+  - Putu Agus Suar Ekkar Yasa: Guru → Guru PJOK (was incorrectly assigned Guru Kelas 6)
+  - Putu Cipta Dewi: Guru → Guru Kelas 6 (was incorrectly assigned Guru Kelas 4)
+  - Putu Harta Wijaya: Guru → Guru Kelas 1 (was incorrectly assigned Guru Kelas 3)
+  - Susi Susanti: Guru → Guru Kelas 3 (was incorrectly assigned Guru Kelas 2)
+- Created `scripts/update-teacher-roles.ts` that:
+  - Reads the new Excel file via Python openpyxl (called from bun)
+  - Matches teachers by name (fuzzy, case-insensitive)
+  - Updates ONLY the position and subject fields (preserves photos, NIP, NUPTK, contact info)
+  - Expands abbreviated subjects: Guru PJOK → "Pendidikan Jasmani, Olahraga, dan Kesehatan", Guru Agama Hindu → "Pendidikan Agama Hindu"
+  - Also updates OrganizationMember positions
+- Ran the script: 6/6 teachers + 6/6 org members updated
+- Verified via API: all 8 teachers have correct positions, subjects, and real photos preserved
+- Verified via Agent Browser accessibility snapshot: GTK page shows "Guru Kelas 5", "Guru Agama Hindu", "Guru PJOK", "Pendidikan Jasmani, Olahraga, dan Kesehatan", "Guru Kelas 6", "Guru Kelas 1", "Guru Kelas 3"
+- No console errors, lint clean
+
+Stage Summary:
+- All 6 teacher roles updated with correct specializations from the latest Dapodik data
+- Photos from FOTO.rar and all contact info (NIP, NUPTK, email, phone) preserved intact
+- Organization structure also updated to match new roles
+- Script `update-teacher-roles.ts` created for future role updates when Dapodik data changes
