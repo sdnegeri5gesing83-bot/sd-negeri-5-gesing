@@ -85,8 +85,8 @@ export function HomeSection() {
   // Chart data: gender distribution (donut)
   const genderChartData = studentSummary
     ? [
-        { name: 'Laki-laki', value: studentSummary.male, color: '#0d9488' },
-        { name: 'Perempuan', value: studentSummary.female, color: '#d4a017' },
+        { name: 'Laki-laki', value: studentSummary.male, color: '#3B82C4' },
+        { name: 'Perempuan', value: studentSummary.female, color: '#7DD3E0' },
       ]
     : [];
   // Chart data: facilities by condition
@@ -287,19 +287,19 @@ export function HomeSection() {
                   {classChartData.length > 0 ? (
                     <ResponsiveContainer width="100%" height={260}>
                       <BarChart data={classChartData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.9 0.01 160)" />
-                        <XAxis dataKey="name" tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 160)" />
-                        <YAxis tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 160)" allowDecimals={false} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.9 0.01 235)" />
+                        <XAxis dataKey="name" tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 235)" />
+                        <YAxis tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 235)" allowDecimals={false} />
                         <Tooltip
                           contentStyle={{
                             borderRadius: 8,
-                            border: '1px solid oklch(0.9 0.01 160)',
+                            border: '1px solid oklch(0.9 0.01 235)',
                             fontSize: 12,
                           }}
                         />
                         <Legend wrapperStyle={{ fontSize: 12 }} />
-                        <Bar dataKey="Laki" stackId="a" fill="#0d9488" radius={[0, 0, 0, 0]} />
-                        <Bar dataKey="Perempuan" stackId="a" fill="#d4a017" radius={[6, 6, 0, 0]} />
+                        <Bar dataKey="Laki" stackId="a" fill="#3B82C4" radius={[0, 0, 0, 0]} />
+                        <Bar dataKey="Perempuan" stackId="a" fill="#7DD3E0" radius={[6, 6, 0, 0]} />
                       </BarChart>
                     </ResponsiveContainer>
                   ) : (
@@ -342,7 +342,7 @@ export function HomeSection() {
                         <Tooltip
                           contentStyle={{
                             borderRadius: 8,
-                            border: '1px solid oklch(0.9 0.01 160)',
+                            border: '1px solid oklch(0.9 0.01 235)',
                             fontSize: 12,
                           }}
                         />
@@ -370,13 +370,13 @@ export function HomeSection() {
                   {facilityByCondition.length > 0 ? (
                     <ResponsiveContainer width="100%" height={220}>
                       <BarChart data={facilityByCondition} layout="vertical" margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.9 0.01 160)" horizontal={false} />
-                        <XAxis type="number" tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 160)" allowDecimals={false} />
-                        <YAxis dataKey="name" type="category" tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 160)" width={110} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.9 0.01 235)" horizontal={false} />
+                        <XAxis type="number" tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 235)" allowDecimals={false} />
+                        <YAxis dataKey="name" type="category" tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 235)" width={110} />
                         <Tooltip
                           contentStyle={{
                             borderRadius: 8,
-                            border: '1px solid oklch(0.9 0.01 160)',
+                            border: '1px solid oklch(0.9 0.01 235)',
                             fontSize: 12,
                           }}
                         />

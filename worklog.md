@@ -335,3 +335,37 @@ Stage Summary:
   3. Kondisi Sarana & Prasarana (horizontal bar chart, by condition)
 - All charts use recharts, are responsive, have tooltips + legends, and use school theme colors
 - Charts are dynamic — auto-update when student/facility data changes
+
+---
+Task ID: blue-ice-theme
+Agent: Z.ai Code (main)
+Task: Change the color theme on home page and footer from teal/green to blue ice.
+
+Work Log:
+- Updated globals.css :root CSS variables — all teal/green (hue 170) → blue ice (hue 235):
+  - --primary: oklch(0.55 0.14 235) — vivid ice blue
+  - --primary-foreground, --secondary, --muted, --accent, --border, --input, --ring — all shifted to blue hue 235
+  - --gold → oklch(0.82 0.13 230) — silver-ice accent (replaced warm gold)
+  - --teal-soft → oklch(0.93 0.045 235) — soft ice blue surface
+  - --chart-1 to --chart-5 — blue palette variants
+  - --sidebar-* variables — all blue
+- Updated .dark mode variables — same teal→blue shift
+- Updated CSS utility classes:
+  - .hero-gradient → blue gradient (135deg ice blue)
+  - .custom-scroll scrollbar colors → blue
+  - .shimmer background → blue
+- Updated hardcoded colors in components:
+  - home-section.tsx charts: Laki #0d9488→#3B82C4, Perempuan #d4a017→#7DD3E0, axis/grid strokes 170→235
+  - smart-image.tsx placeholder: #0d9488 → #3B82C4
+- Restarted dev server (had crashed)
+- Verified via Agent Browser + VLM:
+  - Hero banner: "bright blue" ✓
+  - Navigation active state: blue with white text ✓
+  - Footer: "footer background is blue" ✓
+- Lint clean, no errors
+
+Stage Summary:
+- Entire website theme changed from teal/green to blue ice (hue 235)
+- All pages affected (CSS variables propagate everywhere): Beranda hero, banners, CTA, footer, navbar, buttons, cards, charts, admin panel
+- Charts updated: Laki-laki = blue (#3B82C4), Perempuan = light cyan (#7DD3E0)
+- Gold accent → silver-ice accent for cohesive blue look
