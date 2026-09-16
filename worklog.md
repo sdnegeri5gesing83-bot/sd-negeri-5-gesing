@@ -407,3 +407,35 @@ Stage Summary:
 - Footer (blue) and hero (blue gradient) provide accent contrast against the black
 - Text remains highly readable (white/light on dark)
 - Logo circles kept white (bg-white) so the pentagonal shield logo stays visible on dark navbar/footer
+
+---
+Task ID: basic-background
+Agent: Z.ai Code (main)
+Task: Change the page background from black smooth to basic (clean light) color.
+
+Work Log:
+- Updated globals.css :root CSS variables from dark "black smooth" back to basic light theme:
+  - --background: oklch(0.99 0.003 235) — clean white with subtle blue tint (98.8% lightness)
+  - --foreground: oklch(0.18 0.04 235) — dark text
+  - --card/--popover: oklch(1 0 0) — pure white
+  - --secondary: oklch(0.95 0.03 235) — light blue tint
+  - --muted: oklch(0.96 0.005 235), --muted-foreground: oklch(0.45 0.02 235)
+  - --accent: oklch(0.95 0.035 235), --accent-foreground: oklch(0.32 0.08 235)
+  - --border: oklch(0.9 0.01 235), --input: oklch(0.9 0.01 235)
+  - --primary: oklch(0.55 0.14 235) — blue ice (kept), --primary-foreground: white
+  - --teal-soft: oklch(0.95 0.03 235) — light blue surface
+  - --sidebar-* all light
+  - --gold: oklch(0.82 0.13 230) — silver-ice accent (kept)
+- Cleared .next cache + restarted dev server for CSS recompilation
+- Navbar already uses bg-background/* (auto-adjusts to light)
+- Verified via Agent Browser:
+  - CSS variable --background = lab(98.8%) — confirmed near white
+  - VLM: "page background is white/light, hero section is blue, text highly readable"
+- Lint clean, no errors
+
+Stage Summary:
+- Page background reverted to basic clean light (white with subtle blue tint)
+- Blue ice primary color and hero gradient remain as accents
+- Navbar, cards, footer all auto-adjusted to light theme via CSS variables
+- Footer stays blue (bg-primary) for accent contrast against white
+- Clean, professional, basic look with blue ice accents
