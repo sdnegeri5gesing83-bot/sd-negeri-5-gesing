@@ -685,3 +685,32 @@ Stage Summary:
 - PRIVACY: Student photos only show in admin panel (NOT on public page) — per original requirement
 - Tips guide admins on format, size, and privacy
 - Default admin credentials restored: admin@sdn5gesing.sch.id / admin123
+
+---
+Task ID: student-data-bug-fix
+Agent: Z.ai Code (main)
+Task: Fix bug in student data (NISN values corrupted with "xxx").
+
+Work Log:
+- Investigated bug on Data Siswa page reported by user
+- Checked APIs: all returned correct data (40 students, correct class/year distribution)
+- Checked via VLM and accessibility snapshot: page structure was fine, no JS errors
+- Found the bug via database inspection: ALL 40 students had NISN values ending with "xxx"
+  - Example: "3193695xxx" instead of correct "3193695543"
+  - The last 3 digits of every NISN were replaced with "xxx"
+  - Root cause: NISN data in the database had been masked/corrupted at some point
+  - The import-data.json had CORRECT NISNs (3177959964), but DB had masked versions (3177959xxx)
+- Fix: Re-ran `bun run scripts/import-excel.ts` to re-import correct student data from import-data.json
+- Verified: 0 students with "xxx" in NISN after re-import ✓
+- Side effect: re-import also reset teacher photos (to AI-generated) and positions (to old generic roles)
+- Fixed side effects:
+  - Re-ran `update-teacher-photos.ts` → restored 8/8 real photos from FOTO.rar + headmaster photo
+  - Re-ran `update-teacher-roles.ts` → restored 6/6 correct specific roles (Guru Kelas 5, Guru Agama Hindu, Guru PJOK, etc.)
+- Lint clean, no errors
+
+Stage Summary:
+- Bug fixed: NISN values now correct (e.g., 3177959964 instead of 3177959xxx)
+- Public page now shows correct masked NISN: "••••9964" (last 4 digits) instead of "••••5xxx"
+- Teacher photos restored to real photos (nyoman-astawa.jpg, etc.)
+- Teacher positions restored to specific roles from latest Dapodik Excel
+- Admin credentials: admin@sdn5gesing.sch.id / admin123
