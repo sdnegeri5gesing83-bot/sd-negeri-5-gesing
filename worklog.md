@@ -369,3 +369,41 @@ Stage Summary:
 - All pages affected (CSS variables propagate everywhere): Beranda hero, banners, CTA, footer, navbar, buttons, cards, charts, admin panel
 - Charts updated: Laki-laki = blue (#3B82C4), Perempuan = light cyan (#7DD3E0)
 - Gold accent → silver-ice accent for cohesive blue look
+
+---
+Task ID: black-smooth-background
+Agent: Z.ai Code (main)
+Task: Change the page background to black smooth (dark theme).
+
+Work Log:
+- Updated globals.css :root CSS variables from light to dark "black smooth" theme:
+  - --background: oklch(0.1 0.004 235) — smooth near-black with subtle blue tint (0.9% lightness)
+  - --foreground: oklch(0.96 0.005 235) — near white for contrast
+  - --card/--popover: oklch(0.14 0.005 235) — slightly lighter than bg for card elevation
+  - --card-foreground/--popover-foreground: oklch(0.96 0.005 235) — white text
+  - --secondary: oklch(0.18 0.005 235) — dark blue surface
+  - --muted: oklch(0.16 0.004 235), --muted-foreground: oklch(0.62 0.01 235)
+  - --accent: oklch(0.2 0.01 235), --accent-foreground: oklch(0.92 0.01 230)
+  - --border: oklch(0.25 0.005 235) — subtle visible border
+  - --input: oklch(0.18 0.005 235)
+  - --primary: oklch(0.6 0.14 235) — slightly brighter blue for visibility on dark
+  - --primary-foreground: oklch(0.1 0.004 235) — dark text on blue buttons
+  - --teal-soft: oklch(0.16 0.004 235) — dark soft sections
+  - --sidebar: oklch(0.12 0.004 235) — darker than main bg
+  - All sidebar-* variables updated to dark
+- Updated navbar.tsx: hardcoded bg-white/95 → bg-background/90, bg-white/80 → bg-background/70
+- Updated home-section.tsx: stat overlay card bg-white → bg-card, galeri badge bg-white → bg-card
+- Cleared .next cache (rm -rf .next) + restarted dev server to force CSS recompilation
+- Verified via Agent Browser:
+  - CSS variable --background = lab(0.905546%) — confirmed nearly black
+  - VLM: "page background is dark black, navbar is black, cards are dark gray/black, theme is dark/black smooth, text highly readable"
+  - Footer remains blue (uses bg-primary) for nice contrast against black
+- Lint clean, no errors
+
+Stage Summary:
+- Entire website background changed to "black smooth" — a near-black (oklch 0.1 lightness) with subtle blue ice tint
+- All components auto-adapted via CSS variables: cards, navbar, inputs, borders, muted text all dark
+- Blue ice primary color pops nicely against the dark background
+- Footer (blue) and hero (blue gradient) provide accent contrast against the black
+- Text remains highly readable (white/light on dark)
+- Logo circles kept white (bg-white) so the pentagonal shield logo stays visible on dark navbar/footer

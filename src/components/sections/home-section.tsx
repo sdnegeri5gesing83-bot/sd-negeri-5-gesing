@@ -158,7 +158,7 @@ export function HomeSection() {
                   className="h-full w-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-5 -left-5 bg-white text-foreground rounded-2xl shadow-xl p-4 w-44">
+              <div className="absolute -bottom-5 -left-5 bg-card text-card-foreground rounded-2xl shadow-xl p-4 w-44 ring-1 ring-border">
                 <p className="text-3xl font-bold text-primary">{studentCount}</p>
                 <p className="text-xs text-muted-foreground">Siswa Aktif</p>
               </div>
@@ -462,7 +462,7 @@ export function HomeSection() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
             <div>
-              <span className="inline-block text-xs font-semibold uppercase tracking-[0.15em] text-primary bg-white px-3 py-1 rounded-full mb-2">
+              <span className="inline-block text-xs font-semibold uppercase tracking-[0.15em] text-primary bg-card px-3 py-1 rounded-full mb-2">
                 Dokumentasi
               </span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground tracking-tight">
