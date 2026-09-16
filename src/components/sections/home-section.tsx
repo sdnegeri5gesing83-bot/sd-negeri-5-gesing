@@ -107,7 +107,7 @@ export function HomeSection() {
       <section className="relative overflow-hidden hero-gradient text-white">
         <div className="absolute inset-0 opacity-15">
           <img
-            src="/uploads/hero-school.jpg"
+            src="/uploads/hero-signboard.jpg"
             alt=""
             aria-hidden
             className="h-full w-full object-cover"
@@ -153,8 +153,8 @@ export function HomeSection() {
             <div className="relative hidden lg:block">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20">
                 <img
-                  src="/uploads/hero-school.jpg"
-                  alt="Kegiatan sekolah SD Negeri 5 Gesing"
+                  src="/uploads/hero-signboard.jpg"
+                  alt="Papan nama resmi SD Negeri 5 Gesing"
                   className="h-full w-full object-cover"
                 />
               </div>

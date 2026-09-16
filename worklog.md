@@ -746,3 +746,25 @@ Stage Summary:
 - Sticky header with blur and shadow for context while scrolling
 - Consistent padding and professional typography
 - Both public and admin student tables improved
+
+---
+Task ID: header-image-update
+Agent: Z.ai Code (main)
+Task: Change the photo on the header (hero section) to the school signboard image.
+
+Work Log:
+- Received new image: Gemini_Generated_Image_utmlbiutmlbiutml (1).jpeg (1284x832 JPEG)
+- VLM analysis: school signboard/plaque showing "SEKOLAH DASAR NEGERI 5 GESING" on a gate structure
+- Copied image to public/uploads/hero-signboard.jpg
+- Updated home-section.tsx hero section:
+  - Background overlay image: hero-school.jpg → hero-signboard.jpg (opacity-15)
+  - Main side image: hero-school.jpg → hero-signboard.jpg (the visible 4/3 image card)
+  - Updated alt text: "Papan nama resmi SD Negeri 5 Gesing"
+- Verified via VLM: "school signboard plaque showing SEKOLAH DASAR NEGERI 5 GESING, warm orange tones create strong complementary contrast against blue background"
+- Lint clean
+
+Stage Summary:
+- Hero/header section now displays the official school signboard image instead of the AI-generated school building
+- The signboard shows the school name "SEKOLAH DASAR NEGERI 5 GESING" prominently
+- Warm orange signboard creates nice contrast against the blue ice gradient background
+- Both the background overlay (subtle) and the main side image card use the new photo
