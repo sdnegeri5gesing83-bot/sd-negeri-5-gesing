@@ -47,3 +47,34 @@ Stage Summary:
 - Real Visi, Misi (7 poin), dan Tujuan (3 jangka waktu: pendek/menengah/panjang) from the official Word document successfully imported into the school profile
 - Profile page now displays authentic school vision/mission/goals instead of placeholder text
 - Script `import-visi-misi.ts` created for future re-imports
+
+---
+Task ID: teacher-photos
+Agent: Z.ai Code (main)
+Task: Import real teacher photos from FOTO.rar and update all GTK/organization/headmaster photos in the database.
+
+Work Log:
+- Extracted FOTO.rar using `unrar` → 8 teacher photos matching the 8 GTK in the database
+- Verified one photo (principal) with VLM: confirmed as formal portrait headshot
+- Copied all 8 photos to public/uploads/teachers/ with clean lowercase-hyphenated filenames:
+  - nyoman-astawa.jpg (Kepala Sekolah)
+  - made-agus-hermawan.png (Tenaga Kependidikan)
+  - miftahul-jannah.jpg, ni-made-rai-mahaputri.jpg, putu-agus-suar-ekkar-yasa.jpg, putu-cipta-dewi.jpg, putu-harta-wijaya.jpg, susi-susanti.jpg (6 Guru)
+- Created `scripts/update-teacher-photos.ts` with fuzzy name matching that:
+  - Updates all 8 Teacher records with correct photo paths
+  - Updates all 8 OrganizationMember records with correct photo paths
+  - Updates SchoolProfile.headmasterPhoto with principal's real photo
+- Ran the script: 8/8 teachers updated, 8/8 org members updated, headmaster photo updated
+- Verified via Agent Browser:
+  - GTK page: 4 teacher cards visible with real portrait photos loading correctly (VLM confirmed)
+  - Home page Sambutan Kepala Sekolah: real principal portrait photo loading (VLM confirmed)
+  - Profile page Struktur Organisasi: real photos confirmed via accessibility snapshot (image alt texts match teacher names)
+- Verified via API: all 8 teachers and headmaster have correct photo paths
+- No console errors, lint clean
+- Cleaned up extracted folder and test screenshots
+
+Stage Summary:
+- All 8 real teacher/staff photos from FOTO.rar successfully integrated into the website
+- Photos appear on: GTK page cards, Profile page Sambutan & Struktur Organisasi sections, Home page Sambutan section
+- Headmaster photo in SchoolProfile updated to real principal photo (Nyoman Astawa)
+- Script `update-teacher-photos.ts` created for future re-updates
