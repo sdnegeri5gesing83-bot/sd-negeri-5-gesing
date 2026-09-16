@@ -1,0 +1,695 @@
+{
+  "teachers": [
+    {
+      "name": "Nyoman Astawa",
+      "photo": "/uploads/teachers/teacher-3.png",
+      "nip": "197210071996061001",
+      "nuptk": "1339750651200013",
+      "position": "Kepala Sekolah",
+      "education": "S1 - PGSD",
+      "subject": "Kepemimpinan & Manajemen Sekolah",
+      "category": "Guru",
+      "gender": "L",
+      "phone": "nyomanastawa590@gmail.com",
+      "email": "Kepala Sekolah",
+      "bio": "Kepala Sekolah · PNS · Hindu",
+      "order": 1
+    },
+    {
+      "name": "Made Agus Hermawan",
+      "photo": "/uploads/teachers/teacher-5.png",
+      "nip": "197708082025211017",
+      "nuptk": "3140755656130163",
+      "position": "Tenaga Kependidikan",
+      "education": "SMA / sederajat",
+      "subject": "Operator & Administrasi",
+      "category": "Tenaga Kependidikan",
+      "gender": "L",
+      "phone": "dektong2020@gmail.com",
+      "email": "Bendahara BOS/BOP",
+      "bio": "PPPK · Hindu",
+      "order": 2
+    },
+    {
+      "name": "Miftahul Jannah",
+      "photo": "/uploads/teachers/teacher-4.png",
+      "nip": "199707042024212035",
+      "nuptk": "8036775676230173",
+      "position": "Guru Kelas 1",
+      "education": "S1 - PGSD",
+      "subject": "Guru Kelas 1",
+      "category": "Guru",
+      "gender": "P",
+      "phone": "miftahuljannah4797@gmail.com",
+      "email": "",
+      "bio": "PPPK · Islam",
+      "order": 3
+    },
+    {
+      "name": "Ni Made Rai Maha Putri",
+      "photo": "/uploads/teachers/teacher-2.png",
+      "nip": "199301232023212022",
+      "nuptk": "7455771672230222",
+      "position": "Guru Kelas 5",
+      "education": "S1 - PGSD",
+      "subject": "Guru Kelas 5",
+      "category": "Guru",
+      "gender": "P",
+      "phone": "mahaputri387@gmail.com",
+      "email": "",
+      "bio": "PPPK · Hindu",
+      "order": 4
+    },
+    {
+      "name": "Putu Agus Suar Ekkar Yasa",
+      "photo": "/uploads/teachers/teacher-3.png",
+      "nip": "199008192020121004",
+      "nuptk": "1151768669130183",
+      "position": "Guru Kelas 6",
+      "education": "S1 - PGSD",
+      "subject": "Guru Kelas 6",
+      "category": "Guru",
+      "gender": "L",
+      "phone": "putuagussuarekkaryasa@gmail.com",
+      "email": "",
+      "bio": "PNS · Hindu",
+      "order": 5
+    },
+    {
+      "name": "Putu Cipta Dewi",
+      "photo": "/uploads/teachers/teacher-6.png",
+      "nip": "199102042022212004",
+      "nuptk": "7536769670130052",
+      "position": "Guru Kelas 4",
+      "education": "S1 - PGSD",
+      "subject": "Guru Kelas 4",
+      "category": "Guru",
+      "gender": "P",
+      "phone": "ciptadewiwaru@gmail.com",
+      "email": "Pelaksana PBJ",
+      "bio": "PPPK · Hindu",
+      "order": 6
+    },
+    {
+      "name": "Putu Harta Wijaya",
+      "photo": "/uploads/teachers/teacher-1.png",
+      "nip": "197010232022211001",
+      "nuptk": "5563750651200103",
+      "position": "Guru Kelas 3",
+      "education": "S1 - PGSD",
+      "subject": "Guru Kelas 3",
+      "category": "Guru",
+      "gender": "L",
+      "phone": "putuharta.wijaya@yahoo.com",
+      "email": "",
+      "bio": "PPPK · Hindu",
+      "order": 7
+    },
+    {
+      "name": "Susi Susanti",
+      "photo": "/uploads/teachers/headmaster.png",
+      "nip": "199912162024212015",
+      "nuptk": "4548777678230053",
+      "position": "Guru Kelas 2",
+      "education": "S1 - PGSD",
+      "subject": "Guru Kelas 2",
+      "category": "Guru",
+      "gender": "P",
+      "phone": "s_susanti@upi.edu",
+      "email": "",
+      "bio": "PPPK · Islam",
+      "order": 8
+    }
+  ],
+  "students": [
+    {
+      "nis": "450",
+      "nisn": "3177959964",
+      "name": "Desak Ayu Putu Widya Alisha Putri",
+      "gender": "P",
+      "className": "4",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "459",
+      "nisn": "3184103983",
+      "name": "Gede Arya Putra Adnyana",
+      "gender": "L",
+      "className": "3",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "451",
+      "nisn": "3172603891",
+      "name": "Gede Wira Prasetia",
+      "gender": "L",
+      "className": "4",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "435",
+      "nisn": "3146859360",
+      "name": "I Gede Agus Saputra",
+      "gender": "L",
+      "className": "6",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "474",
+      "nisn": "3193695543",
+      "name": "I Komang Arya Narendra",
+      "gender": "L",
+      "className": "1",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "471",
+      "nisn": "3193161517",
+      "name": "Kadek Agus Buda Amerta",
+      "gender": "L",
+      "className": "2",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "475",
+      "nisn": "3196132441",
+      "name": "Kadek Ariastiti",
+      "gender": "P",
+      "className": "1",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "452",
+      "nisn": "3172511618",
+      "name": "Kadek Natalia Putri",
+      "gender": "P",
+      "className": "4",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "460",
+      "nisn": "3184601383",
+      "name": "Kadek Opi Ariasih",
+      "gender": "P",
+      "className": "3",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "445",
+      "nisn": "3167142096",
+      "name": "Kadek Puspita Yanti",
+      "gender": "P",
+      "className": "5",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "453",
+      "nisn": "3171958142",
+      "name": "Kadek Putri Yanti",
+      "gender": "P",
+      "className": "4",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "454",
+      "nisn": "3173665547",
+      "name": "Kadek Rani Puspita Depi",
+      "gender": "P",
+      "className": "4",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "436",
+      "nisn": "3154761684",
+      "name": "Kadek Wira Satya Dharma Putra",
+      "gender": "L",
+      "className": "6",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "461",
+      "nisn": "3172123172",
+      "name": "Ketut Arta Gunawan",
+      "gender": "L",
+      "className": "3",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "446",
+      "nisn": "3164465479",
+      "name": "Ketut Dian Milayanti",
+      "gender": "P",
+      "className": "5",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "437",
+      "nisn": "3154495857",
+      "name": "Ketut Novita Astari",
+      "gender": "P",
+      "className": "6",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "447",
+      "nisn": "3167480334",
+      "name": "Komang Adi Putra Darmawan",
+      "gender": "L",
+      "className": "5",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "472",
+      "nisn": "3195864699",
+      "name": "Komang Jaya Ariastawa",
+      "gender": "L",
+      "className": "2",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "438",
+      "nisn": "3153617315",
+      "name": "Komang Paramita Dewi",
+      "gender": "P",
+      "className": "6",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "439",
+      "nisn": "3150890808",
+      "name": "Komang Perdi Nendra Suputra",
+      "gender": "L",
+      "className": "6",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "462",
+      "nisn": "3180249808",
+      "name": "Komang Raliun Arta Naditya",
+      "gender": "L",
+      "className": "3",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "440",
+      "nisn": "3155509527",
+      "name": "Luh Adelia Putri Junaedhy",
+      "gender": "P",
+      "className": "4",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "463",
+      "nisn": "3174687980",
+      "name": "Luh Dian Pratiwi",
+      "gender": "P",
+      "className": "3",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "473",
+      "nisn": "3194188901",
+      "name": "Made Renakemala Dewi",
+      "gender": "P",
+      "className": "1",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "464",
+      "nisn": "3188472423",
+      "name": "Made Sumarta Ari Wangsa",
+      "gender": "L",
+      "className": "3",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "455",
+      "nisn": "3170522442",
+      "name": "Made Wilda Restiana",
+      "gender": "L",
+      "className": "4",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "456",
+      "nisn": "3174207842",
+      "name": "Ni Kadek Dinda Juni Antari",
+      "gender": "P",
+      "className": "4",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "441",
+      "nisn": "3142158049",
+      "name": "Ni Kadek Septiani Putri",
+      "gender": "P",
+      "className": "6",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "465",
+      "nisn": "3186441761",
+      "name": "Nyoman Adi Ari Astawan",
+      "gender": "L",
+      "className": "3",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "466",
+      "nisn": "3188493624",
+      "name": "Putu Ayu Diana Putri",
+      "gender": "P",
+      "className": "3",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "467",
+      "nisn": "3185401288",
+      "name": "Putu Gebi Aprilyani",
+      "gender": "P",
+      "className": "3",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "442",
+      "nisn": "3156255260",
+      "name": "Putu Indah Aprilia Putri",
+      "gender": "P",
+      "className": "6",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "468",
+      "nisn": "3176369746",
+      "name": "Putu Intan Wahyu Saputra",
+      "gender": "L",
+      "className": "3",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "457",
+      "nisn": "3177630716",
+      "name": "Putu Padma Dinata",
+      "gender": "L",
+      "className": "4",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "434",
+      "nisn": "3146522207",
+      "name": "Putu Perdana",
+      "gender": "L",
+      "className": "6",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "458",
+      "nisn": "3177341051",
+      "name": "Putu Prania",
+      "gender": "P",
+      "className": "4",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "443",
+      "nisn": "3154251356",
+      "name": "Putu Putri Natalia",
+      "gender": "P",
+      "className": "6",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "448",
+      "nisn": "3156943206",
+      "name": "Putu Raka Wibawaputra",
+      "gender": "L",
+      "className": "5",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "469",
+      "nisn": "3180840874",
+      "name": "Putu Septi Arini",
+      "gender": "P",
+      "className": "3",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    },
+    {
+      "nis": "449",
+      "nisn": "3160596573",
+      "name": "Putu Winda Restiani",
+      "gender": "P",
+      "className": "5",
+      "academicYear": "2025/2026",
+      "status": "Aktif"
+    }
+  ],
+  "facilities": [
+    {
+      "name": "Ruang Kelas 1",
+      "photo": "/uploads/facilities/facility-classroom.jpg",
+      "category": "Ruang Kelas",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Ruang kelas berukuran 6X7 meter",
+      "order": 1
+    },
+    {
+      "name": "Ruang Kelas 2",
+      "photo": "/uploads/facilities/facility-classroom.jpg",
+      "category": "Ruang Kelas",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Ruang kelas berukuran 8X7 meter",
+      "order": 2
+    },
+    {
+      "name": "Ruang Kelas 3",
+      "photo": "/uploads/facilities/facility-classroom.jpg",
+      "category": "Ruang Kelas",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Ruang kelas berukuran 8X7 meter",
+      "order": 3
+    },
+    {
+      "name": "Ruang Kelas 4",
+      "photo": "/uploads/facilities/facility-classroom.jpg",
+      "category": "Ruang Kelas",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Ruang kelas berukuran 8X7 meter",
+      "order": 4
+    },
+    {
+      "name": "Ruang Kelas 5",
+      "photo": "/uploads/facilities/facility-classroom.jpg",
+      "category": "Ruang Kelas",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Ruang kelas berukuran 8X7 meter",
+      "order": 5
+    },
+    {
+      "name": "Ruang Kelas 6",
+      "photo": "/uploads/facilities/facility-classroom.jpg",
+      "category": "Ruang Kelas",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Ruang kelas berukuran 8X7 meter",
+      "order": 6
+    },
+    {
+      "name": "Perpustakaan",
+      "photo": "/uploads/facilities/facility-library.jpg",
+      "category": "Perpustakaan",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Ruang Perpustakaan berukuran 7x6 meter",
+      "order": 7
+    },
+    {
+      "name": "Ruang Guru",
+      "photo": "/uploads/facilities/facility-teacher-room.jpg",
+      "category": "Ruang Guru",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Ruang kelas berukuran 8X7 meter",
+      "order": 8
+    },
+    {
+      "name": "WC/Toilet Guru",
+      "photo": "/uploads/facilities/facility-toilet.jpg",
+      "category": "Toilet",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Toilet berukuran 2x2 meter",
+      "order": 9
+    },
+    {
+      "name": "WC/Toilet Siswa Laki-laki",
+      "photo": "/uploads/facilities/facility-toilet.jpg",
+      "category": "Toilet",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Toilet berukuran 2x2 meter",
+      "order": 10
+    },
+    {
+      "name": "WC/Toilet Siswa Perempuan",
+      "photo": "/uploads/facilities/facility-toilet.jpg",
+      "category": "Toilet",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Toilet berukuran 2x1 meter",
+      "order": 11
+    },
+    {
+      "name": "Gudang",
+      "photo": "",
+      "category": "Gudang",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Gudang berukuran 2x1 meter",
+      "order": 12
+    },
+    {
+      "name": "Padmasana",
+      "photo": "",
+      "category": "Padmasana",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Padmasana berukuran 2x2 meter",
+      "order": 13
+    },
+    {
+      "name": "Mes Kepala Sekolah",
+      "photo": "",
+      "category": "Mes",
+      "quantity": 1,
+      "condition": "Baik",
+      "description": "Mes berukuran 7x6 meter",
+      "order": 14
+    }
+  ],
+  "organization": [
+    {
+      "name": "Nyoman Astawa",
+      "position": "Kepala Sekolah",
+      "photo": "/uploads/teachers/teacher-3.png",
+      "order": 1
+    },
+    {
+      "name": "Made Agus Hermawan",
+      "position": "Tenaga Kependidikan",
+      "photo": "/uploads/teachers/teacher-5.png",
+      "order": 2
+    },
+    {
+      "name": "Miftahul Jannah",
+      "position": "Guru Kelas 1",
+      "photo": "/uploads/teachers/teacher-4.png",
+      "order": 3
+    },
+    {
+      "name": "Ni Made Rai Maha Putri",
+      "position": "Guru Kelas 5",
+      "photo": "/uploads/teachers/teacher-2.png",
+      "order": 4
+    },
+    {
+      "name": "Putu Agus Suar Ekkar Yasa",
+      "position": "Guru Kelas 6",
+      "photo": "/uploads/teachers/teacher-3.png",
+      "order": 5
+    },
+    {
+      "name": "Putu Cipta Dewi",
+      "position": "Guru Kelas 4",
+      "photo": "/uploads/teachers/teacher-6.png",
+      "order": 6
+    },
+    {
+      "name": "Putu Harta Wijaya",
+      "position": "Guru Kelas 3",
+      "photo": "/uploads/teachers/teacher-1.png",
+      "order": 7
+    },
+    {
+      "name": "Susi Susanti",
+      "position": "Guru Kelas 2",
+      "photo": "/uploads/teachers/headmaster.png",
+      "order": 8
+    }
+  ],
+  "headmaster": {
+    "name": "Nyoman Astawa",
+    "photo": "/uploads/teachers/teacher-3.png",
+    "nip": "197210071996061001"
+  },
+  "stats": [
+    {
+      "label": "Jumlah GTK",
+      "value": 8,
+      "icon": "Users",
+      "order": 1
+    },
+    {
+      "label": "Jumlah Siswa",
+      "value": 40,
+      "icon": "GraduationCap",
+      "order": 2
+    },
+    {
+      "label": "Jumlah Kelas",
+      "value": 6,
+      "icon": "School",
+      "order": 3
+    },
+    {
+      "label": "Sarana & Prasarana",
+      "value": 14,
+      "icon": "Building2",
+      "order": 4
+    }
+  ]
+}

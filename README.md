@@ -100,10 +100,22 @@ halaman tetap dapat diakses pengguna dari satu URL.
    ```bash
    bun run scripts/seed.ts
    ```
-   Ini akan membuat akun admin default, profil sekolah, 7 GTK, 84+ siswa,
-   12 fasilitas, 10 galeri, 5 berita, 4 pengumuman, dan statistik.
+   Ini akan membuat akun admin default, profil sekolah, GTK, siswa, fasilitas,
+   galeri, berita, pengumuman, dan statistik.
 
-6. **Jalankan aplikasi:**
+6. **(Opsional) Impor data asli dari file Excel Dapodik:**
+   Jika Anda memiliki file Excel dari sistem Dapodik (daftar guru, tendik,
+   peserta didik, dan template fasilitas), Anda bisa mengimpornya:
+   ```bash
+   # Letakkan file Excel di folder upload/ lalu jalankan:
+   python3 scripts/read-excel.py     # baca Excel → JSON
+   bun run scripts/import-excel.ts   # impor JSON → database
+   ```
+   Impor akan mengganti data GTK, siswa, fasilitas, dan struktur organisasi
+   dengan data asli dari file Excel. Profil kepala sekolah juga diperbarui
+   otomatis dari data tendik.
+
+7. **Jalankan aplikasi:**
    ```bash
    bun run dev
    ```
@@ -136,7 +148,9 @@ Password: admin123
 │       └── editor/
 ├── scripts/
 │   ├── generate-images.ts     # Generator gambar AI (opsional)
-│   └── seed.ts                # Seed database
+│   ├── seed.ts                # Seed database (data contoh)
+│   ├── read-excel.py          # Pembaca file Excel Dapodik → JSON
+│   └── import-excel.ts        # Impor JSON dari Excel → database
 ├── src/
 │   ├── app/
 │   │   ├── api/               # REST API (public + admin + auth)
