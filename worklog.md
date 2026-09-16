@@ -201,3 +201,26 @@ Stage Summary:
 - All clickable (tel:, mailto:, wa.me links work)
 - Footer auto-updated too (dynamic from profile)
 - Script `update-contact.ts` created for future contact updates
+
+---
+Task ID: welcome-update
+Agent: Z.ai Code (main)
+Task: Update headmaster welcome message (Sambutan Kepala Sekolah) with the real text provided by the school.
+
+Work Log:
+- Created `scripts/update-welcome.ts` to update SchoolProfile.headmasterWelcome
+- Real welcome text (3 paragraphs) includes:
+  - "Assalamualaikum dan salam sejahtera bagi kita semua."
+  - Welcome message referencing the school vision "Terwujudnya Insan yang Bertaqwa, cerdas, serta peduli sesama"
+  - Closing call to action "Mari bersama-sama membangun pendidikan yang bermutu..."
+- Ran the script successfully
+- Verified via Agent Browser:
+  - Beranda Sambutan section: full welcome text + real principal photo confirmed (VLM: "real portrait photo of the principal visible")
+  - Profil Sambutan section: full welcome text confirmed
+- Lint clean, no errors
+
+Stage Summary:
+- Real headmaster welcome message updated (replaces previous placeholder text)
+- Now displays consistently on both Beranda and Profil pages
+- Includes reference to the real school vision
+- Script `update-welcome.ts` created for future updates
