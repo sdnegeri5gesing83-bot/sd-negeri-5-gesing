@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Plus, Pencil, Trash2, Search, Users } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Users, Camera, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Teacher } from '@/lib/types';
 import { ImageUpload } from '../image-upload';
@@ -51,6 +51,48 @@ export function TeachersPanel() {
   const [form, setForm] = useState<typeof empty>(empty);
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState('');
+  const [photoEdit, setPhotoEdit] = useState<Teacher | null>(null);
+  const [photoUrl, setPhotoUrl] = useState('');
+  const [photoSaving, setPhotoSaving] = useState(false);
+
+  const openPhotoEdit = (t: Teacher) => {
+    setPhotoEdit(t);
+    setPhotoUrl(t.photo || '');
+  };
+
+  const savePhoto = async () => {
+    if (!photoEdit) return;
+    setPhotoSaving(true);
+    try {
+      const res = await fetch(`/api/admin/teachers/${photoEdit.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: photoEdit.name,
+          photo: photoUrl,
+          nip: photoEdit.nip || '',
+          nuptk: photoEdit.nuptk || '',
+          position: photoEdit.position,
+          education: photoEdit.education,
+          subject: photoEdit.subject || '',
+          category: photoEdit.category,
+          gender: photoEdit.gender,
+          phone: photoEdit.phone || '',
+          email: photoEdit.email || '',
+          bio: photoEdit.bio || '',
+        }),
+      });
+      const j = await res.json();
+      if (!res.ok) throw new Error(j?.error);
+      toast.success('Foto GTK berhasil diperbarui!');
+      setPhotoEdit(null);
+      refetch();
+    } catch (e: any) {
+      toast.error(e?.message);
+    } finally {
+      setPhotoSaving(false);
+    }
+  };
 
   const filtered = (data || []).filter((t) =>
     !search || t.name.toLowerCase().includes(search.toLowerCase()) || t.position.toLowerCase().includes(search.toLowerCase())
@@ -142,7 +184,7 @@ export function TeachersPanel() {
                   <th className="text-left p-3 font-semibold">Jabatan</th>
                   <th className="text-left p-3 font-semibold hidden sm:table-cell">Kategori</th>
                   <th className="text-left p-3 font-semibold hidden md:table-cell">Pendidikan</th>
-                  <th className="text-center p-3 font-semibold w-24">Aksi</th>
+                  <th className="text-center p-3 font-semibold w-32">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -153,11 +195,16 @@ export function TeachersPanel() {
                     <tr key={t.id} className="border-t border-border hover:bg-muted/30">
                       <td className="p-3">
                         <div className="flex items-center gap-2">
-                          {t.photo ? (
-                            <img src={t.photo} alt={t.name} className="h-8 w-8 rounded-full object-cover" />
-                          ) : (
-                            <div className="h-8 w-8 rounded-full bg-teal-soft/60 flex items-center justify-center text-xs font-bold text-primary">{t.name.charAt(0)}</div>
-                          )}
+                          <button onClick={() => openPhotoEdit(t)} className="relative group/photo shrink-0" title="Ganti Foto">
+                            {t.photo ? (
+                              <img src={t.photo} alt={t.name} className="h-9 w-9 rounded-full object-cover ring-2 ring-border group-hover/photo:ring-primary transition-all" />
+                            ) : (
+                              <div className="h-9 w-9 rounded-full bg-teal-soft/60 flex items-center justify-center text-xs font-bold text-primary ring-2 ring-border group-hover/photo:ring-primary transition-all">{t.name.charAt(0)}</div>
+                            )}
+                            <span className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-primary text-primary-foreground flex items-center justify-center opacity-0 group-hover/photo:opacity-100 transition-opacity">
+                              <Camera className="h-2.5 w-2.5" />
+                            </span>
+                          </button>
                           <div>
                             <p className="font-medium text-foreground">{t.name}</p>
                             <p className="text-xs text-muted-foreground">{t.nip || 'NIP -'}</p>
@@ -171,7 +218,8 @@ export function TeachersPanel() {
                       <td className="p-3 hidden md:table-cell text-muted-foreground">{t.education}</td>
                       <td className="p-3">
                         <div className="flex items-center justify-center gap-1">
-                          <Button size="icon" variant="ghost" onClick={() => openEdit(t)}><Pencil className="h-4 w-4" /></Button>
+                          <Button size="icon" variant="ghost" onClick={() => openPhotoEdit(t)} title="Ganti Foto"><Camera className="h-4 w-4" /></Button>
+                          <Button size="icon" variant="ghost" onClick={() => openEdit(t)} title="Edit"><Pencil className="h-4 w-4" /></Button>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <Button size="icon" variant="ghost" className="text-destructive hover:bg-destructive/10"><Trash2 className="h-4 w-4" /></Button>
@@ -250,6 +298,52 @@ export function TeachersPanel() {
               <Button type="submit" disabled={saving}>{saving ? 'Menyimpan...' : 'Simpan'}</Button>
             </DialogFooter>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Quick photo replace dialog */}
+      <Dialog open={!!photoEdit} onOpenChange={(o) => !o && setPhotoEdit(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Camera className="h-5 w-5 text-primary" />
+              Ganti Foto GTK
+            </DialogTitle>
+            <DialogDescription>
+              {photoEdit ? <>Unggah foto riil untuk <span className="font-semibold text-foreground">{photoEdit.name}</span>. Foto akan tampil di halaman publik GTK dan Struktur Organisasi.</> : null}
+            </DialogDescription>
+          </DialogHeader>
+          {photoEdit && (
+            <div className="space-y-4">
+              <ImageUpload
+                label="Foto Guru / Tenaga Kependidikan"
+                value={photoUrl}
+                onChange={setPhotoUrl}
+                placeholder="URL gambar atau upload dari komputer"
+              />
+              <div className="rounded-lg bg-muted/50 border border-border p-3">
+                <p className="text-xs text-muted-foreground">
+                  💡 <span className="font-medium">Tips:</span> Gunakan foto portrait (rasio 3:4) yang jelas, formal, dan ramah. Format JPG/PNG/WebP, maksimal 5MB.
+                </p>
+              </div>
+              <DialogFooter>
+                <Button type="button" variant="outline" onClick={() => setPhotoEdit(null)}>Batal</Button>
+                <Button type="button" onClick={savePhoto} disabled={photoSaving}>
+                  {photoSaving ? (
+                    <>
+                      <span className="h-4 w-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                      Menyimpan...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" />
+                      Simpan Foto
+                    </>
+                  )}
+                </Button>
+              </DialogFooter>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>

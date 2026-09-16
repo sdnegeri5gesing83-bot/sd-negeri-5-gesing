@@ -561,3 +561,39 @@ Stage Summary:
   - Thinner, more refined icon strokes
   - Playful hover (scale + 6° rotation + card lift)
 - Each card: Jumlah GTK (Users), Jumlah Siswa (GraduationCap), Jumlah Kelas (School), Sarana & Prasarana (Building2)
+
+---
+Task ID: gtk-photo-replace
+Agent: Z.ai Code (main)
+Task: Make GTK (teacher) photos editable/replaceable in the admin panel.
+
+Work Log:
+- Enhanced the admin Teachers panel (teachers-panel.tsx) with quick photo replacement feature (same pattern as facilities panel):
+  1. Added Camera icon button in the action column (before Edit button) for each GTK row
+  2. Made the photo thumbnail clickable — clicking it opens the photo replace dialog
+  3. Added a camera icon badge that appears on the photo thumbnail when hovering (visual hint that it's clickable)
+  4. Photo thumbnail enlarged from h-8 to h-9, added ring-2 ring-border that turns ring-primary on hover
+- Added state: photoEdit (teacher being photo-edited), photoUrl (new photo path), photoSaving (loading)
+- Added openPhotoEdit(t) function that opens the photo dialog
+- Added savePhoto() function that PUTs the teacher with updated photo (preserves all other fields: name, nip, nuptk, position, education, subject, category, gender, phone, email, bio)
+- Added "Ganti Foto GTK" dialog with:
+  - ImageUpload component (upload from computer OR enter URL)
+  - Live preview of current/uploaded photo
+  - Tips: "Gunakan foto portrait (rasio 3:4) yang jelas, formal, dan ramah. Format JPG/PNG/WebP, maksimal 5MB."
+  - "Simpan Foto" button with loading state
+- Widened the action column from w-24 to w-32 to fit 3 buttons (Ganti Foto, Edit, Hapus)
+- Verified via Agent Browser:
+  - "Ganti Foto" buttons confirmed on all GTK rows
+  - Photo dialog opens correctly: "dialog titled Ganti Foto GTK, upload field with current photo path, preview image, Batal + Simpan Foto buttons"
+- Lint clean, no errors
+
+Stage Summary:
+- Admin can now easily replace any GTK photo via 2 access points:
+  1. Click the photo thumbnail (shows camera badge on hover)
+  2. Click the Camera icon button in action column
+- Dedicated "Ganti Foto GTK" dialog is simpler than the full edit form — just upload and save
+- Real teacher photos uploaded will immediately appear on:
+  - Public GTK page (teacher cards)
+  - Profile page Sambutan Kepala Sekolah (for principal)
+  - Profile page Struktur Organisasi (all members)
+- Tips guide admins on format (JPG/PNG/WebP), size (max 5MB), and aspect ratio (3:4 portrait)
