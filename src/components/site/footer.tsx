@@ -63,7 +63,7 @@ export function Footer() {
               </div>
             </div>
             <p className="text-sm opacity-90 leading-relaxed">
-              Pusat informasi resmi {name}. Membentuk generasi cerdas, berakhlak mulia, dan berbudaya.
+              Pusat informasi resmi {name}. Membentuk Insan yang Bertaqwa, cerdas, serta peduli sesama.
             </p>
             <div className="flex items-center gap-2 mt-5">
               {profile?.facebook && (

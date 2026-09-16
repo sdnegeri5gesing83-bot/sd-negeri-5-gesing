@@ -241,3 +241,20 @@ Work Log:
 Stage Summary:
 - CTA section text updated to align with school vision
 - The home page is now fully consistent: hero vision, sambutan, and CTA all reference "Insan yang Bertaqwa, cerdas, serta peduli sesama"
+
+---
+Task ID: footer-text-update
+Agent: Z.ai Code (main)
+Task: Update footer brand description to align with school vision.
+
+Work Log:
+- Found the text in footer.tsx (line 66)
+- Old text: "Pusat informasi resmi {name}. Membentuk generasi cerdas, berakhlak mulia, dan berbudaya."
+- New text: "Pusat informasi resmi {name}. Membentuk Insan yang Bertaqwa, cerdas, serta peduli sesama."
+- Verified via JavaScript eval on the live page: "Pusat informasi resmi SD Negeri 5 Gesing. Membentuk Insan yang Bertaqwa, cerdas, serta peduli sesama."
+- Lint clean
+
+Stage Summary:
+- Footer brand description updated to align with school vision
+- Footer appears on ALL pages (it's a shared component), so the new text shows everywhere
+- Now fully consistent: hero vision, sambutan, CTA, and footer all reference "Insan yang Bertaqwa, cerdas, serta peduli sesama"
