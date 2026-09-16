@@ -492,3 +492,38 @@ Stage Summary:
 - Accreditation field fixed: "Akreditasi B" → "B"
 - No more word duplication on hero and profile pages
 - The label "Akreditasi" + value "B" now displays correctly as "Akreditasi B"
+
+---
+Task ID: elegant-stat-icons
+Agent: Z.ai Code (main)
+Task: Make the statistics icons on home page more elegant and friendly.
+
+Work Log:
+- Redesigned the stat card icons in home-section.tsx from plain to elegant/friendly:
+  BEFORE: plain `bg-primary/10` square container, `text-primary` icon (h-7), simple scale on hover
+  AFTER:
+  - Icon container: h-16 w-16 rounded-2xl with gradient `bg-gradient-to-br from-primary to-primary/70`
+  - Icon color: white (text-primary-foreground) on the blue gradient — high contrast, elegant
+  - Icon stroke: strokeWidth={2.2} for bolder, more visible lines
+  - Shadow: `shadow-lg shadow-primary/25` — colored soft glow
+  - Ring: `ring-4 ring-primary/10` — subtle outer ring for depth
+  - Hover: `group-hover:scale-110 group-hover:rotate-3` — playful rotation + scale
+  - Size: larger (h-16 w-16 vs h-14 w-14)
+- Enhanced the card itself:
+  - Card gradient: `bg-gradient-to-b from-card to-muted/30` — subtle depth
+  - Top accent bar: changed from plain gold to gradient `from-primary via-primary/70 to-gold`
+  - Decorative corner dot: `bg-primary/5 group-hover:bg-primary/10` — subtle accent that brightens on hover
+  - Hover lift: `hover:-translate-y-1` — card floats up on hover (friendly interaction)
+  - Shadow: `hover:shadow-xl` — deeper shadow on hover
+- Verified via VLM: "icons are elegant, modern, minimalist. White line-art symbols on solid blue gradient badges. Light blue-to-white gradient on cards. Vibrant cyan-blue gradient bar"
+- Lint clean
+
+Stage Summary:
+- Statistics icons redesigned to be elegant and friendly:
+  - Gradient icon containers (blue ice gradient) with white icons
+  - Colored shadow glow + outer ring for depth
+  - Playful hover effects (scale + rotate + card lift)
+  - Gradient top accent bar (blue → gold)
+  - Decorative corner dot
+  - Subtle card gradient background
+- Overall: more modern, polished, and friendly look
