@@ -111,7 +111,7 @@ export function ProfileSection() {
             </div>
             <div className="lg:col-span-1">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-sm">
-                <img src="/uploads/hero-school.jpg" alt="Bangunan sekolah" className="h-full w-full object-cover" />
+                <img src="/uploads/school-signboard.jpg" alt="Papan nama resmi SD Negeri 5 Gesing" className="h-full w-full object-cover" />
               </div>
             </div>
           </div>
