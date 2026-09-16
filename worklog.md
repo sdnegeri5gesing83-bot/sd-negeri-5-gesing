@@ -157,3 +157,19 @@ Stage Summary:
 - Hero section now displays "40 Siswa Aktif" (was hardcoded 84)
 - Made dynamic: fetches real student count from API, will auto-update if data changes
 - Consistent with the actual 40 students imported from Dapodik Excel
+
+---
+Task ID: hero-vision-text
+Agent: Z.ai Code (main)
+Task: Replace hero description text with the real school vision.
+
+Work Log:
+- Found the hardcoded placeholder text (about Tri Hita Karana) in hero section
+- Replaced with dynamic vision text from profile API: {profile?.vision || 'Terwujudnya Insan yang Bertaqwa, cerdas, serta peduli sesama.'}
+- Now displays the real school vision "Terwujudnya Insan yang Bertaqwa, cerdas, serta peduli sesama."
+- Verified via accessibility snapshot: new vision text confirmed, old Tri Hita Karana text gone
+- Lint clean
+
+Stage Summary:
+- Hero section now displays the official school vision instead of placeholder text
+- Made dynamic: fetches vision from profile API, auto-updates if admin changes the vision

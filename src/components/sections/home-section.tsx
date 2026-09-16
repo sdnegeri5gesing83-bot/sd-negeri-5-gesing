@@ -86,9 +86,7 @@ export function HomeSection() {
                 Buleleng, Bali &middot; Akreditasi {profile?.accreditation || 'B'}
               </p>
               <p className="mt-5 text-sm sm:text-base text-white/90 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                Mewujudkan peserta didik yang beriman, berakhlak mulia, cerdas, terampil,
-                dan mandiri serta berbudaya berlandaskan Tri Hita Karana. Mari bersama
-                membangun masa depan pendidikan yang bermutu.
+                {profile?.vision || 'Terwujudnya Insan yang Bertaqwa, cerdas, serta peduli sesama.'}
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
                 <Button
