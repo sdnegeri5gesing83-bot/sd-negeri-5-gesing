@@ -1,0 +1,176 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---- Admin / Authentication ----
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("admin") // admin | operator
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ---- School Profile (single record, identified by singleton key) ----
+model SchoolProfile {
+  id                 String   @id @default(cuid())
+  name               String
+  npsn               String?
+  nss                String?
+  accreditation      String?
+  address            String
+  village            String
+  district           String
+  regency            String
+  province           String
+  postalCode         String?
+  phone              String?
+  email              String?
+  whatsapp           String?
+  facebook           String?
+  instagram          String?
+  youtube            String?
+  tiktok             String?
+  logo               String?
+  vision             String
+  mission            String
+  goals              String
+  history            String
+  headmasterName     String
+  headmasterPhoto   String?
+  headmasterWelcome  String
+  headmasterNip      String?
+  mapEmbed           String?
+  serviceHours       String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+// ---- Teachers & Staff (GTK) ----
+model Teacher {
+  id          String   @id @default(cuid())
+  name        String
+  photo       String?
+  nip         String?
+  nuptk       String?
+  position    String
+  education   String
+  subject     String?
+  category    String   @default("Guru") // Guru | Tenaga Kependidikan
+  gender      String   @default("L")    // L | P
+  phone       String?
+  email       String?
+  bio         String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ---- Students (no sensitive data exposed publicly) ----
+model Student {
+  id            String   @id @default(cuid())
+  nisn          String?
+  nis           String?
+  name          String
+  gender        String   // L | P
+  className     String   // 1 .. 6
+  academicYear  String   // 2024/2025
+  status        String   @default("Aktif")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ---- Facilities (Sarpras) ----
+model Facility {
+  id          String   @id @default(cuid())
+  name        String
+  photo       String?
+  category    String   // Ruang Kelas | Ruang Guru | ...
+  quantity    Int      @default(1)
+  condition   String   @default("Baik") // Baik | Rusak Ringan | Rusak Berat
+  description String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ---- Gallery ----
+model GalleryItem {
+  id          String   @id @default(cuid())
+  title       String
+  photo       String
+  category    String   // Kegiatan Pembelajaran | Upacara | ...
+  description String?
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ---- News (Berita) ----
+model News {
+  id          String   @id @default(cuid())
+  title       String
+  excerpt     String?
+  content     String
+  photo       String?
+  category    String   @default("Umum")
+  published   Boolean  @default(true)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ---- Announcements (Pengumuman) ----
+model Announcement {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  date        DateTime @default(now())
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ---- Contact Messages (from contact form) ----
+model ContactMessage {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  subject     String
+  message     String
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ---- Homepage Statistics ----
+model Statistic {
+  id          String   @id @default(cuid())
+  label       String
+  value       Int
+  icon        String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ---- Organization Structure ----
+model OrganizationMember {
+  id          String   @id @default(cuid())
+  name        String
+  position    String
+  photo       String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
