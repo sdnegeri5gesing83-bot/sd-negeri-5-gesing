@@ -245,22 +245,22 @@ export function StudentsSection() {
               <div className="rounded-lg border border-border overflow-hidden">
                 <div className="max-h-[480px] overflow-y-auto custom-scroll">
                   <Table>
-                    <TableHeader className="sticky top-0 bg-muted z-10">
-                      <TableRow>
-                        <TableHead className="w-10">#</TableHead>
-                        <TableHead>Nama</TableHead>
-                        <TableHead className="text-center">L/P</TableHead>
-                        <TableHead className="text-center">Kelas</TableHead>
-                        <TableHead>NIS</TableHead>
-                        <TableHead>NISN</TableHead>
+                    <TableHeader className="sticky top-0 z-10 bg-muted/80 backdrop-blur-sm shadow-sm">
+                      <TableRow className="border-b-2 border-border hover:bg-transparent">
+                        <TableHead className="w-10 py-3 text-xs uppercase tracking-wide">#</TableHead>
+                        <TableHead className="py-3 text-xs uppercase tracking-wide">Nama</TableHead>
+                        <TableHead className="text-center py-3 text-xs uppercase tracking-wide w-14">L/P</TableHead>
+                        <TableHead className="text-center py-3 text-xs uppercase tracking-wide w-16">Kelas</TableHead>
+                        <TableHead className="py-3 text-xs uppercase tracking-wide w-24">NIS</TableHead>
+                        <TableHead className="py-3 text-xs uppercase tracking-wide w-28">NISN</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredStudents.map((s, i) => (
-                        <TableRow key={s.id} className="hover:bg-muted/40">
-                          <TableCell className="text-muted-foreground text-xs">{i + 1}</TableCell>
-                          <TableCell className="font-medium text-sm">{s.name}</TableCell>
-                          <TableCell className="text-center">
+                        <TableRow key={s.id} className={`border-b border-border/50 hover:bg-primary/5 transition-colors ${i % 2 === 1 ? 'bg-muted/40' : 'bg-background'}`}>
+                          <TableCell className="text-muted-foreground text-xs py-3 tabular-nums">{i + 1}</TableCell>
+                          <TableCell className="font-medium text-sm py-3 whitespace-nowrap">{s.name}</TableCell>
+                          <TableCell className="text-center py-3">
                             <Badge
                               variant="outline"
                               className={
@@ -272,9 +272,9 @@ export function StudentsSection() {
                               {s.gender === 'L' ? 'L' : 'P'}
                             </Badge>
                           </TableCell>
-                          <TableCell className="text-center text-sm">{s.className}</TableCell>
-                          <TableCell className="text-xs text-muted-foreground font-mono">{s.nis || '-'}</TableCell>
-                          <TableCell className="text-xs text-muted-foreground font-mono">
+                          <TableCell className="text-center text-sm py-3 font-medium">{s.className}</TableCell>
+                          <TableCell className="text-xs text-muted-foreground font-mono py-3">{s.nis || '-'}</TableCell>
+                          <TableCell className="text-xs text-muted-foreground font-mono py-3">
                             {s.nisn ? `••••${s.nisn.slice(-4)}` : '-'}
                           </TableCell>
                         </TableRow>

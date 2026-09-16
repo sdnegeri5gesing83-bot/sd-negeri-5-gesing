@@ -157,8 +157,8 @@ export function StudentsPanel() {
         <CardContent className="p-0">
           <div className="overflow-x-auto custom-scroll max-h-[60vh]">
             <table className="w-full text-sm">
-              <thead className="bg-muted/50 text-xs uppercase sticky top-0">
-                <tr>
+              <thead className="bg-muted/60 text-xs uppercase sticky top-0 z-10 shadow-sm">
+                <tr className="border-b-2 border-border">
                   <th className="text-left p-3 font-semibold">#</th>
                   <th className="text-center p-3 font-semibold w-14">Foto</th>
                   <th className="text-left p-3 font-semibold">Nama</th>
@@ -175,7 +175,7 @@ export function StudentsPanel() {
                   <tr><td colSpan={9} className="text-center p-8 text-muted-foreground"><GraduationCap className="h-8 w-8 mx-auto mb-2 opacity-50" /> Tidak ada siswa</td></tr>
                 ) : (
                   filtered.map((s, i) => (
-                    <tr key={s.id} className="border-t border-border hover:bg-muted/30">
+                    <tr key={s.id} className={`border-b border-border/50 hover:bg-primary/5 transition-colors ${i % 2 === 1 ? 'bg-muted/30' : 'bg-background'}`}>
                       <td className="p-3 text-muted-foreground">{i + 1}</td>
                       <td className="p-3 text-center">
                         <button onClick={() => openPhotoEdit(s)} className="relative group/photo inline-flex" title="Ganti Foto">

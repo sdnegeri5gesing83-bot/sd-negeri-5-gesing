@@ -714,3 +714,35 @@ Stage Summary:
 - Teacher photos restored to real photos (nyoman-astawa.jpg, etc.)
 - Teacher positions restored to specific roles from latest Dapodik Excel
 - Admin credentials: admin@sdn5gesing.sch.id / admin123
+
+---
+Task ID: student-table-layout-fix
+Agent: Z.ai Code (main)
+Task: Fix the student table layout so names are neat when scrolling.
+
+Work Log:
+- Investigated the student table on public Data Siswa page
+- Found layout issues: no zebra striping, no row separators, no whitespace-nowrap on names, minimal padding
+- Updated students-section.tsx (public table):
+  - Added zebra striping: alternating `bg-muted/40` (even rows) and `bg-background` (odd rows)
+  - Added row separators: `border-b border-border/50` on each row
+  - Added `whitespace-nowrap` on name cells to prevent awkward wrapping
+  - Added `py-3` padding for consistent row height
+  - Added `tabular-nums` for number alignment
+  - Improved sticky header: `bg-muted/80 backdrop-blur-sm shadow-sm` + `border-b-2`
+  - Added `uppercase tracking-wide` to header text for professional look
+  - Added fixed widths to columns (w-10 for #, w-14 for L/P, w-16 for Kelas, w-24 for NIS, w-28 for NISN)
+  - Added hover effect: `hover:bg-primary/5 transition-colors`
+- Applied same fixes to admin students-panel.tsx table:
+  - Zebra striping: `bg-muted/30` alternating
+  - Row separators, hover effects, sticky header with shadow
+- Verified via VLM: "alternating row coloring (zebra striping), names on single lines, rows neatly separated, professional and neat"
+- Lint clean
+
+Stage Summary:
+- Student table now has clear zebra striping for easy reading when scrolling
+- Names display on single lines (no wrapping)
+- Rows separated by subtle borders
+- Sticky header with blur and shadow for context while scrolling
+- Consistent padding and professional typography
+- Both public and admin student tables improved
