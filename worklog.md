@@ -473,3 +473,22 @@ Stage Summary:
 - The dedicated photo dialog is simpler than the full edit form — just upload and save
 - Real school photos uploaded will immediately appear on the public Sarpras page
 - Tips guide admins on format (JPG/PNG/WebP), size (max 5MB), and aspect ratio (4:3 landscape)
+
+---
+Task ID: accreditation-fix
+Agent: Z.ai Code (main)
+Task: Fix "Akreditasi Akreditasi B" duplication → "Akreditasi B".
+
+Work Log:
+- Found the issue: SchoolProfile.accreditation field contained "Akreditasi B" (with the word "Akreditasi" included)
+- When displayed with label "Akreditasi" or prefix "Akreditasi ", it became duplicated: "Akreditasi Akreditasi B"
+- Updated the database field from "Akreditasi B" → "B" (just the grade letter)
+- Verified:
+  - Hero section: "Buleleng, Bali · Akreditasi B" ✓ (was "Akreditasi Akreditasi B")
+  - Profile identity table: label "Akreditasi" + value "B" ✓
+- No errors
+
+Stage Summary:
+- Accreditation field fixed: "Akreditasi B" → "B"
+- No more word duplication on hero and profile pages
+- The label "Akreditasi" + value "B" now displays correctly as "Akreditasi B"
