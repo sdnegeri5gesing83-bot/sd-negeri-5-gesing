@@ -224,3 +224,20 @@ Stage Summary:
 - Now displays consistently on both Beranda and Profil pages
 - Includes reference to the real school vision
 - Script `update-welcome.ts` created for future updates
+
+---
+Task ID: cta-text-update
+Agent: Z.ai Code (main)
+Task: Update the CTA (Call to Action) text on home page to align with school vision.
+
+Work Log:
+- Found the CTA text in home-section.tsx (line 346-347)
+- Old text: "Jadilah bagian dari sekolah yang ramah anak, berbudaya, dan berkomitmen membentuk generasi cerdas serta berakhlak mulia."
+- New text: "Jadilah bagian dari sekolah yang ramah anak, berbudaya, dan berkomitmen membentuk Insan yang Bertaqwa, cerdas, serta peduli sesama."
+- Now consistent with the school vision ("Terwujudnya Insan yang Bertaqwa, cerdas, serta peduli sesama")
+- Verified via Agent Browser: new CTA text confirmed, old text gone
+- Lint clean
+
+Stage Summary:
+- CTA section text updated to align with school vision
+- The home page is now fully consistent: hero vision, sambutan, and CTA all reference "Insan yang Bertaqwa, cerdas, serta peduli sesama"

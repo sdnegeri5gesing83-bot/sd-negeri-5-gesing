@@ -344,7 +344,7 @@ export function HomeSection() {
                 </h2>
                 <p className="mt-3 text-sm sm:text-base text-white/90 max-w-xl">
                   Jadilah bagian dari sekolah yang ramah anak, berbudaya, dan berkomitmen
-                  membentuk generasi cerdas serta berakhlak mulia.
+                  membentuk Insan yang Bertaqwa, cerdas, serta peduli sesama.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 lg:justify-end">
