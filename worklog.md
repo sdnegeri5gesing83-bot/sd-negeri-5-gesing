@@ -27,3 +27,23 @@ Stage Summary:
 - School profile headmaster automatically updated from tendik data
 - Two reusable scripts created: `read-excel.py` (Excel→JSON) and `import-excel.ts` (JSON→DB) for future re-imports
 - All website pages verified working with real data via Agent Browser
+
+---
+Task ID: visi-misi-import
+Agent: Z.ai Code (main)
+Task: Import real VISI, MISI, TUJUAN from uploaded Word document (VISI, MISI, TUJUAN.docx) into the school profile.
+
+Work Log:
+- Read the docx file using pandoc (`pandoc -f docx -t plain`) to extract text content
+- Parsed the extracted text into 3 sections: Visi (1 sentence), Misi (7 numbered points), Tujuan (3 time horizons: Pendek/Menengah/Panjang, each with lettered items a-f)
+- Cleaned up the Tujuan table format (which pandoc rendered as a 3-column table) into structured text with clear section headers
+- Created `scripts/import-visi-misi.ts` that updates the SchoolProfile vision, mission, and goals fields via Prisma
+- Ran the script successfully — school profile updated with real content
+- Verified via API: VISI = "Terwujudnya Insan yang Bertaqwa, cerdas, serta peduli sesama.", MISI has 7 points (deep learning, gotong-royong, etc.), TUJUAN has all 3 jangka waktu (Pendek/Menengah/Panjang)
+- Verified via Agent Browser: Profile page displays the real Visi/Misi/Tujuan in 3 cards with proper whitespace-pre-line formatting
+- No console errors, lint clean
+
+Stage Summary:
+- Real Visi, Misi (7 poin), dan Tujuan (3 jangka waktu: pendek/menengah/panjang) from the official Word document successfully imported into the school profile
+- Profile page now displays authentic school vision/mission/goals instead of placeholder text
+- Script `import-visi-misi.ts` created for future re-imports
