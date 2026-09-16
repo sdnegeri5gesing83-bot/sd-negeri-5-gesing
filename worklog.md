@@ -642,3 +642,46 @@ Stage Summary:
 - All password fields have show/hide toggles
 - Warning notice informs user about auto-logout before changing credentials
 - Default credentials restored: admin@sdn5gesing.sch.id / admin123
+
+---
+Task ID: student-photo-feature
+Agent: Z.ai Code (main)
+Task: Add a photo column to the student list (daftar siswa) in admin panel.
+
+Work Log:
+- Added `photo` field to Student model in Prisma schema
+- Ran `bun run db:push` to sync schema to database
+- Updated Student TypeScript interface to include `photo?: string | null`
+- Updated admin students API routes (POST + PUT) to accept and save `photo` field with Zod validation
+- Updated admin Students panel (students-panel.tsx):
+  1. Added "Foto" column to the table (between # and Nama)
+  2. Each row shows a circular photo thumbnail:
+     - If photo exists: shows the photo (h-9 w-9 rounded-full with ring)
+     - If no photo: shows initial letter with gender-colored background (blue for L, gold for P)
+  3. Photo thumbnail is CLICKABLE — opens photo replace dialog
+  4. Camera icon badge appears on thumbnail hover (visual hint)
+  5. Added Camera icon button in action column (before Edit) — "Ganti Foto" tooltip
+  6. Widened action column from w-24 to w-32 to fit 3 buttons (Ganti Foto, Edit, Hapus)
+  7. Added ImageUpload field at the top of the add/edit student dialog form
+  8. Added dedicated "Ganti Foto Siswa" quick dialog with:
+     - ImageUpload component (upload from computer OR enter URL)
+     - Live preview
+     - Tips: "Gunakan foto portrait (rasio 3:4) yang jelas. Format JPG/PNG/WebP, maksimal 5MB. Foto siswa bersifat privat — hanya tampil di panel admin."
+     - "Simpan Foto" button with loading state
+  9. savePhoto() function PUTs the student with updated photo (preserves all other fields)
+- Reset admin credentials to default (admin@sdn5gesing.sch.id / admin123) — had drifted during earlier testing
+- Verified via Agent Browser + VLM:
+  - "FOTO column with circular student photo thumbnails (showing initials). Camera icons in AKSI column functioning as Ganti Foto buttons"
+  - Photo dialog opens: "Ganti Foto Siswa" with upload field + Simpan Foto button
+- Lint clean, no errors
+
+Stage Summary:
+- Admin can now add/manage student photos via 3 access points:
+  1. Click photo thumbnail in table (shows camera badge on hover)
+  2. Click Camera icon button in action column
+  3. Upload photo in the add/edit student dialog form
+- Dedicated "Ganti Foto Siswa" dialog for quick photo replacement
+- Photo column shows thumbnails or initials (gender-colored)
+- PRIVACY: Student photos only show in admin panel (NOT on public page) — per original requirement
+- Tips guide admins on format, size, and privacy
+- Default admin credentials restored: admin@sdn5gesing.sch.id / admin123

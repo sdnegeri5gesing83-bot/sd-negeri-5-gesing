@@ -53,6 +53,7 @@ export interface Student {
   nisn?: string | null;
   nis?: string | null;
   name: string;
+  photo?: string | null;
   gender: string;
   className: string;
   academicYear: string;

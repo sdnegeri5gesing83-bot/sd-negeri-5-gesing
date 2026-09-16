@@ -23,14 +23,16 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Plus, Pencil, Trash2, Search, GraduationCap, ShieldCheck } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, GraduationCap, ShieldCheck, Camera, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Student } from '@/lib/types';
+import { ImageUpload } from '../image-upload';
 
 const empty = {
   nisn: '',
   nis: '',
   name: '',
+  photo: '',
   gender: 'L',
   className: '1',
   academicYear: '2024/2025',
@@ -45,6 +47,44 @@ export function StudentsPanel() {
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState('');
   const [classFilter, setClassFilter] = useState('all');
+  const [photoEdit, setPhotoEdit] = useState<Student | null>(null);
+  const [photoUrl, setPhotoUrl] = useState('');
+  const [photoSaving, setPhotoSaving] = useState(false);
+
+  const openPhotoEdit = (s: Student) => {
+    setPhotoEdit(s);
+    setPhotoUrl(s.photo || '');
+  };
+
+  const savePhoto = async () => {
+    if (!photoEdit) return;
+    setPhotoSaving(true);
+    try {
+      const res = await fetch(`/api/admin/students/${photoEdit.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nisn: photoEdit.nisn || '',
+          nis: photoEdit.nis || '',
+          name: photoEdit.name,
+          photo: photoUrl,
+          gender: photoEdit.gender,
+          className: photoEdit.className,
+          academicYear: photoEdit.academicYear,
+          status: photoEdit.status,
+        }),
+      });
+      const j = await res.json();
+      if (!res.ok) throw new Error(j?.error);
+      toast.success('Foto siswa berhasil diperbarui!');
+      setPhotoEdit(null);
+      refetch();
+    } catch (e: any) {
+      toast.error(e?.message);
+    } finally {
+      setPhotoSaving(false);
+    }
+  };
 
   const filtered = (data || []).filter((s) => {
     const okSearch = !search || s.name.toLowerCase().includes(search.toLowerCase()) || (s.nis || '').includes(search);
@@ -53,7 +93,7 @@ export function StudentsPanel() {
   });
 
   const openNew = () => { setEditing(null); setForm(empty); setOpen(true); };
-  const openEdit = (s: Student) => { setEditing(s); setForm({ ...empty, ...s }); setOpen(true); };
+  const openEdit = (s: Student) => { setEditing(s); setForm({ nisn: s.nisn || '', nis: s.nis || '', name: s.name, photo: s.photo || '', gender: s.gender, className: s.className, academicYear: s.academicYear, status: s.status }); setOpen(true); };
   const set = (k: keyof typeof empty, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
   const save = async (e: React.FormEvent) => {
@@ -120,22 +160,35 @@ export function StudentsPanel() {
               <thead className="bg-muted/50 text-xs uppercase sticky top-0">
                 <tr>
                   <th className="text-left p-3 font-semibold">#</th>
+                  <th className="text-center p-3 font-semibold w-14">Foto</th>
                   <th className="text-left p-3 font-semibold">Nama</th>
                   <th className="text-center p-3 font-semibold">L/P</th>
                   <th className="text-center p-3 font-semibold">Kelas</th>
                   <th className="text-left p-3 font-semibold hidden sm:table-cell">NIS</th>
                   <th className="text-left p-3 font-semibold hidden md:table-cell">NISN</th>
                   <th className="text-center p-3 font-semibold">Status</th>
-                  <th className="text-center p-3 font-semibold w-24">Aksi</th>
+                  <th className="text-center p-3 font-semibold w-32">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0 ? (
-                  <tr><td colSpan={8} className="text-center p-8 text-muted-foreground"><GraduationCap className="h-8 w-8 mx-auto mb-2 opacity-50" /> Tidak ada siswa</td></tr>
+                  <tr><td colSpan={9} className="text-center p-8 text-muted-foreground"><GraduationCap className="h-8 w-8 mx-auto mb-2 opacity-50" /> Tidak ada siswa</td></tr>
                 ) : (
                   filtered.map((s, i) => (
                     <tr key={s.id} className="border-t border-border hover:bg-muted/30">
                       <td className="p-3 text-muted-foreground">{i + 1}</td>
+                      <td className="p-3 text-center">
+                        <button onClick={() => openPhotoEdit(s)} className="relative group/photo inline-flex" title="Ganti Foto">
+                          {s.photo ? (
+                            <img src={s.photo} alt={s.name} className="h-9 w-9 rounded-full object-cover ring-2 ring-border group-hover/photo:ring-primary transition-all" />
+                          ) : (
+                            <div className={`h-9 w-9 rounded-full flex items-center justify-center text-xs font-bold ring-2 ring-border group-hover/photo:ring-primary transition-all ${s.gender === 'L' ? 'bg-primary/10 text-primary' : 'bg-gold/15 text-gold'}`}>{s.name.charAt(0)}</div>
+                          )}
+                          <span className="absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full bg-primary text-primary-foreground flex items-center justify-center opacity-0 group-hover/photo:opacity-100 transition-opacity">
+                            <Camera className="h-2.5 w-2.5" />
+                          </span>
+                        </button>
+                      </td>
                       <td className="p-3 font-medium">{s.name}</td>
                       <td className="p-3 text-center">{s.gender}</td>
                       <td className="p-3 text-center">{s.className}</td>
@@ -146,7 +199,8 @@ export function StudentsPanel() {
                       </td>
                       <td className="p-3">
                         <div className="flex items-center justify-center gap-1">
-                          <Button size="icon" variant="ghost" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button>
+                          <Button size="icon" variant="ghost" onClick={() => openPhotoEdit(s)} title="Ganti Foto"><Camera className="h-4 w-4" /></Button>
+                          <Button size="icon" variant="ghost" onClick={() => openEdit(s)} title="Edit"><Pencil className="h-4 w-4" /></Button>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <Button size="icon" variant="ghost" className="text-destructive hover:bg-destructive/10"><Trash2 className="h-4 w-4" /></Button>
@@ -180,6 +234,7 @@ export function StudentsPanel() {
             <DialogDescription>Isi data kependudukan siswa.</DialogDescription>
           </DialogHeader>
           <form onSubmit={save} className="space-y-4">
+            <ImageUpload label="Foto Siswa" value={form.photo} onChange={(v) => set('photo', v)} />
             <Field label="Nama Lengkap" value={form.name} onChange={(v) => set('name', v)} required />
             <div className="grid grid-cols-2 gap-3">
               <Field label="NIS" value={form.nis} onChange={(v) => set('nis', v)} />
@@ -225,6 +280,52 @@ export function StudentsPanel() {
               <Button type="submit" disabled={saving}>{saving ? 'Menyimpan...' : 'Simpan'}</Button>
             </DialogFooter>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Quick photo replace dialog */}
+      <Dialog open={!!photoEdit} onOpenChange={(o) => !o && setPhotoEdit(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Camera className="h-5 w-5 text-primary" />
+              Ganti Foto Siswa
+            </DialogTitle>
+            <DialogDescription>
+              {photoEdit ? <>Unggah foto untuk <span className="font-semibold text-foreground">{photoEdit.name}</span> (Kelas {photoEdit.className}).</> : null}
+            </DialogDescription>
+          </DialogHeader>
+          {photoEdit && (
+            <div className="space-y-4">
+              <ImageUpload
+                label="Foto Siswa"
+                value={photoUrl}
+                onChange={setPhotoUrl}
+                placeholder="URL gambar atau upload dari komputer"
+              />
+              <div className="rounded-lg bg-muted/50 border border-border p-3">
+                <p className="text-xs text-muted-foreground">
+                  💡 <span className="font-medium">Tips:</span> Gunakan foto portrait (rasio 3:4) yang jelas. Format JPG/PNG/WebP, maksimal 5MB. Foto siswa bersifat privat — hanya tampil di panel admin.
+                </p>
+              </div>
+              <DialogFooter>
+                <Button type="button" variant="outline" onClick={() => setPhotoEdit(null)}>Batal</Button>
+                <Button type="button" onClick={savePhoto} disabled={photoSaving}>
+                  {photoSaving ? (
+                    <>
+                      <span className="h-4 w-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                      Menyimpan...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" />
+                      Simpan Foto
+                    </>
+                  )}
+                </Button>
+              </DialogFooter>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>

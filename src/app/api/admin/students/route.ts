@@ -7,6 +7,7 @@ const schema = z.object({
   nisn: z.string().optional().nullable(),
   nis: z.string().optional().nullable(),
   name: z.string().min(2, 'Nama minimal 2 karakter'),
+  photo: z.string().optional().nullable(),
   gender: z.enum(['L', 'P']),
   className: z.string().min(1, 'Kelas wajib diisi'),
   academicYear: z.string().min(5, 'Tahun pelajaran wajib diisi'),
@@ -47,7 +48,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: parsed.error.errors[0]?.message || 'Validasi gagal' }, { status: 400 });
     }
     const data = parsed.data as any;
-    ['nisn', 'nis'].forEach((k) => { if (data[k] === '') data[k] = null; });
+    ['nisn', 'nis', 'photo'].forEach((k) => { if (data[k] === '') data[k] = null; });
     const item = await db.student.create({ data });
     return NextResponse.json(item, { status: 201 });
   } catch (e: any) {

@@ -82,6 +82,7 @@ model Student {
   nisn          String?
   nis           String?
   name          String
+  photo         String?
   gender        String   // L | P
   className     String   // 1 .. 6
   academicYear  String   // 2024/2025
