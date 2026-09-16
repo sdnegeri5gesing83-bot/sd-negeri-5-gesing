@@ -24,6 +24,8 @@ import type {
   NewsItem,
   Announcement,
   GalleryItem,
+  StudentByClass,
+  Facility,
 } from '@/lib/types';
 import { format } from 'date-fns';
 import { id as idLocale } from 'date-fns/locale';
@@ -37,6 +39,19 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
+import {
+  Bar,
+  BarChart,
+  Cell,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Legend,
+} from 'recharts';
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Users,
@@ -53,11 +68,38 @@ export function HomeSection() {
   const { data: announcements } = useFetch<Announcement[]>('/api/public/announcements');
   const { data: gallery } = useFetch<GalleryItem[]>('/api/public/gallery');
   const { data: studentSummary } = useFetch<{ total: number; male: number; female: number }>('/api/public/students/summary');
+  const { data: studentsByClass } = useFetch<StudentByClass[]>('/api/public/students/by-class');
+  const { data: facilities } = useFetch<Facility[]>('/api/public/facilities');
 
   const [openNews, setOpenNews] = useState<NewsItem | null>(null);
   const galleryPreview = (gallery || []).slice(0, 6);
   const announcementsTop = (announcements || []).slice(0, 3);
   const studentCount = studentSummary?.total ?? 40;
+
+  // Chart data: students by class
+  const classChartData = (studentsByClass || []).map((c) => ({
+    name: `Kelas ${c.className}`,
+    Laki: c.male,
+    Perempuan: c.female,
+  }));
+  // Chart data: gender distribution (donut)
+  const genderChartData = studentSummary
+    ? [
+        { name: 'Laki-laki', value: studentSummary.male, color: '#0d9488' },
+        { name: 'Perempuan', value: studentSummary.female, color: '#d4a017' },
+      ]
+    : [];
+  // Chart data: facilities by condition
+  const facilityByCondition = (() => {
+    const facs = facilities || [];
+    const conditions = ['Baik', 'Rusak Ringan', 'Rusak Berat'];
+    const colors = ['#16a34a', '#f59e0b', '#dc2626'];
+    return conditions.map((cond, i) => ({
+      name: cond,
+      Jumlah: facs.filter((f) => f.condition === cond).length,
+      color: colors[i],
+    })).filter((d) => d.Jumlah > 0);
+  })();
 
   return (
     <div>
@@ -204,6 +246,7 @@ export function HomeSection() {
           {statsLoading ? (
             <Loader label="Memuat statistik..." />
           ) : stats && stats.length > 0 ? (
+            <>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
               {stats.map((s) => {
                 const Icon = (s.icon && ICON_MAP[s.icon]) || Users;
@@ -228,6 +271,131 @@ export function HomeSection() {
                 );
               })}
             </div>
+
+            {/* CHARTS / DIAGRAMS */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-8">
+              {/* Bar chart: Students by class */}
+              <Card className="border-border shadow-sm lg:col-span-2">
+                <CardContent className="p-5 lg:p-6">
+                  <h3 className="font-bold text-base mb-1 flex items-center gap-2">
+                    <GraduationCap className="h-5 w-5 text-primary" />
+                    Sebaran Siswa per Kelas
+                  </h3>
+                  <p className="text-xs text-muted-foreground mb-4">
+                    Jumlah siswa laki-laki dan perempuan di setiap kelas
+                  </p>
+                  {classChartData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height={260}>
+                      <BarChart data={classChartData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.9 0.01 160)" />
+                        <XAxis dataKey="name" tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 160)" />
+                        <YAxis tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 160)" allowDecimals={false} />
+                        <Tooltip
+                          contentStyle={{
+                            borderRadius: 8,
+                            border: '1px solid oklch(0.9 0.01 160)',
+                            fontSize: 12,
+                          }}
+                        />
+                        <Legend wrapperStyle={{ fontSize: 12 }} />
+                        <Bar dataKey="Laki" stackId="a" fill="#0d9488" radius={[0, 0, 0, 0]} />
+                        <Bar dataKey="Perempuan" stackId="a" fill="#d4a017" radius={[6, 6, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="h-[260px] flex items-center justify-center text-sm text-muted-foreground">
+                      Memuat data...
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Donut chart: Gender distribution */}
+              <Card className="border-border shadow-sm">
+                <CardContent className="p-5 lg:p-6">
+                  <h3 className="font-bold text-base mb-1 flex items-center gap-2">
+                    <Users className="h-5 w-5 text-primary" />
+                    Sebaran Jenis Kelamin
+                  </h3>
+                  <p className="text-xs text-muted-foreground mb-4">
+                    Proporsi siswa laki-laki & perempuan
+                  </p>
+                  {genderChartData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height={260}>
+                      <PieChart>
+                        <Pie
+                          data={genderChartData}
+                          dataKey="value"
+                          nameKey="name"
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={55}
+                          outerRadius={85}
+                          paddingAngle={3}
+                          label={({ value }) => `${value}`}
+                          labelLine={false}
+                        >
+                          {genderChartData.map((entry, i) => (
+                            <Cell key={i} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          contentStyle={{
+                            borderRadius: 8,
+                            border: '1px solid oklch(0.9 0.01 160)',
+                            fontSize: 12,
+                          }}
+                        />
+                        <Legend wrapperStyle={{ fontSize: 12 }} />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="h-[260px] flex items-center justify-center text-sm text-muted-foreground">
+                      Memuat data...
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Bar chart: Facilities by condition */}
+              <Card className="border-border shadow-sm lg:col-span-3">
+                <CardContent className="p-5 lg:p-6">
+                  <h3 className="font-bold text-base mb-1 flex items-center gap-2">
+                    <Building2 className="h-5 w-5 text-primary" />
+                    Kondisi Sarana & Prasarana
+                  </h3>
+                  <p className="text-xs text-muted-foreground mb-4">
+                    Jumlah fasilitas berdasarkan kondisi (Baik / Rusak Ringan / Rusak Berat)
+                  </p>
+                  {facilityByCondition.length > 0 ? (
+                    <ResponsiveContainer width="100%" height={220}>
+                      <BarChart data={facilityByCondition} layout="vertical" margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.9 0.01 160)" horizontal={false} />
+                        <XAxis type="number" tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 160)" allowDecimals={false} />
+                        <YAxis dataKey="name" type="category" tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 160)" width={110} />
+                        <Tooltip
+                          contentStyle={{
+                            borderRadius: 8,
+                            border: '1px solid oklch(0.9 0.01 160)',
+                            fontSize: 12,
+                          }}
+                        />
+                        <Bar dataKey="Jumlah" radius={[0, 6, 6, 0]}>
+                          {facilityByCondition.map((entry, i) => (
+                            <Cell key={i} fill={entry.color} />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="h-[220px] flex items-center justify-center text-sm text-muted-foreground">
+                      Memuat data...
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+            </>
           ) : (
             <EmptyState title="Belum ada statistik" description="Statistik akan ditampilkan di sini." />
           )}

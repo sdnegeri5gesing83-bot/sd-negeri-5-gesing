@@ -303,3 +303,35 @@ Stage Summary:
 - Coordinates: -8.3021766, 115.0810497 (from user's Google Maps link)
 - Zoom z=19 + Indonesian language (hl=id) for best rural-area rendering
 - Previous generic address-based query replaced with precise coordinates
+
+---
+Task ID: statistics-charts
+Agent: Z.ai Code (main)
+Task: Add diagrams/charts to the statistics section on the home page.
+
+Work Log:
+- Added recharts imports (BarChart, Bar, Pie, PieChart, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid, Legend)
+- Added 3 new data fetches: students by-class, student summary (for gender), facilities
+- Prepared 3 chart datasets:
+  1. classChartData: students per class (Laki/Perempuan stacked) — from /api/public/students/by-class
+  2. genderChartData: donut with Laki-laki (teal #0d9488) / Perempuan (gold #d4a017) — from student summary
+  3. facilityByCondition: bar chart of Baik/Rusak Ringan/Rusak Berat — computed from facilities
+- Added 3 charts after the stat cards (wrapped in React fragment to keep ternary valid):
+  1. Stacked Bar Chart "Sebaran Siswa per Kelas" — laki/perempuan per kelas (lg:col-span-2)
+  2. Donut Chart "Sebaran Jenis Kelamin" — gender proportion with labels
+  3. Horizontal Bar Chart "Kondisi Sarana & Prasarana" — facilities by condition (lg:col-span-3, colored bars)
+- Colors align with school theme: teal (#0d9488) primary, gold (#d4a017) accent
+- Fixed JSX structure: wrapped stat cards + charts grid in <> fragment for valid ternary expression
+- Verified via Agent Browser + VLM:
+  - Stacked bar chart confirmed: "students by gender across Kelas 1-6, Laki teal, Perempuan gold"
+  - Donut chart confirmed: "gender distribution, Laki-laki teal, Perempuan gold, 22 in center"
+  - Facilities bar chart confirmed: "Kondisi Sarana & Prasarana, 14 facilities in Baik condition"
+- Lint clean, no errors
+
+Stage Summary:
+- 3 interactive diagrams/charts added to the "Sekilas tentang Sekolah" statistics section:
+  1. Sebaran Siswa per Kelas (stacked bar chart, laki/perempuan per kelas)
+  2. Sebaran Jenis Kelamin (donut chart, gender proportion)
+  3. Kondisi Sarana & Prasarana (horizontal bar chart, by condition)
+- All charts use recharts, are responsive, have tooltips + legends, and use school theme colors
+- Charts are dynamic — auto-update when student/facility data changes
