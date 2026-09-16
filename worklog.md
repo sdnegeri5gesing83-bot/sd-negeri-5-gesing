@@ -258,3 +258,27 @@ Stage Summary:
 - Footer brand description updated to align with school vision
 - Footer appears on ALL pages (it's a shared component), so the new text shows everywhere
 - Now fully consistent: hero vision, sambutan, CTA, and footer all reference "Insan yang Bertaqwa, cerdas, serta peduli sesama"
+
+---
+Task ID: map-coordinates-update
+Agent: Z.ai Code (main)
+Task: Update Google Maps embed with real coordinates of SD Negeri 5 Gesing.
+
+Work Log:
+- Extracted coordinates from the provided Google Maps URL:
+  https://www.google.com/maps/place//@-8.3021766,115.0810497,153m/...
+  - Latitude: -8.3021766
+  - Longitude: 115.0810497
+- Created `scripts/update-map.ts` to update SchoolProfile.mapEmbed
+- New embed URL: https://www.google.com/maps?q=-8.3021766,115.0810497&z=19&output=embed
+- (Previously used a generic address-based query: q=Banjar+Waru+Gesing+Buleleng+Bali)
+- Ran the script successfully
+- Verified via Agent Browser:
+  - iframe src confirmed: "https://www.google.com/maps?q=-8.3021766,115.0810497&z=19&output=embed"
+  - VLM confirmed map visible with location marker
+- Lint clean
+
+Stage Summary:
+- Google Maps on the Kontak page now shows the EXACT location of SD Negeri 5 Gesing using real coordinates
+- Zoom level z=19 (close-up) shows the school area in detail
+- Script `update-map.ts` created for future coordinate updates
