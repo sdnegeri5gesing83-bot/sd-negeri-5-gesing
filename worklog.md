@@ -173,3 +173,31 @@ Work Log:
 Stage Summary:
 - Hero section now displays the official school vision instead of placeholder text
 - Made dynamic: fetches vision from profile API, auto-updates if admin changes the vision
+
+---
+Task ID: contact-update
+Agent: Z.ai Code (main)
+Task: Update school contact info with real data (phone, email, WhatsApp, service hours).
+
+Work Log:
+- Created `scripts/update-contact.ts` to update SchoolProfile with real contact data provided by the school
+- Updated fields:
+  - phone: 08873886384 (local format)
+  - email: sdnegeri5gesing83@gmail.com (real school email)
+  - whatsapp: 628873886384 (international format so wa.me links work correctly)
+  - serviceHours: "Senin - Kamis: 07.00 - 14.00 WITA\nJumat: 07.00 - 13.00 WITA"
+- Ran the script successfully
+- Verified via Agent Browser accessibility snapshot on Kontak page:
+  - Telepon: 08873886384 (clickable tel: link) ✓
+  - Email: sdnegeri5gesing83@gmail.com (clickable mailto: link) ✓
+  - WhatsApp: +628873886384 (clickable wa.me link) ✓
+  - Jam Layanan: Senin-Kamis 07.00-14.00 WITA, Jumat 07.00-13.00 WITA ✓
+- Contact info also auto-updated in footer (uses same profile data)
+- No errors
+
+Stage Summary:
+- Real contact info successfully updated: phone 08873886384, email sdnegeri5gesing83@gmail.com, WhatsApp +628873886384
+- Service hours updated: Senin-Kamis 07.00-14.00 WITA, Jumat 07.00-13.00 WITA
+- All clickable (tel:, mailto:, wa.me links work)
+- Footer auto-updated too (dynamic from profile)
+- Script `update-contact.ts` created for future contact updates
