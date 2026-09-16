@@ -806,3 +806,44 @@ Stage Summary:
   - Gradient bottom line (transparent→blue→transparent)
   - Mobile: gold accent line for active items + gradient header line
 - More elegant, modern, and professional look
+
+---
+Task ID: sarpras-upload-fix
+Agent: Z.ai Code (main)
+Task: Fix bug where photo upload/change on Sarpras (facilities) doesn't work.
+
+Work Log:
+- Investigated the upload issue on Sarpras facilities panel
+- Found the root cause: the `/api/admin/upload` route file was MISSING (deleted/lost)
+  - Dev log showed: "POST /api/admin/upload 404" and "Failed to find Server Action"
+  - The upload directory `src/app/api/admin/upload/` didn't exist
+  - File `src/app/api/admin/upload/route.ts` was gone
+- Recreated the upload API route (`src/app/api/admin/upload/route.ts`):
+  - POST handler with adminGuard authentication
+  - Accepts FormData with 'file' field
+  - Validates file type (JPG/PNG/WebP/GIF) and size (max 5MB)
+  - Generates unique filename with timestamp + random hex
+  - Saves to `public/uploads/editor/` directory
+  - Returns JSON with the URL path
+- Verified the fix end-to-end via Agent Browser:
+  1. Login as admin ✓
+  2. Navigate to Sarpras panel ✓
+  3. Click "Ganti Foto" on Ruang Kelas 1 ✓
+  4. Upload a test image file ✓
+  5. URL field updated to `/uploads/editor/1789602929797-d1a5bafdfb19.jpg` ✓
+  6. Click "Simpan Foto" ✓
+  7. Toast: "Foto fasilitas berhasil diperbarui!" ✓
+  8. Database confirmed: Ruang Kelas 1 photo = `/uploads/editor/1789602929797-d1a5bafdfb19.jpg` ✓
+- Lint clean, no errors
+
+Stage Summary:
+- Bug fixed: the missing `/api/admin/upload` route was recreated
+- Photo upload/change on Sarpras now works end-to-end
+- This fix also enables photo upload on ALL admin panels that use ImageUpload:
+  - Sarpras (facilities) ✓
+  - GTK (teachers) ✓
+  - Galeri (gallery) ✓
+  - Struktur Organisasi ✓
+  - Data Siswa (students) ✓
+  - Profil Sekolah (logo, headmaster photo) ✓
+  - Berita (news photos) ✓
