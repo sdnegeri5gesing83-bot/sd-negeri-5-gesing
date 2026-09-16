@@ -282,3 +282,24 @@ Stage Summary:
 - Google Maps on the Kontak page now shows the EXACT location of SD Negeri 5 Gesing using real coordinates
 - Zoom level z=19 (close-up) shows the school area in detail
 - Script `update-map.ts` created for future coordinate updates
+
+---
+Task ID: map-precision-update
+Agent: Z.ai Code (main)
+Task: Make the Google Maps embed more accurate and precise with exact coordinates.
+
+Work Log:
+- User re-provided the exact Google Maps coordinates: -8.3021766, 115.0810497 (153m close-up view)
+- First attempt: used z=21 (maximum zoom) + hl=id (Indonesian) — but z=21 was too high for rural area, showed blank
+- Adjusted to z=19 (optimal for rural location) + hl=id — confirmed working
+- Verified via Agent Browser:
+  - iframe src: "https://www.google.com/maps?q=-8.3021766,115.0810497&z=19&hl=id&output=embed"
+  - VLM confirmed: streets (grey lines) and building outlines (light purple shapes) visible at the exact location
+- Map now shows the precise location of SD Negeri 5 Gesing with street-level detail
+- Lint clean
+
+Stage Summary:
+- Google Maps embed now shows the EXACT location of SD Negeri 5 Gesing at street/building level precision
+- Coordinates: -8.3021766, 115.0810497 (from user's Google Maps link)
+- Zoom z=19 + Indonesian language (hl=id) for best rural-area rendering
+- Previous generic address-based query replaced with precise coordinates

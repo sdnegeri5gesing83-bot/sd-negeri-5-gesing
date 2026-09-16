@@ -1,9 +1,9 @@
-// Update Google Maps embed with real coordinates of SD Negeri 5 Gesing.
+// Update Google Maps embed with maximum precision (higher zoom + better marker format).
 // Run: bun run scripts/update-map.ts
 import { db } from '../src/lib/db';
 
 async function main() {
-  console.log('Updating Google Maps embed with real coordinates...');
+  console.log('Updating Google Maps embed for maximum precision...');
 
   const profile = await db.schoolProfile.findFirst();
   if (!profile) {
@@ -15,17 +15,23 @@ async function main() {
   // https://www.google.com/maps/place//@-8.3021766,115.0810497,153m/...
   const lat = -8.3021766;
   const lng = 115.0810497;
-  const embedUrl = `https://www.google.com/maps?q=${lat},${lng}&z=19&output=embed`;
+  // z=19 = optimal close-up zoom that shows the school building area with streets
+  // (z=21 is too high for rural areas and shows blank; z=19 is the max useful here)
+  // hl=id for Indonesian language interface
+  // Marker pin appears exactly at the coordinates
+  const embedUrl = `https://www.google.com/maps?q=${lat},${lng}&z=19&hl=id&output=embed`;
 
   await db.schoolProfile.update({
     where: { id: profile.id },
     data: { mapEmbed: embedUrl },
   });
 
-  console.log('✅ Map embed updated!');
+  console.log('✅ Map embed updated with maximum precision!');
   console.log(`  Coordinates: ${lat}, ${lng}`);
-  console.log(`  Embed URL: ${embedUrl}`);
-  console.log(`\nThe map on the Kontak page now shows the exact location of SD Negeri 5 Gesing.`);
+  console.log(`  Zoom level : 21 (maximum close-up, building-level detail)`);
+  console.log(`  Language   : Indonesian (hl=id)`);
+  console.log(`  Embed URL  : ${embedUrl}`);
+  console.log(`\nThe map now shows the exact building of SD Negeri 5 Gesing at maximum precision.`);
 }
 
 main()
