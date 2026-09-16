@@ -439,3 +439,37 @@ Stage Summary:
 - Navbar, cards, footer all auto-adjusted to light theme via CSS variables
 - Footer stays blue (bg-primary) for accent contrast against white
 - Clean, professional, basic look with blue ice accents
+
+---
+Task ID: sarpras-photo-replace
+Agent: Z.ai Code (main)
+Task: Add a photo column/feature on Sarpras page for replacing building/room photos with real school photos.
+
+Work Log:
+- Enhanced the admin Facilities panel (facilities-panel.tsx) with a quick photo replacement feature:
+  1. Added Camera icon button overlaid on each facility photo (bottom-right corner, black/60 background)
+  2. Added Camera icon button in the action bar (between Edit and Delete buttons)
+  3. For facilities WITHOUT photos: a "Tambah Foto" (Add Photo) overlay appears on the photo area with camera icon
+- Added a dedicated "Ganti Foto Fasilitas" (Replace Facility Photo) dialog with:
+  - Dialog title with camera icon
+  - ImageUpload component (upload from computer OR enter URL)
+  - Live preview of current/uploaded photo
+  - Tips section: "Gunakan foto bangunan/ruang yang riil dari sekolah. Format JPG/PNG/WebP, maksimal 5MB. Disarankan rasio 4:3 (landscape)."
+  - "Simpan Foto" (Save Photo) button with loading state
+- Added savePhoto() function that PUTs the facility with updated photo (preserves all other fields)
+- State: photoEdit (facility being photo-edited), photoUrl (new photo path), photoSaving (loading)
+- Verified via Agent Browser:
+  - "Ganti Foto" buttons confirmed on all 8 facility cards
+  - VLM: "camera icons visible on facility cards (bottom right of each image and in action bar)"
+  - Photo dialog opens correctly: "dialog open for replacing/uploading facility photo, upload area with preview, Batal + Simpan Foto buttons, tips visible"
+  - Public Sarpras page shows facility photos (Ruang Kelas 1, Ruang Kelas 2, etc.)
+- Lint clean, no errors
+
+Stage Summary:
+- Admin can now easily replace any facility photo with a real school photo via 3 access points:
+  1. Camera icon on photo (for facilities with existing photos)
+  2. Camera icon in action bar (always available)
+  3. "Tambah Foto" overlay (for facilities without photos)
+- The dedicated photo dialog is simpler than the full edit form — just upload and save
+- Real school photos uploaded will immediately appear on the public Sarpras page
+- Tips guide admins on format (JPG/PNG/WebP), size (max 5MB), and aspect ratio (4:3 landscape)
