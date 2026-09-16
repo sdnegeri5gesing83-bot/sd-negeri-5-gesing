@@ -248,23 +248,32 @@ export function HomeSection() {
           ) : stats && stats.length > 0 ? (
             <>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              {stats.map((s) => {
+              {stats.map((s, idx) => {
                 const Icon = (s.icon && ICON_MAP[s.icon]) || Users;
                 return (
                   <Card
                     key={s.id}
-                    className="relative overflow-hidden text-center border-border shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group bg-gradient-to-b from-card to-muted/30"
+                    className="relative overflow-hidden text-center border-border/60 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group bg-gradient-to-b from-card via-card to-muted/40"
                   >
-                    {/* Decorative top accent bar */}
-                    <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-primary via-primary/70 to-gold" />
-                    {/* Decorative corner dots */}
-                    <div className="absolute -top-6 -right-6 h-16 w-16 rounded-full bg-primary/5 group-hover:bg-primary/10 transition-colors" aria-hidden />
-                    <CardContent className="relative pt-8 pb-6 px-4">
-                      {/* Elegant gradient icon container */}
-                      <div className="mx-auto h-16 w-16 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-primary-foreground mb-4 shadow-lg shadow-primary/25 ring-4 ring-primary/10 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                        <Icon className="h-8 w-8" strokeWidth={2.2} />
+                    {/* Decorative gradient top accent */}
+                    <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-primary via-primary/60 to-gold" />
+                    {/* Decorative blurred glow */}
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 h-24 w-24 rounded-full bg-primary/10 blur-2xl group-hover:bg-primary/20 transition-colors" aria-hidden />
+                    {/* Decorative corner sparkles */}
+                    <div className="absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-gold/60 group-hover:bg-gold transition-colors" aria-hidden />
+                    <div className="absolute top-6 right-6 h-1 w-1 rounded-full bg-gold/40" aria-hidden />
+
+                    <CardContent className="relative pt-9 pb-6 px-4">
+                      {/* Elegant circular gradient icon */}
+                      <div className="relative mx-auto mb-4">
+                        {/* Outer decorative ring */}
+                        <div className="absolute inset-0 -m-1.5 rounded-full bg-gradient-to-br from-primary/20 to-gold/20 opacity-60 group-hover:opacity-100 transition-opacity" aria-hidden />
+                        {/* Icon container */}
+                        <div className="relative h-16 w-16 mx-auto rounded-full bg-gradient-to-br from-primary via-primary to-primary/70 flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/30 ring-2 ring-white/50 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                          <Icon className="h-8 w-8" strokeWidth={1.8} />
+                        </div>
                       </div>
-                      <p className="text-3xl lg:text-4xl font-bold text-foreground tracking-tight">
+                      <p className="text-3xl lg:text-4xl font-bold text-foreground tracking-tight tabular-nums">
                         {s.value}
                       </p>
                       <p className="mt-1 text-xs lg:text-sm text-muted-foreground font-medium">
