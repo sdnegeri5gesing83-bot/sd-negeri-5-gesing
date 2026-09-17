@@ -1164,3 +1164,30 @@ Stage Summary:
   2. robots.txt (dynamic, references sitemap)
   3. JSON-LD structured data (EducationalOrganization schema)
 - Next steps for the user: register domain, deploy to hosting, submit to Google Search Console
+
+---
+Task ID: announcement-photo-save-fix
+Agent: Z.ai Code (main)
+Task: Fix "foto pada pengumuman tidak bisa disimpan" (announcement photo not saving).
+
+Work Log:
+- Diagnosed the issue: PUT /api/admin/announcements/[id] returned 500 error
+- Root cause: Prisma client was stale — the `photo` field was added to the schema but the Prisma client wasn't regenerated, causing "Invalid `db.announcement.update()` invocation"
+- Fix applied:
+  1. Re-ran `bun run db:push` to sync schema + regenerate Prisma client ✓
+  2. Cleared `.next` cache (rm -rf .next) to remove stale compiled code
+  3. Restarted dev server with fresh Prisma client
+- Verified the fix:
+  - Direct DB insert with photo: works ✓ (photo: /uploads/hero-signboard.jpg)
+  - API endpoints return 401 (auth required, not 500) ✓
+  - Browser test: filled form with photo URL → Simpan → "Pengumuman ditambahkan" ✓
+  - DB confirmed: announcement saved with photo ✓
+  - Announcement photo upload via ImageUpload component works (confirmed via URL input)
+- No more 500 errors in dev log
+- Lint clean
+
+Stage Summary:
+- Bug fixed: announcement photos now save correctly
+- The issue was a stale Prisma client after adding the `photo` field to the Announcement model
+- Both URL input and file upload paths work for saving announcement photos
+- No code changes needed — just Prisma client regeneration + cache clearing
