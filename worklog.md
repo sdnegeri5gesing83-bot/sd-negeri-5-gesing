@@ -1072,3 +1072,39 @@ Stage Summary:
 - Body text: Inter (sans-serif) for readability
 - Calendar: mini calendar widget in navbar with current date display, month navigation, today highlight
 - Calendar and Playfair Display both verified working
+
+---
+Task ID: hex-prism-decorations
+Agent: Z.ai Code (main)
+Task: Replace bulb decorations with transparent hexagonal prism shapes (elegant, futuristic).
+
+Work Log:
+- Created HexPrism component (prism-decoration.tsx):
+  - SVG hexagonal prism with 3D facet lines (depth effect)
+  - Outer hexagon + inner hexagon (dual-layer for prism depth)
+  - Gradient stroke (color fades from 40% → 15% → 30% opacity)
+  - 6 facet lines connecting outer to inner hexagon (3D prism effect)
+  - Center dot for accent
+  - Glassmorphism-like transparency with fill opacity 0.08/0.02
+  - Glow halo (blur-2xl) behind each prism
+  - 3 color variants: gold, blue, white
+  - Props: size, color, rotate, opacity, pulse
+- Replaced ALL LightBulb decorations with HexPrism across 5 sections:
+  1. Hero: 3 gold prisms (rotated 15°, -10°, 30°, opacity 0.4-0.5, 2 pulsing)
+  2. Statistics: 1 blue (20°) + 1 gold pulsing (-25°), opacity 0.4
+  3. Berita: 1 gold (10°), opacity 0.4
+  4. Galeri: 1 gold pulsing (-15°) + 1 blue (25°), opacity 0.4
+  5. CTA: 3 gold prisms (12°, -20°, 18°, 2 pulsing), opacity 0.4-0.45
+- Varied sizes (60-90px) and rotations (10-30°) for organic, non-uniform look
+- Increased opacity from 0.18-0.25 to 0.4-0.5 for better visibility
+- Kept GlowOrb decorations for ambient lighting
+- Verified: 22 polygon elements + 18 absolutely positioned divs in DOM
+- VLM confirmed: "transparent geometric shapes (including hexagons and prisms) visible in the hero section"
+- Lint clean
+
+Stage Summary:
+- All bulb decorations replaced with transparent hexagonal prisms
+- Prisms have: dual-layer hexagons, gradient strokes, 3D facet lines, glow halos
+- Transparent but visible (opacity 0.4-0.5) — elegant and futuristic
+- Varied sizes, rotations, and colors (gold/blue) across sections
+- Pulse animation on select prisms for subtle dynamic effect

@@ -5,7 +5,7 @@ import { useNav } from '@/lib/nav-store';
 import { useFetch } from '@/hooks/use-fetch';
 import { SectionHeader, Loader, EmptyState } from '@/components/site/ui';
 import { SmartImage } from '@/components/smart-image';
-import { LightBulb, GlowOrb } from '@/components/site/bulb-decoration';
+import { HexPrism, GlowOrb } from '@/components/site/prism-decoration';
 import {
   ArrowRight,
   Phone,
@@ -116,9 +116,9 @@ export function HomeSection() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/80 to-primary/60" />
         {/* Decorative bulbs in hero */}
-        <LightBulb className="top-8 right-[15%]" size={36} color="gold" pulse />
-        <LightBulb className="top-20 right-[8%] hidden lg:block" size={28} color="gold" />
-        <LightBulb className="bottom-16 left-[5%] hidden lg:block" size={32} color="gold" pulse />
+        <HexPrism className="top-8 right-[15%]" size={90} color="gold" rotate={15} opacity={0.5} pulse />
+        <HexPrism className="top-20 right-[8%] hidden lg:block" size={70} color="gold" rotate={-10} opacity={0.4} />
+        <HexPrism className="bottom-16 left-[5%] hidden lg:block" size={80} color="gold" rotate={30} opacity={0.4} pulse />
         <GlowOrb className="top-0 right-0" size={300} color="gold" />
         <GlowOrb className="bottom-0 left-1/4" size={250} color="blue" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
@@ -283,8 +283,8 @@ export function HomeSection() {
       {/* STATISTIK */}
       <section className="relative overflow-hidden py-14 lg:py-20 bg-teal-soft/30 border-y border-border">
         {/* Decorative bulbs */}
-        <LightBulb className="top-6 right-[8%] hidden lg:block" size={30} color="blue" />
-        <LightBulb className="bottom-10 left-[6%] hidden lg:block" size={26} color="gold" pulse />
+        <HexPrism className="top-6 right-[8%] hidden lg:block" size={75} color="blue" rotate={20} opacity={0.4} />
+        <HexPrism className="bottom-10 left-[6%] hidden lg:block" size={65} color="gold" rotate={-25} opacity={0.4} pulse />
         <GlowOrb className="top-1/3 right-0" size={200} color="blue" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
@@ -467,7 +467,7 @@ export function HomeSection() {
       {/* BERITA + PENGUMUMAN TERBARU */}
       <section className="relative overflow-hidden py-14 lg:py-20">
         {/* Decorative bulbs */}
-        <LightBulb className="top-8 left-[3%] hidden lg:block" size={28} color="gold" />
+        <HexPrism className="top-8 left-[3%] hidden lg:block" size={70} color="gold" rotate={10} opacity={0.4} />
         <GlowOrb className="bottom-0 right-0" size={180} color="gold" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
@@ -525,8 +525,8 @@ export function HomeSection() {
       {/* GALERI PREVIEW */}
       <section className="relative overflow-hidden py-14 lg:py-20 bg-teal-soft/30 border-y border-border">
         {/* Decorative bulbs */}
-        <LightBulb className="top-8 right-[5%] hidden lg:block" size={30} color="gold" pulse />
-        <LightBulb className="bottom-12 left-[4%] hidden lg:block" size={24} color="blue" />
+        <HexPrism className="top-8 right-[5%] hidden lg:block" size={75} color="gold" rotate={-15} opacity={0.4} pulse />
+        <HexPrism className="bottom-12 left-[4%] hidden lg:block" size={60} color="blue" rotate={25} opacity={0.4} />
         <GlowOrb className="top-0 left-0" size={200} color="gold" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
@@ -571,9 +571,9 @@ export function HomeSection() {
       {/* CTA */}
       <section className="relative overflow-hidden py-16 lg:py-24">
         {/* Decorative bulbs */}
-        <LightBulb className="top-10 left-[8%] hidden lg:block" size={34} color="gold" pulse />
-        <LightBulb className="top-16 left-[15%] hidden lg:block" size={26} color="gold" />
-        <LightBulb className="bottom-10 right-[8%] hidden lg:block" size={32} color="gold" pulse />
+        <HexPrism className="top-10 left-[8%] hidden lg:block" size={85} color="gold" rotate={12} opacity={0.45} pulse />
+        <HexPrism className="top-16 left-[15%] hidden lg:block" size={65} color="gold" rotate={-20} opacity={0.4} />
+        <HexPrism className="bottom-10 right-[8%] hidden lg:block" size={80} color="gold" rotate={18} opacity={0.4} pulse />
         <GlowOrb className="top-0 left-0" size={250} color="gold" />
         <GlowOrb className="bottom-0 right-0" size={200} color="blue" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
