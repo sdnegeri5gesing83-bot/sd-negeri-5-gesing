@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://sdn5gesing.sch.id/sitemap.xml',
-    host: 'https://sdn5gesing.sch.id',
+    sitemap: 'https://my-project-topaz-kappa.vercel.app/sitemap.xml',
+    host: 'https://my-project-topaz-kappa.vercel.app',
   };
 }

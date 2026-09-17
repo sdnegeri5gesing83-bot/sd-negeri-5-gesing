@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://sdn5gesing.sch.id';
+  const baseUrl = 'https://my-project-topaz-kappa.vercel.app';
   const lastModified = new Date();
 
   return [
