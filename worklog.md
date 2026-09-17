@@ -1136,3 +1136,31 @@ Stage Summary:
 - Photo field is optional (announcements without photos still work)
 - Upload works via the existing /api/admin/upload route
 - Photos are stored in /uploads/editor/ with unique filenames
+
+---
+Task ID: google-indexing-seo
+Agent: Z.ai Code (main)
+Task: Add SEO features for Google indexing (sitemap, robots, structured data).
+
+Work Log:
+- Created `src/app/sitemap.ts` — dynamic sitemap.xml with 8 URLs (all pages with priorities)
+- Created `src/app/robots.ts` — dynamic robots.txt with sitemap reference
+- Deleted static `public/robots.txt` to resolve conflict with dynamic route
+- Added JSON-LD structured data (EducationalOrganization schema) in layout.tsx:
+  - School name, alternate name, description, URL
+  - Logo and image URLs
+  - Telephone and email
+  - Postal address (street, locality, region, country, postal code)
+  - Area served, school type
+- Verified all 3 SEO features:
+  - robots.txt: "User-Agent: * Allow: / Sitemap: https://sdn5gesing.sch.id/sitemap.xml" ✓
+  - sitemap.xml: 8 URLs with lastmod, changefreq, priority ✓
+  - JSON-LD: EducationalOrganization schema with full school info ✓
+- Lint clean
+
+Stage Summary:
+- Website now has all 3 critical SEO features for Google indexing:
+  1. sitemap.xml (dynamic, auto-updates)
+  2. robots.txt (dynamic, references sitemap)
+  3. JSON-LD structured data (EducationalOrganization schema)
+- Next steps for the user: register domain, deploy to hosting, submit to Google Search Console
