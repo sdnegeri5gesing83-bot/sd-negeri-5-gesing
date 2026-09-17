@@ -908,3 +908,27 @@ Stage Summary:
 - Gold accent elements (underline indicator, bottom line, admin button) pop elegantly on navy
 - Vertical separators in white/20 for subtle column structure
 - Professional, elegant navy + gold color scheme
+
+---
+Task ID: welcome-update-v2
+Agent: Z.ai Code (main)
+Task: Update headmaster welcome message with revised wording.
+
+Work Log:
+- User provided updated welcome text with key change:
+  - OLD: "demi membentuk generasi yang beriman, berakhlak mulia, cerdas, dan mandiri"
+  - NEW: "demi membentuk insan yang bertaqwa, cerdas serta peduli sesama"
+- Updated SchoolProfile.headmasterWelcome in database
+- Full new message (3 paragraphs):
+  1. "Assalamualaikum dan salam sejahtera bagi kita semua."
+  2. "Selamat datang di website resmi SD Negeri 5 Gesing... demi membentuk insan yang bertaqwa, cerdas serta peduli sesama"
+  3. "Mari bersama-sama membangun pendidikan yang bermutu untuk masa depan anak-anak kita."
+- Verified via Agent Browser + VLM:
+  - Snapshot confirms: "demi membentuk insan yang bertaqwa, cerdas serta peduli sesama" ✓
+  - VLM confirms: "It says 'insan yang bertaqwa'" ✓
+- Now consistent with school vision: "Terwujudnya Insan yang Bertaqwa, cerdas, serta peduli sesama"
+
+Stage Summary:
+- Welcome message updated with revised wording ("membentuk insan yang bertaqwa" instead of "membentuk generasi yang beriman")
+- Now aligns with the school's official vision statement
+- Displays on Beranda (Sambutan Kepala Sekolah) and Profil pages
