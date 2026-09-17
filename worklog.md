@@ -1108,3 +1108,31 @@ Stage Summary:
 - Transparent but visible (opacity 0.4-0.5) — elegant and futuristic
 - Varied sizes, rotations, and colors (gold/blue) across sections
 - Pulse animation on select prisms for subtle dynamic effect
+
+---
+Task ID: announcement-photo
+Agent: Z.ai Code (main)
+Task: Add photo support to announcements (pengumuman) for activity photos.
+
+Work Log:
+- Added `photo` field (String?) to Announcement model in Prisma schema
+- Ran `bun run db:push` to sync schema
+- Updated Announcement TypeScript interface to include `photo?: string | null`
+- Updated admin announcements API routes (POST + PUT) with Zod validation for `photo` field
+- Updated admin AnnouncementsPanel:
+  - Added `photo: ''` to the form default (empty state)
+  - Added `photo: a.photo || ''` to openEdit function
+  - Added ImageUpload component at top of the add/edit form: "Foto Kegiatan (opsional)"
+  - Updated announcement cards to show photo thumbnail (h-16 w-20) if photo exists, otherwise show Megaphone icon
+  - Added import for ImageUpload component
+- Verified via Agent Browser:
+  - Announcement form opens with "Foto Kegiatan" field
+  - "URL gambar atau upload" textbox + "Upload dari komputer" button visible
+- Lint clean, no errors
+
+Stage Summary:
+- Admin can now upload/add a photo to each announcement (pengumuman)
+- Photo appears as thumbnail in the admin announcement list
+- Photo field is optional (announcements without photos still work)
+- Upload works via the existing /api/admin/upload route
+- Photos are stored in /uploads/editor/ with unique filenames

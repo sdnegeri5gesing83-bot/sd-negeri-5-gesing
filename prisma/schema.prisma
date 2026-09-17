@@ -136,6 +136,7 @@ model Announcement {
   id          String   @id @default(cuid())
   title       String
   content     String
+  photo       String?
   date        DateTime @default(now())
   published   Boolean  @default(true)
   createdAt   DateTime @default(now())

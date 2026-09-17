@@ -95,6 +95,7 @@ export interface Announcement {
   id: string;
   title: string;
   content: string;
+  photo?: string | null;
   date: string;
   published: boolean;
 }

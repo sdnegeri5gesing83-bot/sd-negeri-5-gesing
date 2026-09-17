@@ -19,8 +19,9 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { id as idLocale } from 'date-fns/locale';
 import type { Announcement } from '@/lib/types';
+import { ImageUpload } from '../image-upload';
 
-const empty = { title: '', content: '', date: format(new Date(), 'yyyy-MM-dd'), published: true };
+const empty = { title: '', content: '', photo: '', date: format(new Date(), 'yyyy-MM-dd'), published: true };
 
 export function AnnouncementsPanel() {
   const { data, loading, error, refetch } = useFetch<Announcement[]>('/api/admin/announcements');
@@ -30,7 +31,7 @@ export function AnnouncementsPanel() {
   const [saving, setSaving] = useState(false);
 
   const openNew = () => { setEditing(null); setForm(empty); setOpen(true); };
-  const openEdit = (a: Announcement) => { setEditing(a); setForm({ title: a.title, content: a.content, date: format(new Date(a.date), 'yyyy-MM-dd'), published: a.published }); setOpen(true); };
+  const openEdit = (a: Announcement) => { setEditing(a); setForm({ title: a.title, content: a.content, photo: a.photo || '', date: format(new Date(a.date), 'yyyy-MM-dd'), published: a.published }); setOpen(true); };
   const set = (k: keyof typeof empty, v: string | boolean) => setForm((f) => ({ ...f, [k]: v }));
 
   const save = async (e: React.FormEvent) => {
@@ -69,7 +70,11 @@ export function AnnouncementsPanel() {
         {(data || []).map((a) => (
           <Card key={a.id} className="border-border shadow-sm">
             <CardContent className="p-4 flex items-start gap-3">
-              <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0"><Megaphone className="h-5 w-5" /></div>
+              {a.photo ? (
+                <img src={a.photo} alt={a.title} className="h-16 w-20 rounded-lg object-cover shrink-0 ring-1 ring-border" />
+              ) : (
+                <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0"><Megaphone className="h-5 w-5" /></div>
+              )}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
                   <Badge variant="secondary" className={`text-[10px] ${a.published ? 'bg-emerald-500/15 text-emerald-700' : 'bg-muted'}`}>{a.published ? 'Terbit' : 'Draft'}</Badge>
@@ -98,6 +103,7 @@ export function AnnouncementsPanel() {
         <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto custom-scroll">
           <DialogHeader><DialogTitle>{editing ? 'Edit Pengumuman' : 'Tambah Pengumuman'}</DialogTitle><DialogDescription>Isi pengumuman sekolah.</DialogDescription></DialogHeader>
           <form onSubmit={save} className="space-y-4">
+            <ImageUpload label="Foto Kegiatan (opsional)" value={form.photo} onChange={(v) => set('photo', v)} />
             <div className="space-y-1.5"><Label>Tanggal</Label><Input type="date" value={form.date} onChange={(e) => set('date', e.target.value)} /></div>
             <Field label="Judul" value={form.title} onChange={(v) => set('title', v)} required />
             <div className="space-y-1.5"><Label>Konten <span className="text-destructive">*</span></Label><Textarea value={form.content} onChange={(e) => set('content', e.target.value)} rows={4} required /></div>

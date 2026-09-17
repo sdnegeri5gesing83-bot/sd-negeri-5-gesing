@@ -6,6 +6,7 @@ import { z } from 'zod';
 const schema = z.object({
   title: z.string().min(2, 'Judul minimal 2 karakter'),
   content: z.string().min(3, 'Konten minimal 3 karakter'),
+  photo: z.string().optional().nullable(),
   date: z.string().optional().nullable(),
   published: z.boolean().default(true),
 });
@@ -31,6 +32,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: parsed.error.errors[0]?.message || 'Validasi gagal' }, { status: 400 });
     }
     const data: any = { ...parsed.data };
+    if (data.photo === '') data.photo = null;
     if (data.date) data.date = new Date(data.date);
     else delete data.date;
     const item = await db.announcement.create({ data });
