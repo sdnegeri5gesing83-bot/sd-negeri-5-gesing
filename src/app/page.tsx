@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useNav } from '@/lib/nav-store';
 import { Navbar } from '@/components/site/navbar';
@@ -14,11 +14,10 @@ import { GallerySection } from '@/components/sections/gallery-section';
 import { ContactSection } from '@/components/sections/contact-section';
 import { AdminWrapper } from '@/components/admin/admin-wrapper';
 
-export default function Home() {
+function PageContent() {
   const { page, setPage } = useNav();
   const searchParams = useSearchParams();
 
-  // Read URL param ?admin=login to show admin login after redirect
   useEffect(() => {
     const adminParam = searchParams.get('admin');
     if (adminParam === 'login' || adminParam === 'dashboard') {
@@ -41,5 +40,13 @@ export default function Home() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" /></div>}>
+      <PageContent />
+    </Suspense>
   );
 }
