@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useNav } from '@/lib/nav-store';
 import { Navbar } from '@/components/site/navbar';
 import { Footer } from '@/components/site/footer';
@@ -13,7 +15,16 @@ import { ContactSection } from '@/components/sections/contact-section';
 import { AdminWrapper } from '@/components/admin/admin-wrapper';
 
 export default function Home() {
-  const { page } = useNav();
+  const { page, setPage } = useNav();
+  const searchParams = useSearchParams();
+
+  // Read URL param ?admin=login to show admin login after redirect
+  useEffect(() => {
+    const adminParam = searchParams.get('admin');
+    if (adminParam === 'login' || adminParam === 'dashboard') {
+      setPage('admin');
+    }
+  }, [searchParams, setPage]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">

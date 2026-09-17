@@ -82,10 +82,15 @@ export function AccountPanel() {
 
       // If email or password changed, recommend re-login
       if (json.changedEmail || json.changedPassword) {
-        toast.info('Email/password berubah. Silakan login kembali.');
+        // Show clear message with the NEW email to use for login
+        const newEmail = json.email || form.newEmail;
+        toast.info(
+          `Kredensial berubah. Login kembali dengan email: ${newEmail}`,
+          { duration: 4000 }
+        );
         setTimeout(() => {
-          signOut({ callbackUrl: '/' });
-        }, 1500);
+          signOut({ callbackUrl: '/?admin=login' });
+        }, 2500);
       } else {
         // Only name changed — update session and refetch
         refetch();
