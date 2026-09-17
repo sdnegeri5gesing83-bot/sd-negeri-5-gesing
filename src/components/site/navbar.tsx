@@ -61,10 +61,8 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 w-full transition-all duration-300',
-        scrolled
-          ? 'bg-background/90 backdrop-blur-md shadow-sm'
-          : 'bg-background/70 backdrop-blur-sm'
+        'sticky top-0 z-50 w-full transition-all duration-300 bg-gradient-to-b from-[#1e3a5f] to-[#172a4f] shadow-lg',
+        scrolled && 'shadow-2xl'
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -72,7 +70,7 @@ export function Navbar() {
           {/* Logo + name — with elegant right separator */}
           <button
             onClick={() => go('beranda')}
-            className="flex items-center gap-3 group shrink-0 lg:pr-6 lg:mr-2 lg:border-r border-border/50"
+            className="flex items-center gap-3 group shrink-0 lg:pr-6 lg:mr-2 lg:border-r border-white/20"
             aria-label="Beranda SD Negeri 5 Gesing"
           >
             <img
@@ -81,10 +79,10 @@ export function Navbar() {
               className="h-10 w-10 lg:h-12 lg:w-12 object-contain rounded-full bg-white shadow-sm ring-1 ring-border group-hover:scale-105 transition-transform"
             />
             <div className="hidden sm:block text-left leading-tight">
-              <p className="text-base lg:text-lg font-bold text-foreground tracking-tight">
+              <p className="text-base lg:text-lg font-bold text-white tracking-tight">
                 SD Negeri 5 Gesing
               </p>
-              <p className="text-[11px] lg:text-xs text-muted-foreground font-medium">
+              <p className="text-[11px] lg:text-xs text-blue-200/80 font-medium">
                 Buleleng, Bali
               </p>
             </div>
@@ -102,8 +100,8 @@ export function Navbar() {
                   className={cn(
                     'relative px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 group/nav',
                     active
-                      ? 'text-primary'
-                      : 'text-foreground/70 hover:text-primary'
+                      ? 'text-white'
+                      : 'text-white/70 hover:text-white'
                   )}
                 >
                   <Icon className="h-4 w-4" />
@@ -111,10 +109,10 @@ export function Navbar() {
                   {/* Elegant underline indicator */}
                   <span
                     className={cn(
-                      'absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-primary to-gold transition-all duration-300',
+                      'absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-amber-300 to-amber-500 transition-all duration-300',
                       active
                         ? 'w-[70%] opacity-100'
-                        : 'w-0 opacity-0 group-hover/nav:w-[50%] group-hover/nav:opacity-50'
+                        : 'w-0 opacity-0 group-hover/nav:w-[50%] group-hover/nav:opacity-70'
                     )}
                   />
                 </button>
@@ -123,15 +121,15 @@ export function Navbar() {
           </nav>
 
           {/* Right: admin button — with elegant left separator */}
-          <div className="hidden lg:flex items-center gap-2 lg:pl-6 lg:ml-2 lg:border-l border-border/50">
+          <div className="hidden lg:flex items-center gap-2 lg:pl-6 lg:ml-2 lg:border-l border-white/20">
             <Button
               size="sm"
               variant={session?.user ? 'default' : 'outline'}
               onClick={() => go('admin')}
               className={
                 session?.user
-                  ? 'bg-accent text-accent-foreground hover:bg-accent/90'
-                  : 'border-primary/30 text-primary hover:bg-teal-soft/60'
+                  ? 'bg-amber-400 text-[#1e3a5f] hover:bg-amber-300 font-semibold'
+                  : 'border-white/40 text-white hover:bg-white/15'
               }
             >
               <ShieldCheck className="h-4 w-4" />
@@ -143,7 +141,7 @@ export function Navbar() {
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <button
-                className="lg:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg text-foreground hover:bg-teal-soft/60"
+                className="lg:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg text-white hover:bg-white/15"
                 aria-label="Buka menu"
               >
                 {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -207,11 +205,11 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Elegant gradient bottom line */}
+      {/* Elegant gold gradient bottom line */}
       <div
         className={cn(
-          'h-[2.5px] bg-gradient-to-r from-primary/0 via-primary/50 to-primary/0 transition-opacity duration-300',
-          scrolled ? 'opacity-100' : 'opacity-70'
+          'h-[3px] bg-gradient-to-r from-transparent via-amber-400/60 to-transparent transition-opacity duration-300',
+          scrolled ? 'opacity-100' : 'opacity-80'
         )}
       />
     </header>

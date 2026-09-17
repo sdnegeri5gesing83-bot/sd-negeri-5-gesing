@@ -880,3 +880,31 @@ Stage Summary:
 - signOut redirects directly to admin login page (not home page)
 - Clear toast message shows the NEW email to use for re-login
 - Default credentials restored: admin@sdn5gesing.sch.id / admin123
+
+---
+Task ID: navy-navbar
+Agent: Z.ai Code (main)
+Task: Change the navigation bar (header) color to navy blue.
+
+Work Log:
+- Updated navbar.tsx with navy blue theme:
+  - **Header background**: gradient `from-[#1e3a5f] to-[#172a4f]` (rich navy blue gradient) + `shadow-lg` (shadow-2xl when scrolled)
+  - **Logo name**: white text (was dark foreground)
+  - **Logo subtitle**: `text-blue-200/80` (light blue, was muted)
+  - **Vertical separators**: `border-white/20` (was border-border/50)
+  - **Nav items (active)**: `text-white` (was text-primary)
+  - **Nav items (inactive)**: `text-white/70 hover:text-white` (was text-foreground/70)
+  - **Underline indicator**: gradient `from-amber-300 to-amber-500` (gold, was primary-to-gold) — pops on navy
+  - **Admin button (logged in)**: `bg-amber-400 text-[#1e3a5f]` (gold button with navy text)
+  - **Admin button (logged out)**: `border-white/40 text-white hover:bg-white/15` (outline white)
+  - **Mobile menu trigger**: `text-white hover:bg-white/15`
+  - **Bottom line**: `via-amber-400/60` (gold gradient, was primary) — elegant contrast on navy
+- Verified via VLM: "navy blue (dark blue shade), text in white clearly visible, active tab Beranda has gold underline, admin button visible"
+- Lint clean
+
+Stage Summary:
+- Navbar/header now has a rich navy blue gradient background
+- All text is white for high contrast on the dark navy
+- Gold accent elements (underline indicator, bottom line, admin button) pop elegantly on navy
+- Vertical separators in white/20 for subtle column structure
+- Professional, elegant navy + gold color scheme
