@@ -5,6 +5,7 @@ import { useNav } from '@/lib/nav-store';
 import { useFetch } from '@/hooks/use-fetch';
 import { SectionHeader, Loader, EmptyState } from '@/components/site/ui';
 import { SmartImage } from '@/components/smart-image';
+import { LightBulb, GlowOrb } from '@/components/site/bulb-decoration';
 import {
   ArrowRight,
   Phone,
@@ -114,6 +115,12 @@ export function HomeSection() {
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/80 to-primary/60" />
+        {/* Decorative bulbs in hero */}
+        <LightBulb className="top-8 right-[15%]" size={36} color="gold" pulse />
+        <LightBulb className="top-20 right-[8%] hidden lg:block" size={28} color="gold" />
+        <LightBulb className="bottom-16 left-[5%] hidden lg:block" size={32} color="gold" pulse />
+        <GlowOrb className="top-0 right-0" size={300} color="gold" />
+        <GlowOrb className="bottom-0 left-1/4" size={250} color="blue" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div className="text-center lg:text-left">
@@ -274,7 +281,11 @@ export function HomeSection() {
       </section>
 
       {/* STATISTIK */}
-      <section className="py-14 lg:py-20 bg-teal-soft/30 border-y border-border">
+      <section className="relative overflow-hidden py-14 lg:py-20 bg-teal-soft/30 border-y border-border">
+        {/* Decorative bulbs */}
+        <LightBulb className="top-6 right-[8%] hidden lg:block" size={30} color="blue" />
+        <LightBulb className="bottom-10 left-[6%] hidden lg:block" size={26} color="gold" pulse />
+        <GlowOrb className="top-1/3 right-0" size={200} color="blue" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Data Sekolah"
@@ -454,7 +465,10 @@ export function HomeSection() {
       </section>
 
       {/* BERITA + PENGUMUMAN TERBARU */}
-      <section className="py-14 lg:py-20">
+      <section className="relative overflow-hidden py-14 lg:py-20">
+        {/* Decorative bulbs */}
+        <LightBulb className="top-8 left-[3%] hidden lg:block" size={28} color="gold" />
+        <GlowOrb className="bottom-0 right-0" size={180} color="gold" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
             <div>
@@ -509,7 +523,11 @@ export function HomeSection() {
       </section>
 
       {/* GALERI PREVIEW */}
-      <section className="py-14 lg:py-20 bg-teal-soft/30 border-y border-border">
+      <section className="relative overflow-hidden py-14 lg:py-20 bg-teal-soft/30 border-y border-border">
+        {/* Decorative bulbs */}
+        <LightBulb className="top-8 right-[5%] hidden lg:block" size={30} color="gold" pulse />
+        <LightBulb className="bottom-12 left-[4%] hidden lg:block" size={24} color="blue" />
+        <GlowOrb className="top-0 left-0" size={200} color="gold" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
             <div>
@@ -551,7 +569,13 @@ export function HomeSection() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 lg:py-24">
+      <section className="relative overflow-hidden py-16 lg:py-24">
+        {/* Decorative bulbs */}
+        <LightBulb className="top-10 left-[8%] hidden lg:block" size={34} color="gold" pulse />
+        <LightBulb className="top-16 left-[15%] hidden lg:block" size={26} color="gold" />
+        <LightBulb className="bottom-10 right-[8%] hidden lg:block" size={32} color="gold" pulse />
+        <GlowOrb className="top-0 left-0" size={250} color="gold" />
+        <GlowOrb className="bottom-0 right-0" size={200} color="blue" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-3xl hero-gradient text-white px-6 py-12 lg:px-14 lg:py-16 shadow-xl">
             <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold/20" aria-hidden />

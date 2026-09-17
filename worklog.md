@@ -1005,3 +1005,34 @@ Stage Summary:
   3. Upload photo in add/edit teacher dialog
 - Upload works (file saved to /uploads/editor/)
 - Save works (PUT to teachers API)
+
+---
+Task ID: bulb-decorations
+Agent: Z.ai Code (main)
+Task: Add decorative bulb (light bulb) designs to several areas on the Beranda (home page).
+
+Work Log:
+- Created a reusable LightBulb + GlowOrb component (bulb-decoration.tsx):
+  - LightBulb: SVG light bulb (bohlam) with glow halo, light rays, bulb body, highlight, screw base
+  - 3 color variants: gold (amber), blue (blue-400), white
+  - Optional pulse animation (animate-pulse)
+  - Optional glow effect (blur halo)
+  - GlowOrb: simpler glowing circle with blur-2xl
+- Added bulb decorations to 5 sections of the Beranda:
+  1. **Hero section**: 3 gold bulbs (top-right, top-far-right, bottom-left) + 2 glow orbs (gold top-right, blue bottom-left)
+  2. **Statistics section**: 1 blue bulb (top-right) + 1 gold pulsing bulb (bottom-left) + 1 blue glow orb
+  3. **Berita section**: 1 gold bulb (top-left) + 1 gold glow orb (bottom-right)
+  4. **Galeri preview section**: 1 gold pulsing bulb (top-right) + 1 blue bulb (bottom-left) + 1 gold glow orb
+  5. **CTA section**: 3 gold bulbs (2 top-left, 1 bottom-right, 2 pulsing) + 2 glow orbs (gold + blue)
+- Verified via VLM:
+  - Hero: "two yellow light bulb illustrations visible in the upper right area, floating above the school gate image, glowing bulb-shaped icons" ✓
+  - Other sections: bulbs and glow orbs visible ✓
+- Lint clean
+
+Stage Summary:
+- Decorative light bulb (bohlam) designs added to 5 areas of the Beranda
+- Bulbs have gold/blue/white color variants with glow halos and light rays
+- Some bulbs pulse (animate-pulse) for a dynamic effect
+- GlowOrb decorations add ambient lighting to sections
+- Bulbs are hidden on mobile (hidden lg:block) for clean mobile layout
+- Adds visual interest and ambiance to the home page
