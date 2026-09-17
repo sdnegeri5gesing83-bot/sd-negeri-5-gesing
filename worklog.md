@@ -1191,3 +1191,54 @@ Stage Summary:
 - The issue was a stale Prisma client after adding the `photo` field to the Announcement model
 - Both URL input and file upload paths work for saving announcement photos
 - No code changes needed — just Prisma client regeneration + cache clearing
+
+---
+Task ID: vercel-deploy-and-google-indexing
+Agent: Z.ai Code (main)
+Task: Deploy website to Vercel + Supabase PostgreSQL + Google indexing setup.
+
+Work Log:
+- Created GitHub repo: https://github.com/sdnegeri5gesing83-bot/sd-negeri-5-gesing
+- Pushed all code to GitHub (multiple commits)
+- Deployed to Vercel using Vercel CLI with token
+- Fixed build error: useSearchParams() needed Suspense wrapper
+- Successfully deployed: https://my-project-topaz-kappa.vercel.app
+- Set up Supabase PostgreSQL database (project ref: qfsyfawnwlqvptnghbqp)
+- Changed Prisma provider from sqlite to postgresql
+- Created all tables via db:push on Supabase
+- Seeded initial data (admin account, school profile, sample data)
+- Imported real data from Excel:
+  - 8 teachers (with real photos from FOTO.rar)
+  - 40 students (with correct NISN)
+  - 14 facilities
+  - 8 organization members
+- Ran all update scripts:
+  - update-teacher-photos.ts (real photos)
+  - update-teacher-roles.ts (correct positions from latest Dapodik)
+  - import-visi-misi.ts (real vision/mission/goals)
+  - update-profile-data.ts (correct NPSN 50100616, SK info)
+  - update-contact.ts (real phone/email/whatsapp)
+  - update-map.ts (real coordinates)
+  - update-welcome.ts (real headmaster welcome)
+- Set Vercel environment variables:
+  - DATABASE_URL (Supabase PostgreSQL connection)
+  - NEXTAUTH_SECRET
+  - NEXTAUTH_URL
+- Updated sitemap.ts and robots.ts with Vercel production URL
+- Verified all APIs work on production:
+  - Teachers: 8 ✓
+  - Students: 40 (18L/22P) ✓
+  - Facilities: 14 ✓
+  - News: 5 ✓
+  - Gallery: 10 ✓
+  - Homepage: 200 ✓
+  - Sitemap: correct Vercel URLs ✓
+  - Robots.txt: correct Vercel URLs ✓
+
+Stage Summary:
+- Website fully deployed and functional at https://my-project-topaz-kappa.vercel.app
+- Database: Supabase PostgreSQL (free, persistent)
+- Code: GitHub (https://github.com/sdnegeri5gesing83-bot/sd-negeri-5-gesing)
+- All real school data loaded (GTK, students, facilities, visi/misi, contact info)
+- SEO ready: sitemap, robots.txt, JSON-LD structured data
+- Next steps: Google Search Console registration and indexing
