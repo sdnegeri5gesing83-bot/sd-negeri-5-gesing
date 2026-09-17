@@ -932,3 +932,46 @@ Stage Summary:
 - Welcome message updated with revised wording ("membentuk insan yang bertaqwa" instead of "membentuk generasi yang beriman")
 - Now aligns with the school's official vision statement
 - Displays on Beranda (Sambutan Kepala Sekolah) and Profil pages
+
+---
+Task ID: sambutan-elegant-redesign
+Agent: Z.ai Code (main)
+Task: Redesign the Sambutan Kepala Sekolah section with elegant and modern colors/design.
+
+Work Log:
+- Completely redesigned the Sambutan Kepala Sekolah section in home-section.tsx:
+  1. **Background**: Navy blue gradient (`from-[#1e3a5f] via-[#1a3457] to-[#15293f]`) — matches navbar
+  2. **Decorative background elements**:
+     - Golden glow orb (top-right, blur-3xl, amber-400/8)
+     - Blue glow orb (bottom-left, blur-3xl, blue-400/8)
+     - Sparkle dots (amber-300/40, blue-300/40) scattered
+  3. **Photo frame**:
+     - Gradient glow ring (amber→blue, blur-md, brightens on hover)
+     - Rotating dashed ring (border-dashed amber-300/30, rotates 180° on hover in 3s)
+     - Photo with ring-4 ring-white/20 + shadow-2xl
+     - Gradient overlay at bottom (navy fade for depth)
+     - Gold gradient badge "Kepala Sekolah" (amber-400→500, ring-2 ring-white/20)
+  4. **Section label**: "SAMBUTAN" pill in gold (amber-300 text, amber-400/10 bg, border amber-400/20)
+  5. **Gradient divider**: from-amber-400/40 to-transparent
+  6. **Title**: white text, bold
+  7. **Glassmorphism card**:
+     - `bg-white/5 backdrop-blur-md border border-white/15` (frosted glass)
+     - Shadow-2xl
+     - Gold gradient line at top (transparent→amber-400/60→transparent)
+     Large quote icon (amber-300/20, filled)
+  8. **Text**: blue-50/90 (light white-blue), italic
+  9. **Signature**: 
+     - Gold gradient bar (h-10 w-1, amber-400→amber-600)
+     - White name text
+     - Blue-200/70 subtitle with NIP
+- Verified via VLM: "deep navy blue background, glassmorphism card, golden glowing orbs, dashed ring around photo, gold quotation mark, SAMBUTAN pill label — modern and elegant"
+- Lint clean
+
+Stage Summary:
+- Sambutan Kepala Sekolah redesigned with:
+  - Navy blue gradient background (matches navbar)
+  - Glassmorphism card (frosted glass effect)
+  - Gold accent elements (badges, quote icon, gradient lines, sparkles)
+  - Photo with rotating dashed ring + gradient glow
+  - Decorative background orbs and sparkle dots
+  - Modern, elegant, kekinian (contemporary) design

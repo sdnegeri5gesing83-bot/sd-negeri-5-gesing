@@ -193,41 +193,79 @@ export function HomeSection() {
       )}
 
       {/* SAMBUTAN KEPALA SEKOLAH */}
-      <section className="py-14 lg:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10 items-center">
+      <section className="relative overflow-hidden py-16 lg:py-24 bg-gradient-to-br from-[#1e3a5f] via-[#1a3457] to-[#15293f]">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 right-0 h-72 w-72 rounded-full bg-amber-400/8 blur-3xl" aria-hidden />
+        <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-blue-400/8 blur-3xl" aria-hidden />
+        <div className="absolute top-10 left-10 h-2 w-2 rounded-full bg-amber-300/40" aria-hidden />
+        <div className="absolute top-20 left-20 h-1 w-1 rounded-full bg-amber-300/30" aria-hidden />
+        <div className="absolute bottom-20 right-16 h-1.5 w-1.5 rounded-full bg-blue-300/40" aria-hidden />
+
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 items-center">
+            {/* Photo with elegant frame */}
             <div className="lg:col-span-1 flex justify-center">
-              <div className="relative">
-                <div className="absolute -inset-3 bg-teal-soft/60 rounded-full" aria-hidden />
-                <SmartImage
-                  src={profile?.headmasterPhoto}
-                  alt={profile?.headmasterName || 'Kepala Sekolah'}
-                  className="relative h-64 w-64 lg:h-72 lg:w-72 rounded-full object-cover shadow-xl ring-4 ring-white"
-                />
-                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-gold text-primary text-xs font-semibold px-4 py-1 rounded-full shadow whitespace-nowrap">
+              <div className="relative group">
+                {/* Gradient glow ring */}
+                <div className="absolute -inset-4 bg-gradient-to-br from-amber-400/30 to-blue-400/20 rounded-full blur-md group-hover:from-amber-400/40 transition-all" aria-hidden />
+                {/* Decorative rotating ring */}
+                <div className="absolute -inset-2 rounded-full border-2 border-dashed border-amber-300/30 group-hover:rotate-180 transition-transform duration-[3000ms]" aria-hidden />
+                {/* Photo */}
+                <div className="relative rounded-full overflow-hidden ring-4 ring-white/20 shadow-2xl">
+                  <SmartImage
+                    src={profile?.headmasterPhoto}
+                    alt={profile?.headmasterName || 'Kepala Sekolah'}
+                    className="h-64 w-64 lg:h-72 lg:w-72 object-cover"
+                  />
+                  {/* Gradient overlay at bottom */}
+                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#1e3a5f]/80 to-transparent" aria-hidden />
+                </div>
+                {/* Gold badge */}
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-amber-500 text-[#1e3a5f] text-xs font-bold px-5 py-1.5 rounded-full shadow-lg whitespace-nowrap ring-2 ring-white/20">
                   Kepala Sekolah
                 </div>
               </div>
             </div>
+
+            {/* Welcome text card */}
             <div className="lg:col-span-2">
-              <SectionHeader
-                eyebrow="Sambutan"
-                title="Sambutan Kepala Sekolah"
-                align="left"
-              />
-              <div className="relative bg-card border border-border rounded-2xl p-6 lg:p-8 shadow-sm">
-                <Quote className="absolute -top-3 -left-2 h-10 w-10 text-primary/15" />
-                <p className="text-sm lg:text-base text-muted-foreground leading-relaxed whitespace-pre-line italic">
+              {/* Section label */}
+              <div className="flex items-center gap-3 mb-5">
+                <span className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-amber-300 bg-amber-400/10 border border-amber-400/20 px-3.5 py-1.5 rounded-full">
+                  Sambutan
+                </span>
+                <div className="h-px flex-1 bg-gradient-to-r from-amber-400/40 to-transparent" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight mb-6">
+                Sambutan Kepala Sekolah
+              </h2>
+
+              {/* Glassmorphism card */}
+              <div className="relative bg-white/5 backdrop-blur-md border border-white/15 rounded-2xl p-6 lg:p-8 shadow-2xl overflow-hidden">
+                {/* Decorative gradient line at top */}
+                <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
+
+                {/* Large quote icon */}
+                <Quote className="absolute -top-1 -left-1 h-12 w-12 text-amber-300/20" fill="currentColor" />
+
+                <p className="relative text-sm lg:text-base text-blue-50/90 leading-relaxed whitespace-pre-line italic">
                   {profile?.headmasterWelcome || 'Sambutan kepala sekolah sedang dimuat...'}
                 </p>
-                <div className="mt-6 pt-5 border-t border-border">
-                  <p className="font-bold text-foreground text-lg">
-                    {profile?.headmasterName || 'Kepala Sekolah'}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Kepala SD Negeri 5 Gesing
-                    {profile?.headmasterNip ? ` · NIP ${profile.headmasterNip}` : ''}
-                  </p>
+
+                {/* Signature */}
+                <div className="relative mt-6 pt-5 border-t border-white/15">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-1 rounded-full bg-gradient-to-b from-amber-400 to-amber-600" />
+                    <div>
+                      <p className="font-bold text-white text-lg">
+                        {profile?.headmasterName || 'Kepala Sekolah'}
+                      </p>
+                      <p className="text-sm text-blue-200/70">
+                        Kepala SD Negeri 5 Gesing
+                        {profile?.headmasterNip ? ` · NIP ${profile.headmasterNip}` : ''}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
