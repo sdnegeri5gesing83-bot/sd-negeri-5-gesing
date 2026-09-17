@@ -23,6 +23,7 @@ import {
   SheetClose,
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
+import { NavbarCalendar } from '@/components/site/navbar-calendar';
 
 interface NavItem {
   key: PageKey;
@@ -120,8 +121,9 @@ export function Navbar() {
             })}
           </nav>
 
-          {/* Right: admin button — with elegant left separator */}
+          {/* Right: calendar + admin button — with elegant left separator */}
           <div className="hidden lg:flex items-center gap-2 lg:pl-6 lg:ml-2 lg:border-l border-white/20">
+            <NavbarCalendar />
             <Button
               size="sm"
               variant={session?.user ? 'default' : 'outline'}

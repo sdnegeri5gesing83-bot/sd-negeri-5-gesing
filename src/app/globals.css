@@ -6,8 +6,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-poppins), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-playfair), Georgia, ui-serif, serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -49,6 +49,10 @@
 
 :root {
   --radius: 0.875rem;
+  /* Font families (also defined in @theme inline for Tailwind utilities) */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-playfair), Georgia, ui-serif, serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   /* Basic background: clean white with subtle blue ice tint */
   --background: oklch(0.99 0.003 235);
   --foreground: oklch(0.18 0.04 235);
@@ -141,11 +145,16 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-body);
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
+    font-family: var(--font-playfair), Georgia, "Times New Roman", ui-serif, serif;
   }
+}
+
+/* Heading font - Playfair Display (outside @layer for higher priority) */
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: var(--font-playfair), Georgia, "Times New Roman", ui-serif, serif !important;
 }
 
 /* Custom scrollbar */

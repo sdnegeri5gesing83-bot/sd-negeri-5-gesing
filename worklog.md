@@ -1036,3 +1036,39 @@ Stage Summary:
 - GlowOrb decorations add ambient lighting to sections
 - Bulbs are hidden on mobile (hidden lg:block) for clean mobile layout
 - Adds visual interest and ambiance to the home page
+
+---
+Task ID: playfair-font-and-calendar
+Agent: Z.ai Code (main)
+Task: Change font to Playfair Display and add calendar to navigation.
+
+Work Log:
+- **Font change to Playfair Display:**
+  - Updated layout.tsx: replaced Poppins import with Playfair_Display from next/font/google
+  - Set variable name to --font-playfair (weights: 400-900)
+  - Updated globals.css:
+    - @theme inline: --font-heading: var(--font-playfair), Georgia, serif
+    - :root block: added font variable definitions
+    - @layer base: h1-h6 font-family: var(--font-playfair)
+    - Added standalone CSS rule with !important for higher priority:
+      `h1, h2, h3, h4, h5, h6, .font-heading { font-family: var(--font-playfair), Georgia, "Times New Roman", ui-serif, serif !important; }`
+  - Cleared .next cache and restarted dev server for font compilation
+  - Verified: computed h1 font-family = "Playfair Display", font loaded ✓
+
+- **Calendar in navigation:**
+  - Created NavbarCalendar component (navbar-calendar.tsx):
+    - Popover with calendar icon + current date in navbar
+    - Mini calendar grid showing current month with weekday headers
+    - Navigation: prev/next month buttons
+    - Today highlighted with primary background
+    - Footer: full date (EEEE, d MMMM yyyy) + "Hari ini" button
+    - Uses date-fns with Indonesian locale
+    - Month names in Indonesian (Januari-Desember, Min-Sab weekdays)
+  - Added to navbar between nav items and admin button (with left separator)
+  - Verified: calendar shows "17 Sep 2026" in navbar, popover opens with calendar grid ✓
+
+Stage Summary:
+- Font: Playfair Display (serif) applied to all headings (h1-h6) via CSS rule with !important
+- Body text: Inter (sans-serif) for readability
+- Calendar: mini calendar widget in navbar with current date display, month navigation, today highlight
+- Calendar and Playfair Display both verified working
