@@ -14,6 +14,8 @@ import {
   Images,
   Phone,
   ShieldCheck,
+  Calendar,
+  Megaphone,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
