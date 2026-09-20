@@ -29,6 +29,17 @@ function PageContent() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
+      {/* Banner image below navbar */}
+      {page !== 'admin' && (
+        <div className="relative w-full h-[120px] sm:h-[160px] lg:h-[200px] overflow-hidden">
+          <img
+            src="/uploads/banner-sekolah.jpg"
+            alt="SD Negeri 5 Gesing - Ilustrasi sekolah"
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+        </div>
+      )}
       <main className="flex-1">
         {page === 'beranda' && <HomeSection />}
         {page === 'profil' && <ProfileSection />}
