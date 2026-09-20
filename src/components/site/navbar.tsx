@@ -38,8 +38,12 @@ const NAV_ITEMS: NavItem[] = [
   { key: 'siswa', label: 'Data Siswa', icon: GraduationCap },
   { key: 'sarpras', label: 'Sarpras', icon: Building2 },
   { key: 'galeri', label: 'Galeri', icon: Images },
-  { key: 'ppdb', label: 'PPDB', icon: GraduationCap },
   { key: 'kontak', label: 'Kontak', icon: Phone },
+];
+
+const PPDB_SUB_ITEMS = [
+  { label: 'Jadwal PPDB', tab: 'jadwal' as const, icon: Calendar },
+  { label: 'Pengumuman Penerimaan', tab: 'pengumuman' as const, icon: Megaphone },
 ];
 
 export function Navbar() {
@@ -120,6 +124,43 @@ export function Navbar() {
                 </button>
               );
             })}
+            {/* PPDB dropdown with sub-navigation */}
+            <div className="relative group/ppdb">
+              <button
+                onClick={() => go('ppdb')}
+                className={cn(
+                  'relative px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5',
+                  page === 'ppdb'
+                    ? 'text-cyan-300'
+                    : 'text-white/60 hover:text-cyan-300'
+                )}
+              >
+                <GraduationCap className="h-4 w-4" />
+                PPDB
+                <svg className="h-3 w-3 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path d="M5.293 7.293a1 1 0 010 1.414L10 13.414l4.707-4.707a1 1 0 01-1.414-1.414L10 10.586 6.707 7.293a1 1 0 00-1.414 0z"/></svg>
+                {page === 'ppdb' && (
+                  <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-[2.5px] w-[70%] rounded-full bg-gradient-to-r from-cyan-400 to-blue-500" />
+                )}
+              </button>
+              {/* Dropdown */}
+              <div className="absolute top-full left-0 mt-1 w-56 opacity-0 invisible group-hover/ppdb:opacity-100 group-hover/ppdb:visible transition-all duration-200 z-50">
+                <div className="rounded-xl bg-[#0d1424] border border-cyan-500/20 shadow-xl overflow-hidden p-1.5">
+                  {PPDB_SUB_ITEMS.map((sub) => {
+                    const SubIcon = sub.icon;
+                    return (
+                      <button
+                        key={sub.tab}
+                        onClick={() => { go('ppdb'); setPpdbTab(sub.tab); }}
+                        className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:text-cyan-300 hover:bg-cyan-500/10 transition-all"
+                      >
+                        <SubIcon className="h-4 w-4 text-cyan-400/70" />
+                        {sub.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </nav>
 
           {/* Right: calendar + admin button — with elegant left separator */}
@@ -190,6 +231,41 @@ export function Navbar() {
                       </SheetClose>
                     );
                   })}
+                  {/* PPDB with sub-items in mobile menu */}
+                  <SheetClose asChild>
+                    <button
+                      onClick={() => go('ppdb')}
+                      className={cn(
+                        'w-full flex items-center gap-3 px-3.5 py-3 rounded-lg text-sm font-medium transition-all relative',
+                        page === 'ppdb'
+                          ? 'bg-primary text-primary-foreground shadow-sm'
+                          : 'text-foreground/80 hover:bg-teal-soft/60'
+                      )}
+                    >
+                      {page === 'ppdb' && (
+                        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-full bg-gold" />
+                      )}
+                      <GraduationCap className="h-5 w-5" />
+                      PPDB
+                    </button>
+                  </SheetClose>
+                  {/* PPDB sub-items */}
+                  <div className="ml-4 pl-4 border-l border-border space-y-0.5">
+                    {PPDB_SUB_ITEMS.map((sub) => {
+                      const SubIcon = sub.icon;
+                      return (
+                        <SheetClose asChild key={sub.tab}>
+                          <button
+                            onClick={() => { go('ppdb'); setPpdbTab(sub.tab); }}
+                            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-primary hover:bg-teal-soft/60 transition-all"
+                          >
+                            <SubIcon className="h-4 w-4" />
+                            {sub.label}
+                          </button>
+                        </SheetClose>
+                      );
+                    })}
+                  </div>
                 </nav>
                 <div className="p-4 border-t">
                   <SheetClose asChild>
