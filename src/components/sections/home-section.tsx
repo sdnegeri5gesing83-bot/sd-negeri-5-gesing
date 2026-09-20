@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNav } from '@/lib/nav-store';
 import { useFetch } from '@/hooks/use-fetch';
 import { SectionHeader, Loader, EmptyState } from '@/components/site/ui';
@@ -76,6 +76,90 @@ export function HomeSection() {
   const galleryPreview = (gallery || []).slice(0, 6);
   const announcementsTop = (announcements || []).slice(0, 3);
   const studentCount = studentSummary?.total ?? 40;
+
+  // Inject NewsArticle JSON-LD structured data for SEO
+  // When a news article is opened in the dialog, add structured data to document head
+  useEffect(() => {
+    const scriptId = 'news-jsonld';
+    // Remove existing script
+    document.getElementById(scriptId)?.remove();
+
+    if (openNews) {
+      const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://my-project-topaz-kappa.vercel.app';
+      const articleUrl = `${baseUrl}/?news=${openNews.id}`;
+      const newsJsonLd: any = {
+        '@context': 'https://schema.org',
+        '@type': 'NewsArticle',
+        headline: openNews.title,
+        datePublished: new Date(openNews.publishedAt).toISOString(),
+        dateModified: new Date(openNews.publishedAt).toISOString(),
+        author: [{
+          '@type': 'Organization',
+          name: 'SD Negeri 5 Gesing',
+          url: baseUrl,
+        }],
+        publisher: {
+          '@type': 'Organization',
+          name: 'SD Negeri 5 Gesing',
+          url: baseUrl,
+          logo: {
+            '@type': 'ImageObject',
+            url: `${baseUrl}/logo-school.png`,
+          },
+        },
+      };
+      if (openNews.photo) {
+        newsJsonLd.image = [openNews.photo.startsWith('http') ? openNews.photo : `${baseUrl}${openNews.photo}`];
+      }
+      if (openNews.excerpt) {
+        newsJsonLd.description = openNews.excerpt;
+      }
+
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.type = 'application/ld+json';
+      script.textContent = JSON.stringify(newsJsonLd);
+      document.head.appendChild(script);
+    }
+
+    return () => {
+      document.getElementById(scriptId)?.remove();
+    };
+  }, [openNews]);
+
+  // Inject JSON-LD for all news articles on the page (for Google crawling)
+  useEffect(() => {
+    if (!news || news.length === 0) return;
+    const scriptId = 'news-list-jsonld';
+    document.getElementById(scriptId)?.remove();
+
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://my-project-topaz-kappa.vercel.app';
+    const itemList = news.map((n) => ({
+      '@type': 'NewsArticle',
+      headline: n.title,
+      datePublished: new Date(n.publishedAt).toISOString(),
+      author: { '@type': 'Organization', name: 'SD Negeri 5 Gesing' },
+      ...(n.photo ? { image: [n.photo.startsWith('http') ? n.photo : `${baseUrl}${n.photo}`] } : {}),
+    }));
+
+    const script = document.createElement('script');
+    script.id = scriptId;
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      itemListElement: itemList.map((item, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item,
+      })),
+    });
+    document.head.appendChild(script);
+
+    return () => {
+      document.getElementById(scriptId)?.remove();
+    };
+  }, [news]);
 
   // Chart data: students by class
   const classChartData = (studentsByClass || []).map((c) => ({
