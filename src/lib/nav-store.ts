@@ -9,12 +9,16 @@ export type PageKey =
   | 'siswa'
   | 'sarpras'
   | 'galeri'
+  | 'ppdb'
   | 'kontak'
   | 'admin';
 
 interface NavState {
   page: PageKey;
   setPage: (p: PageKey) => void;
+  // PPDB sub-tab
+  ppdbTab: 'jadwal' | 'pengumuman';
+  setPpdbTab: (t: 'jadwal' | 'pengumuman') => void;
   // admin sub-state
   adminView: 'login' | 'dashboard';
   setAdminView: (v: 'login' | 'dashboard') => void;
@@ -27,11 +31,12 @@ export const useNav = create<NavState>((set) => ({
   page: 'beranda',
   setPage: (p) => {
     set({ page: p });
-    // Scroll to top on page change
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   },
+  ppdbTab: 'jadwal',
+  setPpdbTab: (ppdbTab) => set({ ppdbTab }),
   adminView: 'login',
   setAdminView: (adminView) => set({ adminView }),
   newsId: null,

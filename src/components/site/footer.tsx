@@ -28,6 +28,7 @@ const NAV: FooterLink[] = [
   { key: 'siswa', label: 'Data Siswa' },
   { key: 'sarpras', label: 'Sarana & Prasarana' },
   { key: 'galeri', label: 'Galeri' },
+  { key: 'ppdb', label: 'PPDB' },
   { key: 'kontak', label: 'Kontak' },
 ];
 

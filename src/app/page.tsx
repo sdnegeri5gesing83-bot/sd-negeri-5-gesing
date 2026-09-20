@@ -11,6 +11,7 @@ import { GtkSection } from '@/components/sections/gtk-section';
 import { StudentsSection } from '@/components/sections/students-section';
 import { SarprasSection } from '@/components/sections/sarpras-section';
 import { GallerySection } from '@/components/sections/gallery-section';
+import { PpdbSection } from '@/components/sections/ppdb-section';
 import { ContactSection } from '@/components/sections/contact-section';
 import { AdminWrapper } from '@/components/admin/admin-wrapper';
 
@@ -35,6 +36,7 @@ function PageContent() {
         {page === 'siswa' && <StudentsSection />}
         {page === 'sarpras' && <SarprasSection />}
         {page === 'galeri' && <GallerySection />}
+        {page === 'ppdb' && <PpdbSection />}
         {page === 'kontak' && <ContactSection />}
         {page === 'admin' && <AdminWrapper />}
       </main>

@@ -38,6 +38,7 @@ const NAV_ITEMS: NavItem[] = [
   { key: 'siswa', label: 'Data Siswa', icon: GraduationCap },
   { key: 'sarpras', label: 'Sarpras', icon: Building2 },
   { key: 'galeri', label: 'Galeri', icon: Images },
+  { key: 'ppdb', label: 'PPDB', icon: GraduationCap },
   { key: 'kontak', label: 'Kontak', icon: Phone },
 ];
 
