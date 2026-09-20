@@ -188,10 +188,10 @@ export function Footer() {
 
         <div className="mt-10 pt-6 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs opacity-80 text-center sm:text-left">
-            &copy; {new Date().getFullYear()} {name}. Hak Cipta Dilindungi.
+            &copy; 2026 {name}. Hak Cipta Dilindungi.
           </p>
           <p className="text-xs opacity-70">
-            Dibuat dengan dedikasi untuk pendidikan di Bali.
+            Versi 26.01
           </p>
         </div>
       </div>
