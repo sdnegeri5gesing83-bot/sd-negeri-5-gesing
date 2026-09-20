@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useFetch } from '@/hooks/use-fetch';
+import { cn } from '@/lib/utils';
 import { Loader } from '@/components/site/ui';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,8 +31,11 @@ import {
   EyeOff,
   AlertTriangle,
   LogOut,
+  Palette,
+  Check,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTheme, THEMES, type ThemeKey } from '@/lib/theme-store';
 
 interface AdminInfo {
   id: string;
@@ -56,6 +60,7 @@ export function AccountPanel() {
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const { current: currentTheme, setTheme } = useTheme();
 
   const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -122,6 +127,49 @@ export function AccountPanel() {
           Kelola email, nama, dan password login administrator.
         </p>
       </div>
+
+      {/* Theme color selector */}
+      <Card className="border-border shadow-sm mb-6">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base flex items-center gap-2">
+            <Palette className="h-5 w-5 text-primary" />
+            Tema Warna Website
+          </CardTitle>
+          <CardDescription>Pilih tema warna. Perubahan langsung diterapkan di seluruh website.</CardDescription>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {THEMES.map((theme) => (
+              <button
+                key={theme.key}
+                onClick={() => {
+                  setTheme(theme.key);
+                  toast.success(`Tema diubah ke: ${theme.label}`);
+                }}
+                className={cn(
+                  'relative p-3 rounded-xl border-2 transition-all text-left',
+                  currentTheme === theme.key
+                    ? 'border-primary shadow-lg'
+                    : 'border-border hover:border-primary/40'
+                )}
+                style={{ backgroundColor: theme.colors.bg }}
+              >
+                {currentTheme === theme.key && (
+                  <span className="absolute top-2 right-2 h-5 w-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
+                    <Check className="h-3 w-3" />
+                  </span>
+                )}
+                <div className="flex items-center gap-1.5 mb-2">
+                  <div className="h-6 w-6 rounded-full" style={{ backgroundColor: theme.colors.primary }} />
+                  <div className="h-6 w-6 rounded-full" style={{ backgroundColor: theme.colors.accent }} />
+                </div>
+                <p className="text-xs font-bold" style={{ color: theme.colors.text }}>{theme.label}</p>
+                <p className="text-[10px] mt-0.5" style={{ color: theme.colors.text, opacity: 0.6 }}>{theme.description}</p>
+              </button>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Current account info card */}
       <Card className="border-border shadow-sm mb-6">
