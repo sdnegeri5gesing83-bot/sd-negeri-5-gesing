@@ -155,6 +155,16 @@ model ContactMessage {
   updatedAt   DateTime @updatedAt
 }
 
+// ---- File Uploads (stored as base64 in database for Vercel serverless) ----
+model FileUpload {
+  id          String   @id @default(cuid())
+  data        String
+  contentType String   @default("image/jpeg")
+  filename    String?
+  size        Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
 // ---- Homepage Statistics ----
 model Statistic {
   id          String   @id @default(cuid())
