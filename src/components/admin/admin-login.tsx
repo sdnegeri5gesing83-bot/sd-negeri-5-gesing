@@ -104,11 +104,6 @@ export function AdminLogin() {
                   </>
                 )}
               </Button>
-              <div className="text-center text-xs text-muted-foreground mt-3 p-3 rounded-lg bg-muted/50 border border-border">
-                <p className="font-semibold text-foreground mb-1">Akun Demo:</p>
-                <p>Email: <span className="font-mono">admin@sdn5gesing.sch.id</span></p>
-                <p>Password: <span className="font-mono">admin123</span></p>
-              </div>
               <Button
                 type="button"
                 variant="ghost"
