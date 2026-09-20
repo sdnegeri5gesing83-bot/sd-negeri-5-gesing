@@ -172,7 +172,23 @@ model PpdbSchedule {
   date        String
   time        String
   description String?
-  status      String   @default("upcoming")  // active | upcoming | done
+  status      String   @default("upcoming")
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ---- PPDB Announcements (with file attachments) ----
+model PpdbAnnouncement {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  photo       String?
+  fileUrl     String?
+  fileName    String?
+  fileType    String?
+  date        DateTime @default(now())
+  published   Boolean  @default(true)
   order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

@@ -37,6 +37,19 @@ interface PpdbSchedule {
   order: number;
 }
 
+interface PpdbAnnouncement {
+  id: string;
+  title: string;
+  content: string;
+  photo?: string | null;
+  fileUrl?: string | null;
+  fileName?: string | null;
+  fileType?: string | null;
+  date: string;
+  published: boolean;
+  order: number;
+}
+
 const SCHEDULE_ICONS = [FileText, ClipboardList, Megaphone, CheckCircle2, GraduationCap, Users];
 
 const SCHEDULE = [
@@ -101,17 +114,8 @@ const REQUIREMENTS = [
 
 export function PpdbSection() {
   const { ppdbTab, setPpdbTab, setPage } = useNav();
-  const { data: announcements } = useFetch<Announcement[]>('/api/public/announcements');
+  const { data: ppdbAnnouncements } = useFetch<PpdbAnnouncement[]>('/api/public/ppdb-announcements');
   const { data: scheduleData, loading: scheduleLoading } = useFetch<PpdbSchedule[]>('/api/public/ppdb');
-
-  // Filter announcements related to PPDB
-  const ppdbAnnouncements = (announcements || []).filter(
-    (a) =>
-      a.title.toLowerCase().includes('ppdb') ||
-      a.title.toLowerCase().includes('penerimaan') ||
-      a.title.toLowerCase().includes('siswa baru') ||
-      a.title.toLowerCase().includes('pendaftar')
-  );
 
   return (
     <div className="py-12 lg:py-16">
@@ -272,10 +276,15 @@ export function PpdbSection() {
               description="Pengumuman hasil seleksi peserta didik baru."
             />
 
-            {ppdbAnnouncements.length > 0 ? (
+            {ppdbAnnouncements && ppdbAnnouncements.length > 0 ? (
               <div className="space-y-4">
                 {ppdbAnnouncements.map((a) => (
-                  <Card key={a.id} className="border-border shadow-sm hover:shadow-md transition-shadow">
+                  <Card key={a.id} className="border-border shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                    {a.photo && (
+                      <div className="aspect-video w-full overflow-hidden">
+                        <img src={a.photo} alt={a.title} className="h-full w-full object-cover" />
+                      </div>
+                    )}
                     <CardContent className="p-5 flex items-start gap-4">
                       <div className="h-12 w-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
                         <Megaphone className="h-6 w-6" />
@@ -287,6 +296,12 @@ export function PpdbSection() {
                         </p>
                         <h3 className="font-bold text-foreground">{a.title}</h3>
                         <p className="text-sm text-muted-foreground mt-1 whitespace-pre-line">{a.content}</p>
+                        {a.fileUrl && (
+                          <a href={a.fileUrl} download={a.fileName || undefined} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 mt-3 px-3 py-2 rounded-lg bg-primary/10 text-primary text-sm font-medium hover:bg-primary/20 transition-colors">
+                            <Download className="h-4 w-4" />
+                            Download {a.fileName || 'lampiran'}
+                          </a>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
