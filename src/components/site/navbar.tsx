@@ -63,8 +63,8 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 w-full transition-all duration-300 bg-gradient-to-b from-[#1e3a5f] to-[#172a4f] shadow-lg',
-        scrolled && 'shadow-2xl'
+        'sticky top-0 z-50 w-full transition-all duration-300 bg-gradient-to-b from-[#0a0f1e] to-[#0d1424] border-b border-electric/20',
+        scrolled && 'shadow-[0_4px_30px_oklch(0.55_0.22_255/0.15)]'
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -78,13 +78,13 @@ export function Navbar() {
             <img
               src="/logo-school.png"
               alt="Logo SD Negeri 5 Gesing"
-              className="h-10 w-10 lg:h-12 lg:w-12 object-contain rounded-full bg-white shadow-sm ring-1 ring-border group-hover:scale-105 transition-transform"
+              className="h-10 w-10 lg:h-12 lg:w-12 object-contain rounded-full bg-white shadow-[0_0_15px_oklch(0.55_0.22_255/0.3)] ring-1 ring-cyan-500/30 group-hover:scale-105 transition-transform"
             />
             <div className="hidden sm:block text-left leading-tight">
-              <p className="text-base lg:text-lg font-bold text-white tracking-tight">
+              <p className="text-base lg:text-lg font-bold text-white tracking-tight" style={{textShadow:'0 0 12px oklch(0.55 0.22 255 / 0.5)'}}>
                 SD Negeri 5 Gesing
               </p>
-              <p className="text-[11px] lg:text-xs text-blue-200/80 font-medium">
+              <p className="text-[11px] lg:text-xs text-cyan-300/70 font-medium">
                 Buleleng, Bali
               </p>
             </div>
@@ -102,8 +102,8 @@ export function Navbar() {
                   className={cn(
                     'relative px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 group/nav',
                     active
-                      ? 'text-white'
-                      : 'text-white/70 hover:text-white'
+                      ? 'text-cyan-300'
+                      : 'text-white/60 hover:text-cyan-300'
                   )}
                 >
                   <Icon className="h-4 w-4" />
@@ -111,7 +111,7 @@ export function Navbar() {
                   {/* Elegant underline indicator */}
                   <span
                     className={cn(
-                      'absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-amber-300 to-amber-500 transition-all duration-300',
+                      'absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300',
                       active
                         ? 'w-[70%] opacity-100'
                         : 'w-0 opacity-0 group-hover/nav:w-[50%] group-hover/nav:opacity-70'
@@ -131,8 +131,8 @@ export function Navbar() {
               onClick={() => go('admin')}
               className={
                 session?.user
-                  ? 'bg-amber-400 text-[#1e3a5f] hover:bg-amber-300 font-semibold'
-                  : 'border-white/40 text-white hover:bg-white/15'
+                  ? 'bg-cyan-500 text-[#0a0f1e] hover:bg-cyan-400 font-semibold shadow-[0_0_15px_oklch(0.75_0.15_195/0.4)]'
+                  : 'border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/10'
               }
             >
               <ShieldCheck className="h-4 w-4" />
@@ -211,8 +211,8 @@ export function Navbar() {
       {/* Elegant gold gradient bottom line */}
       <div
         className={cn(
-          'h-[3px] bg-gradient-to-r from-transparent via-amber-400/60 to-transparent transition-opacity duration-300',
-          scrolled ? 'opacity-100' : 'opacity-80'
+          'h-[3px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent transition-opacity duration-300',
+          scrolled ? 'opacity-100' : 'opacity-70'
         )}
       />
     </header>

@@ -69,7 +69,7 @@ export function NavbarCalendar() {
           className="hidden lg:inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition-all"
           title="Lihat kalender"
         >
-          <CalendarIcon className="h-4 w-4 text-amber-300" />
+          <CalendarIcon className="h-4 w-4 text-cyan-400" />
           <span className="hidden xl:inline">{format(today, 'd MMM yyyy', { locale: idLocale })}</span>
         </button>
       </PopoverTrigger>
