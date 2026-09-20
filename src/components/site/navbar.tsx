@@ -16,6 +16,7 @@ import {
   ShieldCheck,
   Calendar,
   Megaphone,
+  Palette,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -26,6 +27,8 @@ import {
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { NavbarCalendar } from '@/components/site/navbar-calendar';
+import { ThemeSwitcher } from '@/components/site/theme-switcher';
+import { useTheme, THEMES } from '@/lib/theme-store';
 
 interface NavItem {
   key: PageKey;
@@ -165,8 +168,9 @@ export function Navbar() {
             </div>
           </nav>
 
-          {/* Right: calendar + admin button — with elegant left separator */}
+          {/* Right: theme + calendar + admin button — with elegant left separator */}
           <div className="hidden lg:flex items-center gap-2 lg:pl-6 lg:ml-2 lg:border-l border-white/20">
+            <ThemeSwitcher />
             <NavbarCalendar />
             <Button
               size="sm"
@@ -279,6 +283,31 @@ export function Navbar() {
                       {session?.user ? 'Dashboard Admin' : 'Login Admin'}
                     </Button>
                   </SheetClose>
+                </div>
+                {/* Theme switcher for mobile */}
+                <div className="px-4 py-3 border-t border-border">
+                  <p className="text-xs font-semibold text-muted-foreground mb-2 flex items-center gap-1.5">
+                    <Palette className="h-3.5 w-3.5" />
+                    Tema Warna
+                  </p>
+                  <div className="grid grid-cols-4 gap-2">
+                    {THEMES.map((theme) => (
+                      <button
+                        key={theme.key}
+                        onClick={() => { setTheme(theme.key); }}
+                        className={cn(
+                          'flex flex-col items-center gap-1 p-2 rounded-lg border-2 transition-all',
+                          useTheme.getState().current === theme.key ? 'border-primary' : 'border-border'
+                        )}
+                      >
+                        <div className="flex -space-x-1.5">
+                          <div className="h-5 w-5 rounded-full ring-1 ring-border" style={{ backgroundColor: theme.colors.bg }} />
+                          <div className="h-5 w-5 rounded-full ring-1 ring-border" style={{ backgroundColor: theme.colors.primary }} />
+                        </div>
+                        <span className="text-[9px] font-medium text-foreground">{theme.label}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </SheetContent>
