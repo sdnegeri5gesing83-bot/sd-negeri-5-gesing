@@ -40,6 +40,7 @@ import { MessagesPanel } from './panels/messages-panel';
 import { StatsPanel } from './panels/stats-panel';
 import { OrganizationPanel } from './panels/organization-panel';
 import { AccountPanel } from './panels/account-panel';
+import { PpdbPanel } from './panels/ppdb-panel';
 
 type Panel =
   | 'overview'
@@ -50,6 +51,7 @@ type Panel =
   | 'gallery'
   | 'news'
   | 'announcements'
+  | 'ppdb'
   | 'messages'
   | 'stats'
   | 'organization'
@@ -64,6 +66,7 @@ const NAV: { key: Panel; label: string; icon: React.ComponentType<{ className?: 
   { key: 'gallery', label: 'Galeri', icon: Images },
   { key: 'news', label: 'Berita', icon: Newspaper },
   { key: 'announcements', label: 'Pengumuman', icon: Megaphone },
+  { key: 'ppdb', label: 'Jadwal PPDB', icon: Calendar },
   { key: 'messages', label: 'Pesan Masuk', icon: Mail },
   { key: 'stats', label: 'Statistik', icon: BarChart3 },
   { key: 'organization', label: 'Struktur Organisasi', icon: Network },
@@ -192,6 +195,7 @@ export function AdminDashboard() {
           {active === 'gallery' && <GalleryPanel />}
           {active === 'news' && <NewsPanel />}
           {active === 'announcements' && <AnnouncementsPanel />}
+          {active === 'ppdb' && <PpdbPanel />}
           {active === 'messages' && <MessagesPanel />}
           {active === 'stats' && <StatsPanel />}
           {active === 'organization' && <OrganizationPanel />}

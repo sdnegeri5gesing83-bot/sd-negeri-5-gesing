@@ -165,6 +165,19 @@ model FileUpload {
   createdAt   DateTime @default(now())
 }
 
+// ---- PPDB Schedule ----
+model PpdbSchedule {
+  id          String   @id @default(cuid())
+  phase       String
+  date        String
+  time        String
+  description String?
+  status      String   @default("upcoming")  // active | upcoming | done
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 // ---- Homepage Statistics ----
 model Statistic {
   id          String   @id @default(cuid())

@@ -27,6 +27,18 @@ import type { Announcement } from '@/lib/types';
 import { format } from 'date-fns';
 import { id as idLocale } from 'date-fns/locale';
 
+interface PpdbSchedule {
+  id: string;
+  phase: string;
+  date: string;
+  time: string;
+  description?: string | null;
+  status: string;
+  order: number;
+}
+
+const SCHEDULE_ICONS = [FileText, ClipboardList, Megaphone, CheckCircle2, GraduationCap, Users];
+
 const SCHEDULE = [
   {
     phase: 'Pendaftaran Online',
@@ -90,6 +102,7 @@ const REQUIREMENTS = [
 export function PpdbSection() {
   const { ppdbTab, setPpdbTab, setPage } = useNav();
   const { data: announcements } = useFetch<Announcement[]>('/api/public/announcements');
+  const { data: scheduleData, loading: scheduleLoading } = useFetch<PpdbSchedule[]>('/api/public/ppdb');
 
   // Filter announcements related to PPDB
   const ppdbAnnouncements = (announcements || []).filter(
@@ -164,8 +177,8 @@ export function PpdbSection() {
               {/* Timeline line */}
               <div className="absolute left-5 lg:left-1/2 top-0 bottom-0 w-0.5 bg-border -translate-x-1/2" />
               <div className="space-y-6">
-                {SCHEDULE.map((item, i) => {
-                  const Icon = item.icon;
+                {(scheduleData || []).map((item, i) => {
+                  const Icon = SCHEDULE_ICONS[i % SCHEDULE_ICONS.length];
                   const isLeft = i % 2 === 0;
                   return (
                     <div
