@@ -248,24 +248,50 @@ export function ProfileSection() {
           />
           {org && org.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-5">
-              {org.map((m, i) => (
-                <Card
-                  key={m.id}
-                  className={`text-center border-border shadow-sm hover:shadow-md transition-shadow ${i === 0 ? 'ring-2 ring-gold/40' : ''}`}
-                >
-                  <CardContent className="pt-6 pb-5 px-4">
-                    <div className="mx-auto h-20 w-20 rounded-full bg-teal-soft/60 overflow-hidden ring-2 ring-white shadow-sm mb-3">
-                      <SmartImage
-                        src={m.photo}
-                        alt={m.name}
-                        className="h-full w-full object-cover"
-                      />
+              {org.map((m, i) => {
+                const isHead = i === 0;
+                const isStaff = m.position.toLowerCase().includes('kependidikan') || m.position.toLowerCase().includes('operator') || m.position.toLowerCase().includes('bendahara');
+                const isTeacher = !isHead && !isStaff;
+                return (
+                  <div
+                    key={m.id}
+                    className={`relative rounded-2xl overflow-hidden border shadow-sm hover:shadow-xl transition-all duration-300 group ${isHead ? 'border-cyan-500/40' : 'border-border'}`}
+                  >
+                    {/* Gradient dark background */}
+                    {isHead ? (
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#0d1b3a] via-[#0a1528] to-[#070d1c]" />
+                    ) : isStaff ? (
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#11162a] via-[#0d111e] to-[#090c16]" />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#0f1428] via-[#0b0f20] to-[#070a16]" />
+                    )}
+                    {/* Accent overlay */}
+                    {isHead && <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/15 via-transparent to-transparent" />}
+                    {isStaff && <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-transparent to-transparent" />}
+                    {isTeacher && <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent" />}
+                    {/* Top accent line */}
+                    <div className={`absolute inset-x-0 top-0 h-1 ${isHead ? 'bg-gradient-to-r from-cyan-400 to-blue-500' : isStaff ? 'bg-gradient-to-r from-amber-400 to-amber-500' : 'bg-gradient-to-r from-blue-400 to-cyan-400'}`} />
+
+                    <div className="relative p-5 text-center">
+                      {/* Photo with glow ring */}
+                      <div className="relative mx-auto mb-3">
+                        {isHead && (
+                          <div className="absolute -inset-2 rounded-full bg-cyan-400/20 blur-md" aria-hidden />
+                        )}
+                        <div className={`relative h-20 w-20 mx-auto rounded-full overflow-hidden ring-2 ${isHead ? 'ring-cyan-400/50' : isStaff ? 'ring-amber-400/40' : 'ring-blue-400/40'} shadow-lg`}>
+                          <SmartImage
+                            src={m.photo}
+                            alt={m.name}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                      </div>
+                      <p className="font-semibold text-sm text-white leading-snug">{m.name}</p>
+                      <p className={`text-xs font-medium mt-1 ${isHead ? 'text-cyan-300' : isStaff ? 'text-amber-300' : 'text-blue-300'}`}>{m.position}</p>
                     </div>
-                    <p className="font-semibold text-sm text-foreground leading-snug">{m.name}</p>
-                    <p className="text-xs text-primary font-medium mt-1">{m.position}</p>
-                  </CardContent>
-                </Card>
-              ))}
+                  </div>
+                );
+              })}
             </div>
           ) : (
             <EmptyState title="Struktur organisasi belum tersedia" />
