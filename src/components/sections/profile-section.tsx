@@ -172,40 +172,69 @@ export function ProfileSection() {
           </div>
         </section>
 
-        {/* Visi Misi Tujuan */}
+        {/* Visi Misi Tujuan — Landscape layout */}
         <section className="mb-14">
           <SectionHeader eyebrow="Landasan" title="Visi, Misi & Tujuan" align="left" />
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-            <Card className="border-primary/20 shadow-sm overflow-hidden">
-              <div className="h-1.5 bg-primary" />
-              <CardContent className="p-6">
-                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4">
-                  <Eye className="h-6 w-6" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* Visi */}
+            <div className="relative rounded-2xl overflow-hidden border border-border shadow-sm group">
+              <div className="absolute inset-0 hero-gradient opacity-90" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-transparent to-transparent" />
+              <div className="relative p-6 lg:p-8 min-h-[280px] flex flex-col">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="h-12 w-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center ring-1 ring-white/20">
+                    <Eye className="h-6 w-6 text-cyan-300" />
+                  </div>
+                  <h3 className="font-bold text-xl text-white">Visi</h3>
                 </div>
-                <h3 className="font-bold text-lg mb-2 text-foreground">Visi</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{profile.vision}</p>
-              </CardContent>
-            </Card>
-            <Card className="border-primary/20 shadow-sm overflow-hidden">
-              <div className="h-1.5 bg-gold" />
-              <CardContent className="p-6">
-                <div className="h-12 w-12 rounded-xl bg-gold/15 flex items-center justify-center text-gold mb-4">
-                  <Compass className="h-6 w-6" />
+                <div className="flex-1 flex items-center">
+                  <p className="text-sm text-white/90 leading-relaxed italic">{profile.vision}</p>
                 </div>
-                <h3 className="font-bold text-lg mb-2 text-foreground">Misi</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{profile.mission}</p>
-              </CardContent>
-            </Card>
-            <Card className="border-primary/20 shadow-sm overflow-hidden">
-              <div className="h-1.5 bg-primary/70" />
-              <CardContent className="p-6">
-                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4">
-                  <Target className="h-6 w-6" />
+                <div className="mt-4 pt-3 border-t border-white/10">
+                  <span className="text-[10px] uppercase tracking-widest text-cyan-300/60">Landasan Visi</span>
                 </div>
-                <h3 className="font-bold text-lg mb-2 text-foreground">Tujuan</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{profile.goals}</p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
+
+            {/* Misi */}
+            <div className="relative rounded-2xl overflow-hidden border border-border shadow-sm group">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#1a1f3a] to-[#0f1220]" />
+              <div className="absolute inset-0 bg-gradient-to-br from-gold/20 via-transparent to-transparent" />
+              <div className="relative p-6 lg:p-8 min-h-[280px] flex flex-col">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="h-12 w-12 rounded-full bg-gold/15 backdrop-blur-sm flex items-center justify-center ring-1 ring-gold/20">
+                    <Compass className="h-6 w-6 text-gold" />
+                  </div>
+                  <h3 className="font-bold text-xl text-foreground">Misi</h3>
+                </div>
+                <div className="flex-1 overflow-y-auto custom-scroll max-h-[180px]">
+                  <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{profile.mission}</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-border/50">
+                  <span className="text-[10px] uppercase tracking-widest text-gold/50">Langkah Strategis</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Tujuan */}
+            <div className="relative rounded-2xl overflow-hidden border border-border shadow-sm group">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#0f1a2a] to-[#0a0f1e]" />
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/15 via-transparent to-transparent" />
+              <div className="relative p-6 lg:p-8 min-h-[280px] flex flex-col">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="h-12 w-12 rounded-full bg-cyan-500/15 backdrop-blur-sm flex items-center justify-center ring-1 ring-cyan-500/20">
+                    <Target className="h-6 w-6 text-cyan-400" />
+                  </div>
+                  <h3 className="font-bold text-xl text-foreground">Tujuan</h3>
+                </div>
+                <div className="flex-1 overflow-y-auto custom-scroll max-h-[180px]">
+                  <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{profile.goals}</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-border/50">
+                  <span className="text-[10px] uppercase tracking-widest text-cyan-400/50">Sasaran Pendidikan</span>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
