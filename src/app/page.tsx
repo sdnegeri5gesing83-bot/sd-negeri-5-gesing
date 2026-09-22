@@ -31,23 +31,25 @@ function PageContent() {
       <Navbar />
       {/* Banner image below navbar */}
       {page !== 'admin' && (
-        <div className="relative w-full h-[120px] sm:h-[160px] lg:h-[200px] overflow-hidden">
-          <img
-            src="/uploads/banner-sekolah.jpg"
-            alt="SD Negeri 5 Gesing - Ilustrasi sekolah"
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
-          {/* Logo Kurikulum Merdeka - top right */}
-          <div className="absolute top-2 right-2 sm:top-3 sm:right-4 z-10">
+        <>
+          <div className="relative w-full h-[120px] sm:h-[160px] lg:h-[200px] overflow-hidden">
+            <img
+              src="/uploads/banner-sekolah.jpg"
+              alt="SD Negeri 5 Gesing - Ilustrasi sekolah"
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+          </div>
+          {/* Logo Kurikulum Merdeka - below banner */}
+          <div className="flex justify-end pr-4 sm:pr-6 lg:pr-8 -mt-8 sm:-mt-10 lg:-mt-12 relative z-10">
             <img
               src="/uploads/logo-merdeka.png"
               alt="Kurikulum Merdeka - Merdeka Belajar"
-              className="h-12 sm:h-16 lg:h-20 w-auto object-contain drop-shadow-lg"
-              style={{ filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.5))' }}
+              className="h-12 sm:h-16 lg:h-20 w-auto object-contain"
+              style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))' }}
             />
           </div>
-        </div>
+        </>
       )}
       <main className="flex-1">
         {page === 'beranda' && <HomeSection />}
