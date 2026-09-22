@@ -38,6 +38,15 @@ function PageContent() {
             className="h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
+          {/* Logo Kurikulum Merdeka - top right */}
+          <div className="absolute top-2 right-2 sm:top-3 sm:right-4 z-10">
+            <img
+              src="/uploads/logo-merdeka.png"
+              alt="Kurikulum Merdeka - Merdeka Belajar"
+              className="h-12 sm:h-16 lg:h-20 w-auto object-contain drop-shadow-lg"
+              style={{ filter: 'drop-shadow(0 0 8px rgba(0,0,0,0.5))' }}
+            />
+          </div>
         </div>
       )}
       <main className="flex-1">
