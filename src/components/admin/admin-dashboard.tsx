@@ -102,7 +102,7 @@ export function AdminDashboard() {
             {session?.user?.email}
           </p>
         </div>
-        <nav className="flex-1 overflow-y-auto custom-scroll p-3 space-y-1">
+        <nav className="relative flex-1 overflow-y-auto custom-scroll p-3 space-y-1">
           {NAV.map((item) => {
             const Icon = item.icon;
             const isActive = active === item.key;
@@ -123,7 +123,7 @@ export function AdminDashboard() {
             );
           })}
         </nav>
-        <div className="p-3 border-t border-white/10 space-y-1">
+        <div className="relative p-3 border-t border-white/10 space-y-1">
           <button
             onClick={() => setPage('beranda')}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/70 hover:bg-cyan-500/10 hover:text-cyan-300 transition-all"
@@ -144,13 +144,13 @@ export function AdminDashboard() {
       {/* Mobile sidebar */}
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="fixed bottom-5 right-5 z-40 lg:hidden rounded-full h-12 w-12 shadow-lg bg-primary text-primary-foreground hover:bg-primary/90">
+          <Button variant="outline" size="icon" className="fixed bottom-5 right-5 z-40 lg:hidden rounded-full h-12 w-12 shadow-[0_0_20px_oklch(0.55_0.22_255/0.4)] bg-gradient-to-br from-cyan-500 to-blue-500 text-white hover:from-cyan-400 hover:to-blue-400">
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="w-[280px] p-0">
           <div className="flex flex-col h-full">
-            <div className="p-4 border-b border-white/10 bg-primary text-primary-foreground">
+            <div className="relative p-4 border-b border-white/10 bg-gradient-to-r from-[#0d1b3a] to-[#0a1528] text-white">
               <p className="text-sm font-bold truncate">{session?.user?.name || 'Admin'}</p>
               <p className="text-xs opacity-90 truncate">{session?.user?.email}</p>
             </div>
@@ -230,7 +230,7 @@ function OverviewPanel() {
           const Icon = n.icon;
           return (
             <div key={n.key} className="rounded-xl border border-white/10 bg-card p-5 shadow-sm">
-              <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-3">
+              <div className="h-10 w-10 rounded-lg bg-cyan-500/15 text-cyan-300 flex items-center justify-center mb-3">
                 <Icon className="h-5 w-5" />
               </div>
               <p className="font-semibold text-foreground">{n.label}</p>
