@@ -99,11 +99,11 @@ export function Navbar() {
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 lg:h-20 items-center justify-between gap-4">
-          {/* Logo + name — with elegant right separator */}
+        <div className="flex h-16 lg:h-20 items-center gap-2 lg:gap-3">
+          {/* Photo (logo) — fixed, NOT sliding */}
           <button
             onClick={() => go('beranda')}
-            className="flex items-center gap-3 group shrink-0 lg:pr-6 lg:mr-2 lg:border-r border-white/20"
+            className="flex items-center gap-2 group shrink-0"
             aria-label="Beranda SD Negeri 5 Gesing"
           >
             <img
@@ -111,18 +111,10 @@ export function Navbar() {
               alt="Logo SD Negeri 5 Gesing"
               className="h-10 w-10 lg:h-12 lg:w-12 object-contain rounded-full bg-white shadow-[0_0_15px_oklch(0.55_0.22_255/0.3)] ring-1 ring-cyan-500/30 group-hover:scale-105 transition-transform"
             />
-            <div className="hidden sm:block text-left leading-tight">
-              <p className="text-base lg:text-lg font-bold text-white tracking-tight" style={{textShadow:'0 0 12px oklch(0.55 0.22 255 / 0.5)'}}>
-                SD Negeri 5 Gesing
-              </p>
-              <p className="text-[11px] lg:text-xs text-cyan-300/70 font-medium">
-                Buleleng, Bali
-              </p>
-            </div>
           </button>
 
-          {/* Desktop nav — scrollable with slide left/right */}
-          <div className="hidden lg:flex items-center gap-1 flex-1 max-w-[calc(100%-300px)]">
+          {/* Everything EXCEPT the photo — in one slideable row with left/right slide buttons */}
+          <div className="hidden lg:flex items-center gap-1 flex-1 min-w-0">
             {/* Left slide button */}
             <button
               onClick={() => scrollNav('left')}
@@ -137,13 +129,27 @@ export function Navbar() {
               <ChevronLeft className="h-4 w-4" />
             </button>
 
-            {/* Scrollable nav container */}
+            {/* Slideable container: school name + nav items + theme + calendar + admin */}
             <div
               ref={navScrollRef}
               onScroll={updateScrollButtons}
-              className="flex items-center gap-0.5 overflow-x-auto scroll-smooth nav-scroll-hide"
+              className="flex items-center gap-1 overflow-x-auto scroll-smooth nav-scroll-hide min-w-0"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
+              {/* School name (text only — photo is separate, fixed) */}
+              <button
+                onClick={() => go('beranda')}
+                className="flex flex-col items-start leading-tight shrink-0 px-3 mr-1 border-r border-white/20"
+              >
+                <p className="text-base lg:text-lg font-bold text-white tracking-tight" style={{textShadow:'0 0 12px oklch(0.55 0.22 255 / 0.5)'}}>
+                  SD Negeri 5 Gesing
+                </p>
+                <p className="text-[11px] lg:text-xs text-cyan-300/70 font-medium">
+                  Buleleng, Bali
+                </p>
+              </button>
+
+              {/* Nav items */}
               {NAV_ITEMS.map((item) => {
                 const Icon = item.icon;
                 const active = page === item.key;
@@ -207,6 +213,25 @@ export function Navbar() {
                   </div>
                 </div>
               </div>
+
+              {/* Right-side controls: theme + calendar + admin — also slideable */}
+              <div className="flex items-center gap-2 pl-4 ml-2 border-l border-white/20 shrink-0">
+                <ThemeSwitcher />
+                <NavbarCalendar />
+                <Button
+                  size="sm"
+                  variant={session?.user ? 'default' : 'outline'}
+                  onClick={() => go('admin')}
+                  className={
+                    session?.user
+                      ? 'bg-cyan-500 text-[#0a0f1e] hover:bg-cyan-400 font-semibold shadow-[0_0_15px_oklch(0.75_0.15_195/0.4)]'
+                      : 'border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/10'
+                  }
+                >
+                  <ShieldCheck className="h-4 w-4" />
+                  {session?.user ? 'Dashboard' : 'Admin'}
+                </Button>
+              </div>
             </div>
 
             {/* Right slide button */}
@@ -224,24 +249,18 @@ export function Navbar() {
             </button>
           </div>
 
-          {/* Right: theme + calendar + admin button — with elegant left separator */}
-          <div className="hidden lg:flex items-center gap-2 lg:pl-6 lg:ml-2 lg:border-l border-white/20">
-            <ThemeSwitcher />
-            <NavbarCalendar />
-            <Button
-              size="sm"
-              variant={session?.user ? 'default' : 'outline'}
-              onClick={() => go('admin')}
-              className={
-                session?.user
-                  ? 'bg-cyan-500 text-[#0a0f1e] hover:bg-cyan-400 font-semibold shadow-[0_0_15px_oklch(0.75_0.15_195/0.4)]'
-                  : 'border-cyan-500/40 text-cyan-300 hover:bg-cyan-500/10'
-              }
-            >
-              <ShieldCheck className="h-4 w-4" />
-              {session?.user ? 'Dashboard' : 'Admin'}
-            </Button>
-          </div>
+          {/* Mobile: school name (compact) + menu trigger */}
+          <button
+            onClick={() => go('beranda')}
+            className="lg:hidden flex flex-col items-start leading-tight shrink-0 flex-1 min-w-0"
+          >
+            <p className="text-sm font-bold text-white tracking-tight truncate" style={{textShadow:'0 0 12px oklch(0.55 0.22 255 / 0.5)'}}>
+              SD Negeri 5 Gesing
+            </p>
+            <p className="text-[10px] text-cyan-300/70 font-medium">
+              Buleleng, Bali
+            </p>
+          </button>
 
           {/* Mobile menu trigger */}
           <Sheet open={open} onOpenChange={setOpen}>

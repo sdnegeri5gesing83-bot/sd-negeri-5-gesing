@@ -1242,3 +1242,39 @@ Stage Summary:
 - All real school data loaded (GTK, students, facilities, visi/misi, contact info)
 - SEO ready: sitemap, robots.txt, JSON-LD structured data
 - Next steps: Google Search Console registration and indexing
+
+---
+Task ID: header-slide-everything-except-photo
+Agent: Z.ai Code (main)
+Task: User request "pada header kecuali foto agar dibuatkan slide kiri atau kanan" — make everything on the header (except the photo/logo) slideable with left/right slide buttons.
+
+Work Log:
+- Read existing navbar.tsx to understand current structure:
+  - Photo + school name grouped together on left (fixed, with right separator)
+  - Desktop nav items in a scrollable container with left/right chevron buttons
+  - Theme switcher + calendar + admin button on the right (fixed, with left separator)
+  - Mobile: hamburger menu
+- Restructured the header so that ONLY the photo (logo image) stays fixed on the left
+- Moved EVERYTHING ELSE into ONE slideable area between the left & right chevron buttons:
+  1. School name text (SD Negeri 5 Gesing + Buleleng, Bali) — now inside slideable area, with right separator
+  2. All nav items (Beranda, Profil, GTK, Data Siswa, Sarpras, Galeri, Kontak)
+  3. PPDB dropdown
+  4. Theme switcher + Calendar + Admin button — now inside slideable area, with left separator
+- Kept the photo (logo image) as a standalone fixed button on the far left
+- Added a separate mobile layout: photo + compact school name + hamburger (no slide on mobile, only desktop `lg:flex`)
+- Verified via Agent Browser + VLM:
+  - Desktop 1440px: logo photo fixed on left ✓, left chevron faded (no overflow), right chevron active ✓, all items fit between buttons ✓
+  - Desktop 1024px (narrower): content overflows ✓, left chevron faded ✓, right chevron active/bold ✓, content cut off on right ✓
+  - After 3 right-chevron clicks: 'Beranda' scrolled off-screen left ✓, 'GTK' now leftmost visible ✓, both chevrons active ✓
+  - After 3 left-chevron clicks: content scrolled back to start ✓, 'Beranda' visible again ✓
+  - Mobile 375px: logo photo visible ✓, compact school name ✓, hamburger menu ✓, NO slide buttons (desktop-only) ✓
+- Lint clean
+- No console errors
+
+Stage Summary:
+- Header restructured: photo (logo) is the ONLY fixed element on the left
+- Everything else (school name, nav items, theme switcher, calendar, admin button) is in ONE horizontal slideable area
+- Left/right chevron slide buttons wrap the slideable area
+- Slide buttons activate/deactivate based on scroll position (faded when can't scroll, active when can)
+- Mobile layout preserved: photo + compact name + hamburger menu (no slide on mobile)
+- User request fulfilled: "pada header kecuali foto agar dibuatkan slide kiri atau kanan"
