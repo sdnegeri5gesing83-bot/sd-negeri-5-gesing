@@ -77,36 +77,35 @@ export function ProfileSection() {
           </div>
         </div>
 
-        {/* Identitas */}
+        {/* Identitas — blue ice gradient */}
         <SectionHeader
           eyebrow="Identitas Sekolah"
           title="Identitas Sekolah"
           description="Informasi resmi dan administratif SD Negeri 5 Gesing."
           align="left"
         />
-        <Card className="border-border shadow-sm mb-14">
-          <CardContent className="p-0">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {identityRows.map((row, i) => {
-                const Icon = row.icon;
-                return (
-                  <div
-                    key={row.label}
-                    className={`flex items-start gap-3 p-5 ${i % 3 !== 2 ? 'lg:border-r' : ''} ${i % 2 !== 1 ? 'sm:border-r lg:border-r-0' : ''} border-b border-border`}
-                  >
-                    <div className="h-10 w-10 rounded-lg bg-teal-soft/60 flex items-center justify-center text-primary shrink-0">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-xs text-muted-foreground font-medium">{row.label}</p>
-                      <p className="text-sm font-semibold text-foreground break-words">{row.value}</p>
-                    </div>
+        <div className="relative rounded-2xl overflow-hidden shadow-sm mb-14 border border-blue-400/20">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/40 via-cyan-50/30 to-transparent" />
+          <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            {identityRows.map((row, i) => {
+              const Icon = row.icon;
+              return (
+                <div
+                  key={row.label}
+                  className={`flex items-start gap-3 p-5 ${i % 3 !== 2 ? 'lg:border-r' : ''} ${i % 2 !== 1 ? 'sm:border-r lg:border-r-0' : ''} border-b border-blue-200/30`}
+                >
+                  <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-white shrink-0 shadow-md shadow-blue-500/20">
+                    <Icon className="h-5 w-5" />
                   </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
+                  <div className="min-w-0">
+                    <p className="text-xs text-blue-600/60 font-medium">{row.label}</p>
+                    <p className="text-sm font-semibold text-foreground break-words">{row.value}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
 
         {/* Official Profil Sekolah image */}
         <div className="mb-14 rounded-2xl overflow-hidden border border-border shadow-sm bg-card">
