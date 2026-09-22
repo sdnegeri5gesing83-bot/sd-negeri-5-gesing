@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNav, type PageKey } from '@/lib/nav-store';
 import { useSession } from 'next-auth/react';
 import {
@@ -17,6 +17,8 @@ import {
   Calendar,
   Megaphone,
   Palette,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -52,10 +54,30 @@ const PPDB_SUB_ITEMS = [
 ];
 
 export function Navbar() {
-  const { page, setPage } = useNav();
+  const { page, setPage, ppdbTab, setPpdbTab } = useNav();
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const navScrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const updateScrollButtons = () => {
+    const el = navScrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 10);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
+  };
+
+  const scrollNav = (dir: 'left' | 'right') => {
+    const el = navScrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir === 'left' ? -200 : 200, behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    updateScrollButtons();
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -99,74 +121,108 @@ export function Navbar() {
             </div>
           </button>
 
-          {/* Desktop nav — elegant underline indicators */}
-          <nav className="hidden lg:flex items-center gap-0.5">
-            {NAV_ITEMS.map((item) => {
-              const Icon = item.icon;
-              const active = page === item.key;
-              return (
+          {/* Desktop nav — scrollable with slide left/right */}
+          <div className="hidden lg:flex items-center gap-1 flex-1 max-w-[calc(100%-300px)]">
+            {/* Left slide button */}
+            <button
+              onClick={() => scrollNav('left')}
+              className={cn(
+                'shrink-0 h-8 w-8 rounded-lg flex items-center justify-center transition-all',
+                canScrollLeft
+                  ? 'text-cyan-300 hover:bg-cyan-500/10'
+                  : 'text-white/20 cursor-not-allowed'
+              )}
+              aria-label="Geser kiri"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+
+            {/* Scrollable nav container */}
+            <div
+              ref={navScrollRef}
+              onScroll={updateScrollButtons}
+              className="flex items-center gap-0.5 overflow-x-auto scroll-smooth nav-scroll-hide"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {NAV_ITEMS.map((item) => {
+                const Icon = item.icon;
+                const active = page === item.key;
+                return (
+                  <button
+                    key={item.key}
+                    onClick={() => go(item.key)}
+                    className={cn(
+                      'relative shrink-0 px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 group/nav',
+                      active
+                        ? 'text-cyan-300'
+                        : 'text-white/60 hover:text-cyan-300'
+                    )}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {item.label}
+                    <span
+                      className={cn(
+                        'absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300',
+                        active
+                          ? 'w-[70%] opacity-100'
+                          : 'w-0 opacity-0 group-hover/nav:w-[50%] group-hover/nav:opacity-70'
+                      )}
+                    />
+                  </button>
+                );
+              })}
+              {/* PPDB dropdown */}
+              <div className="relative group/ppdb shrink-0">
                 <button
-                  key={item.key}
-                  onClick={() => go(item.key)}
+                  onClick={() => go('ppdb')}
                   className={cn(
-                    'relative px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 group/nav',
-                    active
+                    'relative px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5',
+                    page === 'ppdb'
                       ? 'text-cyan-300'
                       : 'text-white/60 hover:text-cyan-300'
                   )}
                 >
-                  <Icon className="h-4 w-4" />
-                  {item.label}
-                  {/* Elegant underline indicator */}
-                  <span
-                    className={cn(
-                      'absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300',
-                      active
-                        ? 'w-[70%] opacity-100'
-                        : 'w-0 opacity-0 group-hover/nav:w-[50%] group-hover/nav:opacity-70'
-                    )}
-                  />
+                  <GraduationCap className="h-4 w-4" />
+                  PPDB
+                  <svg className="h-3 w-3 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path d="M5.293 7.293a1 1 0 010 1.414L10 13.414l4.707-4.707a1 1 0 01-1.414-1.414L10 10.586 6.707 7.293a1 1 0 00-1.414 0z"/></svg>
+                  {page === 'ppdb' && (
+                    <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-[2.5px] w-[70%] rounded-full bg-gradient-to-r from-cyan-400 to-blue-500" />
+                  )}
                 </button>
-              );
-            })}
-            {/* PPDB dropdown with sub-navigation */}
-            <div className="relative group/ppdb">
-              <button
-                onClick={() => go('ppdb')}
-                className={cn(
-                  'relative px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5',
-                  page === 'ppdb'
-                    ? 'text-cyan-300'
-                    : 'text-white/60 hover:text-cyan-300'
-                )}
-              >
-                <GraduationCap className="h-4 w-4" />
-                PPDB
-                <svg className="h-3 w-3 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path d="M5.293 7.293a1 1 0 010 1.414L10 13.414l4.707-4.707a1 1 0 01-1.414-1.414L10 10.586 6.707 7.293a1 1 0 00-1.414 0z"/></svg>
-                {page === 'ppdb' && (
-                  <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-[2.5px] w-[70%] rounded-full bg-gradient-to-r from-cyan-400 to-blue-500" />
-                )}
-              </button>
-              {/* Dropdown */}
-              <div className="absolute top-full left-0 mt-1 w-56 opacity-0 invisible group-hover/ppdb:opacity-100 group-hover/ppdb:visible transition-all duration-200 z-50">
-                <div className="rounded-xl bg-[#0d1424] border border-cyan-500/20 shadow-xl overflow-hidden p-1.5">
-                  {PPDB_SUB_ITEMS.map((sub) => {
-                    const SubIcon = sub.icon;
-                    return (
-                      <button
-                        key={sub.tab}
-                        onClick={() => { go('ppdb'); setPpdbTab(sub.tab); }}
-                        className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:text-cyan-300 hover:bg-cyan-500/10 transition-all"
-                      >
-                        <SubIcon className="h-4 w-4 text-cyan-400/70" />
-                        {sub.label}
-                      </button>
-                    );
-                  })}
+                <div className="absolute top-full left-0 mt-1 w-56 opacity-0 invisible group-hover/ppdb:opacity-100 group-hover/ppdb:visible transition-all duration-200 z-50">
+                  <div className="rounded-xl bg-[#0d1424] border border-cyan-500/20 shadow-xl overflow-hidden p-1.5">
+                    {PPDB_SUB_ITEMS.map((sub) => {
+                      const SubIcon = sub.icon;
+                      return (
+                        <button
+                          key={sub.tab}
+                          onClick={() => { go('ppdb'); setPpdbTab(sub.tab); }}
+                          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:text-cyan-300 hover:bg-cyan-500/10 transition-all"
+                        >
+                          <SubIcon className="h-4 w-4 text-cyan-400/70" />
+                          {sub.label}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
-          </nav>
+
+            {/* Right slide button */}
+            <button
+              onClick={() => scrollNav('right')}
+              className={cn(
+                'shrink-0 h-8 w-8 rounded-lg flex items-center justify-center transition-all',
+                canScrollRight
+                  ? 'text-cyan-300 hover:bg-cyan-500/10'
+                  : 'text-white/20 cursor-not-allowed'
+              )}
+              aria-label="Geser kanan"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
 
           {/* Right: theme + calendar + admin button — with elegant left separator */}
           <div className="hidden lg:flex items-center gap-2 lg:pl-6 lg:ml-2 lg:border-l border-white/20">

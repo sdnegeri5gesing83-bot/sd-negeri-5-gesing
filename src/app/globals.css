@@ -261,3 +261,6 @@ html {
 .animate-cyan-pulse {
   animation: cyan-pulse 3s ease-in-out infinite;
 }
+
+.nav-scroll-hide::-webkit-scrollbar { display: none; }
+
