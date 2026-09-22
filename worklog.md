@@ -1278,3 +1278,52 @@ Stage Summary:
 - Slide buttons activate/deactivate based on scroll position (faded when can't scroll, active when can)
 - Mobile layout preserved: photo + compact name + hamburger menu (no slide on mobile)
 - User request fulfilled: "pada header kecuali foto agar dibuatkan slide kiri atau kanan"
+
+---
+Task ID: fix-prisma-provider-mismatch
+Agent: Z.ai Code (main)
+Task: User reported "eror" — diagnose and fix the error on the website.
+
+Work Log:
+- Read /home/z/my-project/dev.log and found the root cause:
+  - All database API routes returning HTTP 500 errors
+  - Error: "Error validating datasource `db`: the URL must start with the protocol `postgresql://` or `postgres://`"
+  - Root cause: MISMATCH between Prisma schema and .env file
+    - prisma/schema.prisma had `provider = "postgresql"` (set during Vercel/Supabase deployment)
+    - .env had `DATABASE_URL=file:/home/z/my-project/db/custom.db` (SQLite format, local dev)
+- Fixed the mismatch by changing prisma schema provider back to `sqlite`:
+  - `provider = "postgresql"` → `provider = "sqlite"`
+  - Verified schema has no PostgreSQL-specific features (no @db.*, no Unsupported, no Decimal, no Json)
+- Ran `bun run db:push` to regenerate Prisma client for SQLite ✓
+- Restarted dev server (cleared .next cache first)
+- Verified ALL previously-failing API endpoints now return 200:
+  - /api/public/news?limit=4 → 200 ✓
+  - /api/public/facilities → 200 ✓
+  - /api/public/gallery → 200 ✓
+  - /api/public/students/summary → 200 ✓
+  - /api/public/students/by-class → 200 ✓
+  - /api/public/profile → 200 ✓
+  - /api/public/teachers → 200 ✓
+- Checked local database contents:
+  - Teachers: 8 ✓, Students: 40 ✓, Facilities: 14 ✓, Gallery: 8 ✓
+  - Profile: 1 ✓, Announcements: 1 ✓, Organization: 8 ✓, Statistics: 4 ✓
+  - News: 0 ✗ (missing — was only seeded to production Supabase, not local SQLite)
+- Created `scripts/seed-news-only.ts` to insert 5 news articles WITHOUT wiping existing real data:
+  - Used `db.news.count()` check first, only inserts if empty
+  - Created 5 news articles (PPDB, HUT RI, Komite Sekolah, Pentas Seni, Penghijauan)
+- Verified via Agent Browser + VLM:
+  - Page renders correctly (not blank, no error messages) ✓
+  - Statistics show real data: 8 GTK, 40 Siswa, 6 Kelas, 14 Sarpras ✓
+  - Charts render with real data ✓
+  - News section "Berita & Pengumuman" shows 4 news articles with titles ✓
+  - No console errors ✓
+- Lint clean
+
+Stage Summary:
+- Error FIXED: all database API routes now return 200 instead of 500
+- Root cause was prisma schema using "postgresql" provider while local .env points to SQLite file
+- Changed schema provider back to "sqlite" for local development
+- Regenerated Prisma client with `bun run db:push`
+- Seeded 5 news articles to local SQLite database (was missing)
+- Website now fully functional locally with all real data (8 teachers, 40 students, 14 facilities, 5 news, 8 gallery items, etc.)
+- NOTE: For Vercel/Supabase production deployment, schema provider may need to be changed back to "postgresql" — but for local dev, sqlite is correct
