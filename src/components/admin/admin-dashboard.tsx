@@ -91,8 +91,10 @@ export function AdminDashboard() {
   return (
     <div className="min-h-[calc(100vh-5rem)] flex">
       {/* Sidebar - desktop */}
-      <aside className="hidden lg:flex w-64 flex-col border-r border-border bg-card sticky top-20 self-start" style={{ height: 'calc(100vh - 5rem)' }}>
-        <div className="p-4 border-b border-border">
+      <aside className="hidden lg:flex w-64 flex-col border-r border-cyan-500/10 sticky top-20 self-start relative overflow-hidden" style={{ height: 'calc(100vh - 5rem)' }}>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1e] to-[#080c18]" />
+        <div className="absolute top-0 right-0 w-40 h-40 rounded-full bg-cyan-500/5 blur-2xl" aria-hidden />
+        <div className="relative p-4 border-b border-white/10">
           <p className="text-sm font-bold text-foreground truncate">
             {session?.user?.name || 'Admin'}
           </p>
@@ -111,8 +113,8 @@ export function AdminDashboard() {
                 className={cn(
                   'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
                   isActive
-                    ? 'bg-primary text-primary-foreground shadow-sm'
-                    : 'text-foreground/70 hover:bg-teal-soft/60 hover:text-primary'
+                    ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-[0_0_15px_oklch(0.55_0.22_255/0.3)]'
+                    : 'text-foreground/70 hover:bg-cyan-500/10 hover:text-cyan-300'
                 )}
               >
                 <Icon className="h-4 w-4 shrink-0" />
@@ -121,10 +123,10 @@ export function AdminDashboard() {
             );
           })}
         </nav>
-        <div className="p-3 border-t border-border space-y-1">
+        <div className="p-3 border-t border-white/10 space-y-1">
           <button
             onClick={() => setPage('beranda')}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/70 hover:bg-teal-soft/60 hover:text-primary transition-all"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/70 hover:bg-cyan-500/10 hover:text-cyan-300 transition-all"
           >
             <Home className="h-4 w-4" />
             Lihat Website
@@ -148,7 +150,7 @@ export function AdminDashboard() {
         </SheetTrigger>
         <SheetContent side="left" className="w-[280px] p-0">
           <div className="flex flex-col h-full">
-            <div className="p-4 border-b border-border bg-primary text-primary-foreground">
+            <div className="p-4 border-b border-white/10 bg-primary text-primary-foreground">
               <p className="text-sm font-bold truncate">{session?.user?.name || 'Admin'}</p>
               <p className="text-xs opacity-90 truncate">{session?.user?.email}</p>
             </div>
@@ -164,7 +166,7 @@ export function AdminDashboard() {
                         'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
                         isActive
                           ? 'bg-primary text-primary-foreground'
-                          : 'text-foreground/70 hover:bg-teal-soft/60'
+                          : 'text-foreground/70 hover:bg-cyan-500/10'
                       )}
                     >
                       <Icon className="h-4 w-4" />
@@ -174,9 +176,9 @@ export function AdminDashboard() {
                 );
               })}
             </nav>
-            <div className="p-3 border-t border-border space-y-1">
+            <div className="p-3 border-t border-white/10 space-y-1">
               <SheetClose asChild>
-                <button onClick={() => setPage('beranda')} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/70 hover:bg-teal-soft/60">
+                <button onClick={() => setPage('beranda')} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/70 hover:bg-cyan-500/10">
                   <Home className="h-4 w-4" /> Lihat Website
                 </button>
               </SheetClose>
@@ -189,8 +191,12 @@ export function AdminDashboard() {
       </Sheet>
 
       {/* Content */}
-      <main className="flex-1 min-w-0 bg-background">
-        <div className="p-4 sm:p-6 lg:p-8">
+      <main className="flex-1 min-w-0 relative overflow-hidden">
+        {/* Dark blue glow gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0f1e] via-[#0d1424] to-[#0a0f1e]" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-blue-500/5 blur-3xl" aria-hidden />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full bg-cyan-500/5 blur-3xl" aria-hidden />
+        <div className="relative p-4 sm:p-6 lg:p-8">
           {active === 'overview' && <OverviewPanel />}
           {active === 'profile' && <ProfilePanel />}
           {active === 'teachers' && <TeachersPanel />}
@@ -223,7 +229,7 @@ function OverviewPanel() {
         {NAV.filter((n) => n.key !== 'overview').map((n) => {
           const Icon = n.icon;
           return (
-            <div key={n.key} className="rounded-xl border border-border bg-card p-5 shadow-sm">
+            <div key={n.key} className="rounded-xl border border-white/10 bg-card p-5 shadow-sm">
               <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-3">
                 <Icon className="h-5 w-5" />
               </div>
