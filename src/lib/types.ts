@@ -35,6 +35,7 @@ export interface Teacher {
   id: string;
   name: string;
   photo?: string | null;
+  birthDate?: string | null;
   nip?: string | null;
   nuptk?: string | null;
   position: string;
@@ -54,6 +55,7 @@ export interface Student {
   nis?: string | null;
   name: string;
   photo?: string | null;
+  birthDate?: string | null;
   gender: string;
   className: string;
   academicYear: string;

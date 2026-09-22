@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { useFetch } from '@/hooks/use-fetch';
 import { SectionHeader, Loader, EmptyState } from '@/components/site/ui';
 import { SmartImage } from '@/components/smart-image';
-import { Search, Mail, Phone, BadgeCheck, GraduationCap, Briefcase, User } from 'lucide-react';
+import { Search, Mail, Phone, BadgeCheck, GraduationCap, Briefcase, User, Calendar } from 'lucide-react';
 import type { Teacher } from '@/lib/types';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -195,6 +195,9 @@ export function GtkSection() {
                 )}
                 {open.nuptk && (
                   <Row icon={BadgeCheck} label="NUPTK" value={open.nuptk} />
+                )}
+                {open.birthDate && (
+                  <Row icon={Calendar} label="Tanggal Lahir" value={format(new Date(open.birthDate), 'd MMMM yyyy', { locale: idLocale })} />
                 )}
                 <Row icon={GraduationCap} label="Pendidikan Terakhir" value={open.education} />
                 {open.subject && (

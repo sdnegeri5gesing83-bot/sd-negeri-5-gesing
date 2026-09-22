@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const students = await db.student.findMany({
       where: { status: 'Aktif' },
-      select: { id: true, name: true, gender: true, className: true, academicYear: true, status: true, nis: true, nisn: true },
+      select: { id: true, name: true, gender: true, className: true, academicYear: true, status: true, nis: true, nisn: true, birthDate: true },
       orderBy: [{ className: 'asc' }, { name: 'asc' }],
     });
     return NextResponse.json(students);

@@ -63,11 +63,12 @@ model Teacher {
   photo       String?
   nip         String?
   nuptk       String?
+  birthDate   String?
   position    String
   education   String
   subject     String?
-  category    String   @default("Guru") // Guru | Tenaga Kependidikan
-  gender      String   @default("L")    // L | P
+  category    String   @default("Guru")
+  gender      String   @default("L")
   phone       String?
   email       String?
   bio         String?
@@ -83,6 +84,7 @@ model Student {
   nis           String?
   name          String
   photo         String?
+  birthDate     String?
   gender        String   // L | P
   className     String   // 1 .. 6
   academicYear  String   // 2024/2025

@@ -8,6 +8,7 @@ const schema = z.object({
   nis: z.string().optional().nullable(),
   name: z.string().min(2),
   photo: z.string().optional().nullable(),
+  birthDate: z.string().optional().nullable(),
   gender: z.enum(['L', 'P']),
   className: z.string().min(1),
   academicYear: z.string().min(5),
@@ -25,7 +26,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       return NextResponse.json({ error: parsed.error.errors[0]?.message || 'Validasi gagal' }, { status: 400 });
     }
     const data = parsed.data as any;
-    ['nisn', 'nis', 'photo'].forEach((k) => { if (data[k] === '') data[k] = null; });
+    ['nisn', 'nis', 'photo', 'birthDate'].forEach((k) => { if (data[k] === '') data[k] = null; });
     const item = await db.student.update({ where: { id }, data });
     return NextResponse.json(item);
   } catch (e: any) {

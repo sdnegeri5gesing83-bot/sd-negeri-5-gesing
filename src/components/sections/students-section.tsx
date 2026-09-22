@@ -253,6 +253,7 @@ export function StudentsSection() {
                         <TableHead className="text-center py-3 text-xs uppercase tracking-wide w-16">Kelas</TableHead>
                         <TableHead className="py-3 text-xs uppercase tracking-wide w-24">NIS</TableHead>
                         <TableHead className="py-3 text-xs uppercase tracking-wide w-28">NISN</TableHead>
+                        <TableHead className="py-3 text-xs uppercase tracking-wide w-32 hidden lg:table-cell">Tgl Lahir</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -276,6 +277,9 @@ export function StudentsSection() {
                           <TableCell className="text-xs text-muted-foreground font-mono py-3">{s.nis || '-'}</TableCell>
                           <TableCell className="text-xs text-muted-foreground font-mono py-3">
                             {s.nisn ? `••••${s.nisn.slice(-4)}` : '-'}
+                          </TableCell>
+                          <TableCell className="text-xs text-muted-foreground py-3 hidden lg:table-cell">
+                            {s.birthDate || '-'}
                           </TableCell>
                         </TableRow>
                       ))}
