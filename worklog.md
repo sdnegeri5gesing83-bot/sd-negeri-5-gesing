@@ -1327,3 +1327,51 @@ Stage Summary:
 - Seeded 5 news articles to local SQLite database (was missing)
 - Website now fully functional locally with all real data (8 teachers, 40 students, 14 facilities, 5 news, 8 gallery items, etc.)
 - NOTE: For Vercel/Supabase production deployment, schema provider may need to be changed back to "postgresql" — but for local dev, sqlite is correct
+
+---
+Task ID: header-photo-auto-rotate-carousel
+Agent: Z.ai Code (main)
+Task: User request "pada bagian foto header agar bisa bergerak sendiri ketika web dibuka dengan menambahkan foto yang sudah saya kasi" — make the header photo auto-rotate/move on its own when the web opens, using 3 new photos the user uploaded.
+
+Work Log:
+- User uploaded 3 new images to /home/z/my-project/upload/:
+  1. Gemini_Generated_Image_utmlbiutmlbiutml (1).jpeg — cartoon school signboard illustration
+  2. WhatsApp Image 2026-09-10 at 09.24.55.jpeg — real photo of green building with motorbikes
+  3. WhatsApp Image 2026-09-10 at 09.24.45.jpeg — real photo of green school building with Indonesian flag
+- Copied all 3 images to public/uploads/ with clean names:
+  - header-photo-1.jpg (cartoon signboard)
+  - header-photo-2.jpg (green building with motorbikes)
+  - header-photo-3.jpg (green building with flag)
+- Created new component `src/components/site/header-photo-carousel.tsx`:
+  - Auto-rotating carousel through 4 photos: logo-school.png + 3 new photos
+  - 3-second rotation interval
+  - Crossfade transition (opacity + scale, 700ms ease-in-out)
+  - Circular shape matching original logo design (h-10 w-10 mobile, h-12 w-12 desktop)
+  - Rotating gradient ring indicator (cyan→amber, 6s linear infinite spin animation)
+  - Progress dots at bottom (4 dots, active one is wider cyan, inactive are small white)
+  - Pause on hover (mouseEnter pauses, mouseLeave resumes)
+  - Logo image uses object-contain with padding; photos use object-cover
+  - Accepts onClick + className props (reusable)
+- Integrated into navbar.tsx:
+  - Replaced static `<img src="/logo-school.png">` in desktop header with `<HeaderPhotoCarousel onClick={() => go('beranda')} />`
+  - Replaced static `<img>` in mobile Sheet header with `<HeaderPhotoCarousel onClick={...} className="h-11 w-11" />`
+- Verified via Agent Browser:
+  - All 4 images accessible (HTTP 200): logo-school.png, header-photo-1/2/3.jpg ✓
+  - DOM inspection confirms 4 <img> elements stacked in carousel button with opacity transitions ✓
+  - Rotation confirmed: at t=0 image idx 3 visible (opacity 1.00), at t=8s image idx 0 visible (opacity 0.88 transitioning) ✓
+  - Progress dots present (6 spans in carousel: 4 dots + ring + container) ✓
+  - No console errors ✓
+  - Mobile menu also has the carousel component ✓
+  - Lint clean ✓
+
+Stage Summary:
+- Header photo now auto-rotates on its own through 4 images when the web opens:
+  1. School logo (official emblem)
+  2. Cartoon school signboard illustration
+  3. Real photo of green building with motorbikes
+  4. Real photo of green school building with Indonesian flag
+- 3-second interval per photo with smooth crossfade
+- Rotating gradient ring + progress dots indicate animation
+- Pauses on hover for user control
+- Works in both desktop header and mobile menu header
+- User's 3 uploaded photos successfully integrated

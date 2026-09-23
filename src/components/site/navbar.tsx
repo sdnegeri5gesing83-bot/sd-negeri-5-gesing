@@ -30,6 +30,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { NavbarCalendar } from '@/components/site/navbar-calendar';
 import { ThemeSwitcher } from '@/components/site/theme-switcher';
+import { HeaderPhotoCarousel } from '@/components/site/header-photo-carousel';
 import { useTheme, THEMES } from '@/lib/theme-store';
 
 interface NavItem {
@@ -100,18 +101,8 @@ export function Navbar() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 lg:h-20 items-center gap-2 lg:gap-3">
-          {/* Photo (logo) — fixed, NOT sliding */}
-          <button
-            onClick={() => go('beranda')}
-            className="flex items-center gap-2 group shrink-0"
-            aria-label="Beranda SD Negeri 5 Gesing"
-          >
-            <img
-              src="/logo-school.png"
-              alt="Logo SD Negeri 5 Gesing"
-              className="h-10 w-10 lg:h-12 lg:w-12 object-contain rounded-full bg-white shadow-[0_0_15px_oklch(0.55_0.22_255/0.3)] ring-1 ring-cyan-500/30 group-hover:scale-105 transition-transform"
-            />
-          </button>
+          {/* Photo carousel — auto-rotating, fixed, NOT sliding */}
+          <HeaderPhotoCarousel onClick={() => go('beranda')} />
 
           {/* Everything EXCEPT the photo — in one slideable row with left/right slide buttons */}
           <div className="hidden lg:flex items-center gap-1 flex-1 min-w-0">
@@ -275,11 +266,7 @@ export function Navbar() {
             <SheetContent side="right" className="w-[300px] sm:w-[360px] p-0">
               <div className="flex flex-col h-full">
                 <div className="flex items-center gap-3 p-5 border-b bg-primary text-primary-foreground relative">
-                  <img
-                    src="/logo-school.png"
-                    alt="Logo"
-                    className="h-11 w-11 object-contain rounded-full bg-white p-1"
-                  />
+                  <HeaderPhotoCarousel onClick={() => { go('beranda'); setOpen(false); }} className="h-11 w-11" />
                   <div className="leading-tight">
                     <p className="font-bold text-sm">SD Negeri 5 Gesing</p>
                     <p className="text-[11px] opacity-90">Buleleng, Bali</p>
