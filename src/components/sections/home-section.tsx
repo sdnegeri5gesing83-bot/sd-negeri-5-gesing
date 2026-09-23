@@ -6,6 +6,7 @@ import { useFetch } from '@/hooks/use-fetch';
 import { SectionHeader, Loader, EmptyState } from '@/components/site/ui';
 import { SmartImage } from '@/components/smart-image';
 import { HexPrism, GlowOrb } from '@/components/site/prism-decoration';
+import { HeroPhotoCarousel } from '@/components/site/hero-photo-carousel';
 import {
   ArrowRight,
   Phone,
@@ -241,14 +242,8 @@ export function HomeSection() {
                 </Button>
               </div>
             </div>
-            <div className="relative hidden lg:block">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20">
-                <img
-                  src="/uploads/hero-signboard.jpg"
-                  alt="Papan nama resmi SD Negeri 5 Gesing"
-                  className="h-full w-full object-cover"
-                />
-              </div>
+            <div className="relative block mt-8 lg:mt-0">
+              <HeroPhotoCarousel />
               <div className="absolute -bottom-5 -left-5 bg-card text-card-foreground rounded-2xl shadow-xl p-4 w-44 ring-1 ring-border">
                 <p className="text-3xl font-bold text-primary">{studentCount}</p>
                 <p className="text-xs text-muted-foreground">Siswa Aktif</p>
