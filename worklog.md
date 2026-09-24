@@ -1434,3 +1434,59 @@ Stage Summary:
 - Now visible on BOTH desktop and mobile (was desktop-only before)
 - User's 3 uploaded photos successfully integrated into the hero carousel
 - NOTE: The small navbar logo carousel from previous task remains as a secondary feature
+
+---
+Task ID: full-width-hero-carousel-top
+Agent: Z.ai Code (main)
+Task: User feedback "foto begeraknya belum bisa dilihat semua orang" — the moving photo carousel can't be seen by everyone. Fix: make it a full-width banner at the very top so everyone sees it immediately.
+
+Work Log:
+- Diagnosed the issue: the previous HeroPhotoCarousel was only in the right column of the hero section (lg:grid-cols-2), so it wasn't prominent enough — on mobile it was below the text (required scrolling), on desktop it was a small photo on the side
+- Created new component `src/components/site/full-width-hero-carousel.tsx`:
+  - Full-width banner (spans 100% of viewport width, edge-to-edge)
+  - Wide aspect ratios: aspect-[16/9] mobile → aspect-[16/7] sm → aspect-[21/6] lg → aspect-[21/5] xl (cinematic banner)
+  - Same 5 photos: hero-signboard, hero-school, hero-classroom, header-photo-2, header-photo-3
+  - 4-second auto-rotation with crossfade + Ken Burns zoom effect (scale 1.05→1.18)
+  - Larger navigation arrows (h-11/h-12, always visible on mobile, hover on desktop)
+  - Caption bottom-left with slide counter "X / 5" badge + alt text
+  - Dot indicators bottom-right (5 dots, active is wider)
+  - Progress bar at bottom (cyan→amber)
+  - Gradient overlays for readability (top + bottom + left)
+  - Pause on hover (desktop)
+- Restructured home-section.tsx:
+  - Added `<FullWidthHeroCarousel />` at the very top of the page (before the hero section) — now the FIRST thing everyone sees
+  - Removed the right-column HeroPhotoCarousel from the hero section (was redundant)
+  - Changed hero section from 2-column grid (text + carousel) to single centered column with text
+  - Moved the "Siswa Aktif" student count from a floating badge on the carousel to a pill-shaped stat badge below the buttons
+  - Removed unused HeroPhotoCarousel import
+- Verified via Agent Browser + VLM:
+  - Desktop 1440px:
+    - Full-width carousel at very top, right below navbar ✓
+    - Spans entire width edge-to-edge ✓
+    - Immediately visible without scrolling (above the fold) ✓
+    - VLM: "Yes, there is a full-width moving photo carousel... immediately visible right below the dark navigation bar without any scrolling required"
+    - Currently showing "Aktivitas Siswa di Lingkungan Sekolah" (2/5) ✓
+    - Slide indicator + caption visible ✓
+  - Mobile 375px:
+    - Full-width carousel at very top, right below navbar ✓
+    - Immediately visible without scrolling ✓
+    - Navigation arrows (< >) visible ✓
+    - "1/5" counter visible ✓
+    - Caption + pagination dots visible ✓
+  - Auto-rotation confirmed via DOM inspection:
+    - t=0: header-photo-3.jpg (opacity 1.00)
+    - t=5s: hero-school.jpg (opacity 1.00)
+    - t=10s: header-photo-2.jpg (opacity 1.00) + hero-classroom.jpg transitioning (0.76)
+  - No console errors ✓
+  - Lint clean ✓
+
+Stage Summary:
+- The moving photo carousel is now a FULL-WIDTH BANNER at the very top of the page
+- Positioned right below the navbar, before the hero text section
+- Everyone sees it immediately when the page loads (above the fold, no scrolling)
+- Works on ALL screen sizes: desktop, tablet, mobile
+- 5 photos auto-rotate every 4 seconds with Ken Burns zoom effect
+- Navigation: prev/next arrows + dot indicators + progress bar
+- Hero text section restructured to centered single-column layout (cleaner)
+- Student count moved to a stat badge in the hero text section
+- User's concern "belum bisa dilihat semua orang" resolved — now everyone sees the moving photos immediately

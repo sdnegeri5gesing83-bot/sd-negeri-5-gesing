@@ -6,7 +6,7 @@ import { useFetch } from '@/hooks/use-fetch';
 import { SectionHeader, Loader, EmptyState } from '@/components/site/ui';
 import { SmartImage } from '@/components/smart-image';
 import { HexPrism, GlowOrb } from '@/components/site/prism-decoration';
-import { HeroPhotoCarousel } from '@/components/site/hero-photo-carousel';
+import { FullWidthHeroCarousel } from '@/components/site/full-width-hero-carousel';
 import {
   ArrowRight,
   Phone,
@@ -189,6 +189,9 @@ export function HomeSection() {
 
   return (
     <div>
+      {/* FULL-WIDTH MOVING PHOTO BANNER — visible to everyone immediately */}
+      <FullWidthHeroCarousel />
+
       {/* HERO */}
       <section className="relative overflow-hidden hero-gradient text-white">
         <div className="absolute inset-0 opacity-15">
@@ -206,48 +209,45 @@ export function HomeSection() {
         <HexPrism className="bottom-16 left-[5%] hidden lg:block" size={80} color="gold" rotate={30} opacity={0.4} pulse />
         <GlowOrb className="top-0 right-0" size={300} color="gold" />
         <GlowOrb className="bottom-0 left-1/4" size={250} color="blue" />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            <div className="text-center lg:text-left">
-              <span className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 px-3.5 py-1.5 rounded-full text-xs font-medium mb-5">
-                <Sparkles className="h-3.5 w-3.5 text-gold" />
-                Selamat Datang
-              </span>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
-                SD Negeri 5 Gesing
-              </h1>
-              <p className="mt-3 text-base sm:text-lg text-white/85">
-                Buleleng, Bali &middot; Akreditasi {profile?.accreditation || 'B'}
-              </p>
-              <p className="mt-5 text-sm sm:text-base text-white/90 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                {profile?.vision || 'Terwujudnya Insan yang Bertaqwa, cerdas, serta peduli sesama.'}
-              </p>
-              <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-                <Button
-                  size="lg"
-                  onClick={() => setPage('profil')}
-                  className="bg-gold text-primary hover:bg-gold/90 shadow-lg"
-                >
-                  Lihat Profil
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => setPage('kontak')}
-                  className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
-                >
-                  <Phone className="h-4 w-4" />
-                  Hubungi Kami
-                </Button>
-              </div>
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 px-3.5 py-1.5 rounded-full text-xs font-medium mb-5">
+              <Sparkles className="h-3.5 w-3.5 text-gold" />
+              Selamat Datang
+            </span>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+              SD Negeri 5 Gesing
+            </h1>
+            <p className="mt-3 text-base sm:text-lg text-white/85">
+              Buleleng, Bali &middot; Akreditasi {profile?.accreditation || 'B'}
+            </p>
+            <p className="mt-5 text-sm sm:text-base text-white/90 leading-relaxed">
+              {profile?.vision || 'Terwujudnya Insan yang Bertaqwa, cerdas, serta peduli sesama.'}
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+              <Button
+                size="lg"
+                onClick={() => setPage('profil')}
+                className="bg-gold text-primary hover:bg-gold/90 shadow-lg"
+              >
+                Lihat Profil
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => setPage('kontak')}
+                className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
+              >
+                <Phone className="h-4 w-4" />
+                Hubungi Kami
+              </Button>
             </div>
-            <div className="relative block mt-8 lg:mt-0">
-              <HeroPhotoCarousel />
-              <div className="absolute -bottom-5 -left-5 bg-card text-card-foreground rounded-2xl shadow-xl p-4 w-44 ring-1 ring-border">
-                <p className="text-3xl font-bold text-primary">{studentCount}</p>
-                <p className="text-xs text-muted-foreground">Siswa Aktif</p>
-              </div>
+            {/* Quick stat badge */}
+            <div className="mt-8 inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-5 py-2.5">
+              <GraduationCap className="h-5 w-5 text-gold" />
+              <span className="text-2xl font-bold text-white">{studentCount}</span>
+              <span className="text-sm text-white/80">Siswa Aktif</span>
             </div>
           </div>
         </div>
