@@ -126,7 +126,7 @@ export function GtkSection() {
                     className={`absolute top-2 right-2 text-[10px] ${
                       t.category === 'Guru'
                         ? 'bg-primary/95 text-primary-foreground'
-                        : 'bg-gold text-primary'
+                        : 'bg-gold text-[#0a0f1e]'
                     }`}
                   >
                     {t.category === 'Guru' ? 'Guru' : 'Tenaga Kependidikan'}

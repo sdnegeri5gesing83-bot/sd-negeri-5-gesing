@@ -228,7 +228,7 @@ export function HomeSection() {
               <Button
                 size="lg"
                 onClick={() => setPage('profil')}
-                className="bg-gold text-primary hover:bg-gold/90 shadow-lg"
+                className="bg-gold text-[#0a0f1e] hover:bg-gold/90 shadow-lg"
               >
                 Lihat Profil
                 <ArrowRight className="h-4 w-4" />
@@ -317,7 +317,7 @@ export function HomeSection() {
             <div className="lg:col-span-2">
               {/* Section label */}
               <div className="flex items-center gap-3 mb-5">
-                <span className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-amber-300 bg-amber-400/10 border border-amber-400/20 px-3.5 py-1.5 rounded-full">
+                <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-amber-200 bg-amber-400/15 border border-amber-400/30 px-3.5 py-1.5 rounded-full">
                   Sambutan
                 </span>
                 <div className="h-px flex-1 bg-gradient-to-r from-amber-400/40 to-transparent" />
@@ -334,7 +334,7 @@ export function HomeSection() {
                 {/* Large quote icon */}
                 <Quote className="absolute -top-1 -left-1 h-12 w-12 text-amber-300/20" fill="currentColor" />
 
-                <p className="relative text-sm lg:text-base text-blue-50/90 leading-relaxed whitespace-pre-line italic">
+                <p className="relative text-sm lg:text-base text-blue-50/95 leading-relaxed whitespace-pre-line italic">
                   {profile?.headmasterWelcome || 'Sambutan kepala sekolah sedang dimuat...'}
                 </p>
 
@@ -346,7 +346,7 @@ export function HomeSection() {
                       <p className="font-bold text-white text-lg">
                         {profile?.headmasterName || 'Kepala Sekolah'}
                       </p>
-                      <p className="text-sm text-blue-200/70">
+                      <p className="text-sm text-blue-100/90">
                         Kepala SD Negeri 5 Gesing
                         {profile?.headmasterNip ? ` · NIP ${profile.headmasterNip}` : ''}
                       </p>
@@ -673,7 +673,7 @@ export function HomeSection() {
                 <Button
                   size="lg"
                   onClick={() => setPage('kontak')}
-                  className="bg-gold text-primary hover:bg-gold/90"
+                  className="bg-gold text-[#0a0f1e] hover:bg-gold/90"
                 >
                   <Phone className="h-4 w-4" />
                   Hubungi Kami

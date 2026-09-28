@@ -60,10 +60,10 @@ export function Footer() {
               />
               <div>
                 <p className="font-bold text-lg leading-tight">{name}</p>
-                <p className="text-xs opacity-80">{regency}, {province}</p>
+                <p className="text-xs">{regency}, {province}</p>
               </div>
             </div>
-            <p className="text-sm opacity-90 leading-relaxed">
+            <p className="text-sm leading-relaxed">
               Pusat informasi resmi {name}. Membentuk Insan yang Bertaqwa, cerdas, serta peduli sesama.
             </p>
             <div className="flex items-center gap-2 mt-5 flex-wrap">
@@ -120,7 +120,7 @@ export function Footer() {
               <MapPin className="h-5 w-5 text-gold" />
               Alamat
             </h3>
-            <p className="text-sm opacity-90 leading-relaxed">
+            <p className="text-sm leading-relaxed">
               {address}
               <br />
               Desa {village}, Kecamatan {district}
@@ -137,22 +137,22 @@ export function Footer() {
               <Phone className="h-5 w-5 text-gold" />
               Kontak
             </h3>
-            <ul className="space-y-2.5 text-sm opacity-90">
+            <ul className="space-y-2.5 text-sm">
               {phone && (
                 <li className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 shrink-0 opacity-80" />
+                  <Phone className="h-4 w-4 shrink-0 opacity-90" />
                   <a href={`tel:${phone}`} className="hover:underline">{phone}</a>
                 </li>
               )}
               {email && (
                 <li className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 shrink-0 opacity-80" />
+                  <Mail className="h-4 w-4 shrink-0 opacity-90" />
                   <a href={`mailto:${email}`} className="hover:underline break-all">{email}</a>
                 </li>
               )}
               {whatsapp && (
                 <li className="flex items-center gap-2">
-                  <Send className="h-4 w-4 shrink-0 opacity-80" />
+                  <Send className="h-4 w-4 shrink-0 opacity-90" />
                   <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noreferrer" className="hover:underline">
                     +{whatsapp}
                   </a>
@@ -160,7 +160,7 @@ export function Footer() {
               )}
               {profile?.serviceHours && (
                 <li className="flex items-start gap-2 pt-1">
-                  <Clock className="h-4 w-4 shrink-0 opacity-80 mt-0.5" />
+                  <Clock className="h-4 w-4 shrink-0 opacity-90 mt-0.5" />
                   <span className="whitespace-pre-line">{profile.serviceHours}</span>
                 </li>
               )}
@@ -187,10 +187,10 @@ export function Footer() {
         </div>
 
         <div className="mt-10 pt-6 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs opacity-80 text-center sm:text-left">
+          <p className="text-xs text-center sm:text-left">
             &copy; 2026 {name}. Hak Cipta Dilindungi.
           </p>
-          <p className="text-xs opacity-70">
+          <p className="text-xs opacity-95">
             Versi 26.01
           </p>
         </div>

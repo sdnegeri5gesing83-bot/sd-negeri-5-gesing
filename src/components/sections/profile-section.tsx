@@ -190,7 +190,7 @@ export function ProfileSection() {
                   <p className="text-sm text-white/90 leading-relaxed italic">{profile.vision}</p>
                 </div>
                 <div className="mt-4 pt-3 border-t border-white/10">
-                  <span className="text-[10px] uppercase tracking-widest text-cyan-300/60">Landasan Visi</span>
+                  <span className="text-[10px] uppercase tracking-widest text-cyan-300/85">Landasan Visi</span>
                 </div>
               </div>
             </div>
@@ -210,7 +210,7 @@ export function ProfileSection() {
                   <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{profile.mission}</p>
                 </div>
                 <div className="mt-4 pt-3 border-t border-border/50">
-                  <span className="text-[10px] uppercase tracking-widest text-gold/50">Langkah Strategis</span>
+                  <span className="text-[10px] uppercase tracking-widest text-gold/85">Langkah Strategis</span>
                 </div>
               </div>
             </div>
@@ -230,7 +230,7 @@ export function ProfileSection() {
                   <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{profile.goals}</p>
                 </div>
                 <div className="mt-4 pt-3 border-t border-border/50">
-                  <span className="text-[10px] uppercase tracking-widest text-cyan-400/50">Sasaran Pendidikan</span>
+                  <span className="text-[10px] uppercase tracking-widest text-cyan-400/85">Sasaran Pendidikan</span>
                 </div>
               </div>
             </div>

@@ -13,7 +13,11 @@ export interface ThemeOption {
     bg: string;
     card: string;
     primary: string;
+    /** Color used for text on top of `primary` background (e.g. button text on primary buttons). Must contrast >=4.5:1 with primary. */
+    primaryForeground: string;
     accent: string;
+    /** Color used for text on top of `accent` background. */
+    accentForeground: string;
     text: string;
     border: string;
   };
@@ -27,9 +31,11 @@ export const THEMES: ThemeOption[] = [
     colors: {
       bg: 'oklch(0.99 0.003 235)',
       card: 'oklch(1 0 0)',
-      primary: 'oklch(0.55 0.14 235)',
+      primary: 'oklch(0.50 0.14 235)',
+      primaryForeground: 'oklch(0.99 0.003 235)',
       accent: 'oklch(0.95 0.035 235)',
-      text: 'oklch(0.18 0.04 235)',
+      accentForeground: 'oklch(0.20 0.04 235)',
+      text: 'oklch(0.20 0.04 235)',
       border: 'oklch(0.9 0.01 235)',
     },
   },
@@ -40,8 +46,10 @@ export const THEMES: ThemeOption[] = [
     colors: {
       bg: 'oklch(0.08 0.02 250)',
       card: 'oklch(0.12 0.025 250)',
-      primary: 'oklch(0.55 0.22 255)',
+      primary: 'oklch(0.52 0.22 245)',
+      primaryForeground: 'oklch(1 0 0)',
       accent: 'oklch(0.75 0.15 195)',
+      accentForeground: 'oklch(0.10 0.02 250)',
       text: 'oklch(0.93 0.02 220)',
       border: 'oklch(0.22 0.03 250)',
     },
@@ -53,9 +61,11 @@ export const THEMES: ThemeOption[] = [
     colors: {
       bg: 'oklch(0.14 0.01 240)',
       card: 'oklch(0.18 0.015 240)',
-      primary: 'oklch(0.65 0.08 240)',
-      accent: 'oklch(0.82 0.03 240)',
-      text: 'oklch(0.9 0.01 240)',
+      primary: 'oklch(0.62 0.08 240)',
+      primaryForeground: 'oklch(0.14 0.01 240)',
+      accent: 'oklch(0.85 0.03 240)',
+      accentForeground: 'oklch(0.14 0.01 240)',
+      text: 'oklch(0.92 0.01 240)',
       border: 'oklch(0.28 0.01 240)',
     },
   },
@@ -66,9 +76,11 @@ export const THEMES: ThemeOption[] = [
     colors: {
       bg: 'oklch(0.97 0.02 230)',
       card: 'oklch(1 0.005 235)',
-      primary: 'oklch(0.55 0.14 235)',
+      primary: 'oklch(0.50 0.14 235)',
+      primaryForeground: 'oklch(0.97 0.02 230)',
       accent: 'oklch(0.88 0.04 230)',
-      text: 'oklch(0.2 0.03 230)',
+      accentForeground: 'oklch(0.22 0.03 230)',
+      text: 'oklch(0.22 0.03 230)',
       border: 'oklch(0.85 0.015 230)',
     },
   },
@@ -84,20 +96,20 @@ function applyTheme(theme: ThemeOption) {
   root.style.setProperty('--popover', theme.colors.card);
   root.style.setProperty('--popover-foreground', theme.colors.text);
   root.style.setProperty('--primary', theme.colors.primary);
-  root.style.setProperty('--primary-foreground', theme.colors.bg);
+  root.style.setProperty('--primary-foreground', theme.colors.primaryForeground);
   root.style.setProperty('--secondary', theme.colors.card);
   root.style.setProperty('--secondary-foreground', theme.colors.text);
   root.style.setProperty('--muted', theme.colors.card);
   root.style.setProperty('--muted-foreground', theme.colors.text);
   root.style.setProperty('--accent', theme.colors.accent);
-  root.style.setProperty('--accent-foreground', theme.colors.text);
+  root.style.setProperty('--accent-foreground', theme.colors.accentForeground);
   root.style.setProperty('--border', theme.colors.border);
   root.style.setProperty('--input', theme.colors.border);
   root.style.setProperty('--ring', theme.colors.primary);
   root.style.setProperty('--sidebar', theme.colors.bg);
   root.style.setProperty('--sidebar-foreground', theme.colors.text);
   root.style.setProperty('--sidebar-primary', theme.colors.primary);
-  root.style.setProperty('--sidebar-primary-foreground', theme.colors.bg);
+  root.style.setProperty('--sidebar-primary-foreground', theme.colors.primaryForeground);
   root.style.setProperty('--sidebar-accent', theme.colors.card);
   root.style.setProperty('--sidebar-accent-foreground', theme.colors.text);
   root.style.setProperty('--sidebar-border', theme.colors.border);

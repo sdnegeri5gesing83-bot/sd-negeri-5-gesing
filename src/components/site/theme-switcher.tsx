@@ -18,7 +18,7 @@ export function ThemeSwitcher() {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
-          className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-sm font-medium text-white/60 hover:text-cyan-300 hover:bg-white/10 transition-all"
+          className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-sm font-medium text-white/85 hover:text-cyan-300 hover:bg-white/10 transition-all"
           title="Ganti tema warna"
           aria-label="Ganti tema warna"
         >

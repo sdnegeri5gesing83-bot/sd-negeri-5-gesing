@@ -107,10 +107,10 @@ export function GallerySection() {
                   alt={g.title}
                   className="w-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                  <Badge className="self-start bg-gold text-primary text-[10px] mb-1.5">{g.category}</Badge>
-                  <p className="text-white font-semibold text-sm leading-snug line-clamp-2">{g.title}</p>
-                  <p className="text-white/70 text-xs mt-1 flex items-center gap-1">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                  <Badge className="self-start bg-gold text-[#0a0f1e] text-[10px] mb-1.5">{g.category}</Badge>
+                  <p className="text-white font-semibold text-sm leading-snug line-clamp-2 text-shadow-soft">{g.title}</p>
+                  <p className="text-white/85 text-xs mt-1 flex items-center gap-1 text-shadow-soft">
                     <Calendar className="h-3 w-3" />
                     {format(new Date(g.date), 'd MMM yyyy', { locale: idLocale })}
                   </p>
@@ -162,16 +162,16 @@ export function GallerySection() {
               />
             </div>
             <div className="mt-4 text-center text-white max-w-2xl">
-              <Badge className="bg-gold text-primary text-[10px] mb-2">{current.category}</Badge>
+              <Badge className="bg-gold text-[#0a0f1e] text-[10px] mb-2">{current.category}</Badge>
               <h3 className="text-lg sm:text-xl font-semibold">{current.title}</h3>
               {current.description && (
-                <p className="text-sm text-white/80 mt-1.5 leading-relaxed">{current.description}</p>
+                <p className="text-sm text-white/85 mt-1.5 leading-relaxed">{current.description}</p>
               )}
-              <p className="text-white/60 text-xs mt-2 flex items-center justify-center gap-1.5">
+              <p className="text-white/75 text-xs mt-2 flex items-center justify-center gap-1.5">
                 <Calendar className="h-3 w-3" />
                 {format(new Date(current.date), 'd MMMM yyyy', { locale: idLocale })}
                 <span className="mx-1">·</span>
-                <span className="text-white/80">{(lightbox || 0) + 1} / {filtered.length}</span>
+                <span className="text-white/90">{(lightbox || 0) + 1} / {filtered.length}</span>
               </p>
             </div>
           </div>

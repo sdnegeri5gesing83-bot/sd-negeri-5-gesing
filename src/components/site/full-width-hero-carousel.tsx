@@ -81,8 +81,10 @@ export function FullWidthHeroCarousel() {
       </div>
 
       {/* Gradient overlays for readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/30 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/40 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent pointer-events-none" />
+      {/* Localized dark gradient behind caption (bottom) for guaranteed text readability on any photo */}
+      <div className="absolute bottom-0 left-0 right-0 h-2/5 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
 
       {/* Prev/Next arrows */}
       <button
@@ -102,16 +104,16 @@ export function FullWidthHeroCarousel() {
 
       {/* Caption (bottom-left) */}
       <div className="absolute bottom-0 left-0 p-4 sm:p-6 lg:p-8 pointer-events-none">
-        <span className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border border-white/30 px-3 py-1 rounded-full text-xs sm:text-sm font-medium text-white mb-2">
+        <span className="inline-flex items-center gap-2 bg-black/50 backdrop-blur-sm border border-white/30 px-3 py-1 rounded-full text-xs sm:text-sm font-medium text-white mb-2 text-shadow-soft">
           {current + 1} / {PHOTOS.length}
         </span>
-        <p className="text-white text-base sm:text-lg lg:text-xl font-bold drop-shadow-lg max-w-2xl">
+        <p className="text-white text-base sm:text-lg lg:text-xl font-bold max-w-2xl text-shadow-strong">
           {PHOTOS[current].alt}
         </p>
       </div>
 
       {/* Dot indicators (bottom-right) */}
-      <div className="absolute bottom-4 right-3 sm:right-6 flex items-center gap-2 bg-black/40 backdrop-blur-sm rounded-full px-3 py-2">
+      <div className="absolute bottom-4 right-3 sm:right-6 flex items-center gap-2 bg-black/50 backdrop-blur-sm rounded-full px-3 py-2">
         {PHOTOS.map((_, idx) => (
           <button
             key={idx}
@@ -121,7 +123,7 @@ export function FullWidthHeroCarousel() {
               'rounded-full transition-all duration-300',
               idx === current
                 ? 'w-6 h-2 bg-white'
-                : 'w-2 h-2 bg-white/50 hover:bg-white/80'
+                : 'w-2 h-2 bg-white/60 hover:bg-white/90'
             )}
           />
         ))}

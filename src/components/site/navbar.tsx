@@ -144,7 +144,7 @@ export function Navbar() {
                 <p className="text-base lg:text-lg font-bold text-white tracking-tight" style={{textShadow:'0 0 12px oklch(0.55 0.22 255 / 0.5)'}}>
                   SD Negeri 5 Gesing
                 </p>
-                <p className="text-[11px] lg:text-xs text-cyan-300/70 font-medium">
+                <p className="text-[11px] lg:text-xs text-cyan-200/95 font-medium">
                   Buleleng, Bali
                 </p>
               </button>
@@ -161,7 +161,7 @@ export function Navbar() {
                       'relative shrink-0 px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 group/nav',
                       active
                         ? 'text-cyan-300'
-                        : 'text-white/60 hover:text-cyan-300'
+                        : 'text-white/85 hover:text-cyan-300'
                     )}
                   >
                     <Icon className="h-4 w-4" />
@@ -185,7 +185,7 @@ export function Navbar() {
                     'relative px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5',
                     page === 'ppdb'
                       ? 'text-cyan-300'
-                      : 'text-white/60 hover:text-cyan-300'
+                      : 'text-white/85 hover:text-cyan-300'
                   )}
                 >
                   <GraduationCap className="h-4 w-4" />
@@ -203,9 +203,9 @@ export function Navbar() {
                         <button
                           key={sub.tab}
                           onClick={() => { go('ppdb'); setPpdbTab(sub.tab); }}
-                          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:text-cyan-300 hover:bg-cyan-500/10 transition-all"
+                          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-white/85 hover:text-cyan-300 hover:bg-cyan-500/10 transition-all"
                         >
-                          <SubIcon className="h-4 w-4 text-cyan-400/70" />
+                          <SubIcon className="h-4 w-4 text-cyan-400/85" />
                           {sub.label}
                         </button>
                       );
@@ -257,7 +257,7 @@ export function Navbar() {
             <p className="text-sm font-bold text-white tracking-tight truncate" style={{textShadow:'0 0 12px oklch(0.55 0.22 255 / 0.5)'}}>
               SD Negeri 5 Gesing
             </p>
-            <p className="text-[10px] text-cyan-300/70 font-medium">
+            <p className="text-[10px] text-cyan-200/95 font-medium">
               Buleleng, Bali
             </p>
           </button>
@@ -282,7 +282,7 @@ export function Navbar() {
                   />
                   <div className="leading-tight">
                     <p className="font-bold text-sm">SD Negeri 5 Gesing</p>
-                    <p className="text-[11px] opacity-90">Buleleng, Bali</p>
+                    <p className="text-[11px] text-cyan-100/95">Buleleng, Bali</p>
                   </div>
                   {/* Elegant gradient line at bottom of mobile header */}
                   <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-gold via-white/60 to-gold" />
