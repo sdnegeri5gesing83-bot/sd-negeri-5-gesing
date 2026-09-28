@@ -94,7 +94,7 @@ export function AccountPanel() {
           { duration: 4000 }
         );
         setTimeout(() => {
-          signOut({ callbackUrl: '/?admin=login' });
+          signOut({ redirect: false }).then(() => { window.location.href = '/?admin=login'; });
         }, 2500);
       } else {
         // Only name changed — update session and refetch
@@ -364,7 +364,7 @@ export function AccountPanel() {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Batal</AlertDialogCancel>
-                <AlertDialogAction onClick={() => signOut({ callbackUrl: '/' })}>
+                <AlertDialogAction onClick={() => signOut({ redirect: false }).then(() => { window.location.href = '/'; })}>
                   Ya, Keluar
                 </AlertDialogAction>
               </AlertDialogFooter>

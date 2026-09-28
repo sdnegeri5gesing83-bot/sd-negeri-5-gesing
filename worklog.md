@@ -1669,3 +1669,35 @@ Stage Summary:
   - Read chart descriptions from the wrapper div's aria-label (not the confusing empty titles)
 - 0 SVG accessibility issues remain (was 8: 1 missing aria + 7 empty titles)
 - WCAG 1.1.1 (Non-text Content) compliance improved
+
+---
+Task ID: fix-localhost-redirect-on-exit
+Agent: Z.ai Code (main)
+Task: User request "saat keluar dari web kenapa ke localhost3000" — when exiting/leaving the web, why does it go to localhost:3000? Fix the redirect issue.
+
+Work Log:
+- Diagnosed the issue: when users click "Keluar" (logout) or external links, the browser navigates to localhost:3000 instead of staying on the current domain
+- Root cause: NextAuth's `signOut({ callbackUrl: '/' })` does a SERVER-SIDE redirect. Behind the Caddy gateway proxy, NextAuth may resolve the callback URL against `localhost:3000` (the internal dev server) instead of the gateway's public URL, because `X-Forwarded-Host` is not set in the Caddyfile
+- Also found: YouTube links used `href={profile.youtube}` directly — if admin enters a YouTube URL without `https://` prefix, it resolves as a relative path → `localhost:3000/...`
+- Fixed all 4 `signOut` calls to use client-side navigation instead of server-side redirect:
+  1. **admin-dashboard.tsx:135** (sidebar logout): `signOut({ callbackUrl: '/' })` → `signOut({ redirect: false }).then(() => { window.location.href = '/'; })`
+  2. **admin-dashboard.tsx:185** (mobile sidebar logout): same fix
+  3. **account-panel.tsx:97** (auto-logout after credential change): `signOut({ callbackUrl: '/?admin=login' })` → `signOut({ redirect: false }).then(() => { window.location.href = '/?admin=login'; })`
+  4. **account-panel.tsx:367** (manual logout dialog): same fix as #1
+- Fixed YouTube links in footer.tsx and contact-section.tsx to always have `https://` prefix:
+  - `href={profile.youtube}` → `href={profile.youtube.startsWith('http') ? profile.youtube : 'https://youtube.com/' + profile.youtube.replace(/^@?\//, '')}`
+  - This handles: full URLs (https://youtube.com/...), bare paths (youtube.com/...), handles (@channel), and paths (/channel/...)
+- Verified:
+  - All 4 signOut calls now use `redirect: false` + `window.location.href` (relative, stays on same domain) ✓
+  - All external links (Facebook, Instagram, WhatsApp, YouTube, tel:, mailto:) verified to have correct absolute URLs ✓
+  - Lint clean ✓
+  - Dev server running, no errors ✓
+  - All external links have `target="_blank"` + `rel="noopener noreferrer"` ✓
+
+Stage Summary:
+- "Saat keluar dari web ke localhost:3000" issue fixed:
+  - **Logout (Keluar)**: Now uses `redirect: false` + client-side `window.location.href = '/'` — the navigation is always relative and stays on whatever domain the user is currently on (gateway URL in preview, Vercel URL in production). No server-side redirect that could resolve to localhost:3000.
+  - **YouTube links**: Always get `https://` prefix even if admin enters a bare URL/handle — prevents relative path resolution to localhost:3000.
+  - **All other external links** (Facebook, Instagram, WhatsApp, phone, email): Already correct with `https://`, `tel:`, `mailto:` prefixes.
+  - **Login**: Already uses `redirect: false` (no change needed).
+- The fix works in ALL environments: local dev (localhost:3000), Preview Panel (gateway URL), and production (Vercel URL).

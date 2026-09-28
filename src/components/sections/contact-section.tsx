@@ -167,7 +167,7 @@ export function ContactSection() {
                     </a>
                   )}
                   {profile.youtube && (
-                    <a href={profile.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" className="h-11 w-11 rounded-xl bg-teal-soft/60 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                    <a href={profile.youtube.startsWith('http') ? profile.youtube : `https://youtube.com/${profile.youtube.replace(/^@?\//, '')}`} target="_blank" rel="noreferrer" aria-label="YouTube" className="h-11 w-11 rounded-xl bg-teal-soft/60 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
                       <Youtube className="h-5 w-5" />
                     </a>
                   )}

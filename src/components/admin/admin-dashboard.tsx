@@ -132,7 +132,7 @@ export function AdminDashboard() {
             Lihat Website
           </button>
           <button
-            onClick={() => signOut({ callbackUrl: '/' })}
+            onClick={() => signOut({ redirect: false }).then(() => { window.location.href = '/'; })}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-all"
           >
             <LogOut className="h-4 w-4" />
@@ -182,7 +182,7 @@ export function AdminDashboard() {
                   <Home className="h-4 w-4" /> Lihat Website
                 </button>
               </SheetClose>
-              <button onClick={() => signOut({ callbackUrl: '/' })} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10">
+              <button onClick={() => signOut({ redirect: false }).then(() => { window.location.href = '/'; })} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10">
                 <LogOut className="h-4 w-4" /> Keluar
               </button>
             </div>

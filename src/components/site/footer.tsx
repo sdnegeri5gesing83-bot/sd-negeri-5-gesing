@@ -91,7 +91,7 @@ export function Footer() {
               )}
               {profile?.youtube && (
                 <a
-                  href={profile.youtube}
+                  href={profile.youtube.startsWith('http') ? profile.youtube : `https://youtube.com/${profile.youtube.replace(/^@?\//, '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="YouTube"
