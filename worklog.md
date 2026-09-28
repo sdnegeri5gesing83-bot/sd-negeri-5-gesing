@@ -1490,3 +1490,31 @@ Stage Summary:
 - Hero text section restructured to centered single-column layout (cleaner)
 - Student count moved to a stat badge in the hero text section
 - User's concern "belum bisa dilihat semua orang" resolved — now everyone sees the moving photos immediately
+
+---
+Task ID: navbar-logo-static
+Agent: Z.ai Code (main)
+Task: User request "logo pada bilah navigasi agar tetap tidak bergerak" — the logo in the navbar should stay still (not rotate/move). Revert the auto-rotating logo carousel back to a static logo.
+
+Work Log:
+- Found 2 usages of HeaderPhotoCarousel in navbar.tsx:
+  1. Desktop header (line 104-105): `<HeaderPhotoCarousel onClick={() => go('beranda')} />`
+  2. Mobile menu Sheet header (line 269): `<HeaderPhotoCarousel onClick={...} className="h-11 w-11" />`
+- Replaced BOTH with static logo images:
+  - Desktop: `<button><img src="/logo-school.png" className="h-10 w-10 lg:h-12 lg:w-12 object-contain rounded-full bg-white shadow ring-cyan-500/30 group-hover:scale-105 transition-transform" /></button>`
+  - Mobile: `<img src="/logo-school.png" className="h-11 w-11 object-contain rounded-full bg-white p-1" />`
+- Removed unused import: `import { HeaderPhotoCarousel } from '@/components/site/header-photo-carousel';`
+- Verified via Agent Browser + DOM + VLM:
+  - DOM: logo button now contains only 1 image (logo-school.png), was 4 in carousel ✓
+  - VLM screenshot at t=0: "official emblem of SD Negeri 5 Gesing, circular seal, mountain/volcano" ✓
+  - VLM screenshot at t=4s: same "official institutional emblem, circular seal" ✓
+  - VLM screenshot at t=8s: same "official emblem of SD Negeri 5 Gesing, circular seal, mountain with rice stalks" ✓
+  - All 3 screenshots show the SAME static logo (no rotation) ✓
+  - No console errors ✓
+  - Lint clean ✓
+
+Stage Summary:
+- Navbar logo is now STATIC (not moving/rotating)
+- Reverted from auto-rotating 4-photo carousel back to single static logo-school.png
+- Both desktop header and mobile menu use the static logo
+- The full-width hero carousel at the top of the page (FullWidthHeroCarousel) still rotates as before — only the navbar logo is now static per user request
