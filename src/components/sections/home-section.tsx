@@ -301,7 +301,7 @@ export function HomeSection() {
                   <SmartImage
                     src={profile?.headmasterPhoto}
                     alt={profile?.headmasterName || 'Kepala Sekolah'}
-                    className="h-64 w-64 lg:h-72 lg:w-72 object-cover"
+                    className="h-44 w-44 sm:h-56 sm:w-56 lg:h-72 lg:w-72 object-cover"
                   />
                   {/* Gradient overlay at bottom */}
                   <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#1e3a5f]/80 to-transparent" aria-hidden />

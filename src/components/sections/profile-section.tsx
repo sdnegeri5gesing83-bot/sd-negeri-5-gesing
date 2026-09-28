@@ -99,7 +99,7 @@ export function ProfileSection() {
                   </div>
                   <div className="min-w-0">
                     <p className="text-xs text-blue-600/60 font-medium">{row.label}</p>
-                    <p className="text-sm font-semibold text-foreground break-words">{row.value}</p>
+                    <p className="text-sm font-semibold text-foreground" style={{ overflowWrap: 'anywhere' }}>{row.value}</p>
                   </div>
                 </div>
               );
@@ -150,7 +150,7 @@ export function ProfileSection() {
                 <SmartImage
                   src={profile.headmasterPhoto}
                   alt={profile.headmasterName}
-                  className="relative h-56 w-56 rounded-full object-cover shadow-xl ring-4 ring-white"
+                  className="relative h-44 w-44 sm:h-56 sm:w-56 rounded-full object-cover shadow-xl ring-4 ring-white"
                 />
               </div>
             </div>

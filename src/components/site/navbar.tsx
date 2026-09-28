@@ -266,7 +266,7 @@ export function Navbar() {
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <button
-                className="lg:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg text-white hover:bg-white/15"
+                className="lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-lg text-white hover:bg-white/15"
                 aria-label="Buka menu"
               >
                 {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}

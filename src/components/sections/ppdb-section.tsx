@@ -141,30 +141,30 @@ export function PpdbSection() {
         </div>
 
         {/* Tabs */}
-        <div className="flex justify-center gap-2 mb-8">
+        <div className="flex flex-col sm:flex-row justify-center gap-2 mb-8 max-w-md sm:max-w-none mx-auto">
           <button
             onClick={() => setPpdbTab('jadwal')}
             className={cn(
-              'px-6 py-3 rounded-xl text-sm font-semibold transition-all flex items-center gap-2',
+              'px-4 sm:px-6 py-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 flex-1 sm:flex-initial',
               ppdbTab === 'jadwal'
                 ? 'bg-primary text-primary-foreground shadow-lg'
                 : 'bg-card border border-border text-foreground/70 hover:text-primary hover:border-primary/40'
             )}
           >
-            <Calendar className="h-4 w-4" />
-            Jadwal PPDB
+            <Calendar className="h-4 w-4 shrink-0" />
+            <span className="text-center">Jadwal PPDB</span>
           </button>
           <button
             onClick={() => setPpdbTab('pengumuman')}
             className={cn(
-              'px-6 py-3 rounded-xl text-sm font-semibold transition-all flex items-center gap-2',
+              'px-4 sm:px-6 py-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 flex-1 sm:flex-initial',
               ppdbTab === 'pengumuman'
                 ? 'bg-primary text-primary-foreground shadow-lg'
                 : 'bg-card border border-border text-foreground/70 hover:text-primary hover:border-primary/40'
             )}
           >
-            <Megaphone className="h-4 w-4" />
-            Pengumuman Penerimaan
+            <Megaphone className="h-4 w-4 shrink-0" />
+            <span className="text-center">Pengumuman Penerimaan</span>
           </button>
         </div>
 

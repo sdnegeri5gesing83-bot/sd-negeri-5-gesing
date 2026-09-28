@@ -155,24 +155,24 @@ export function ContactSection() {
             <Card className="border-border shadow-sm">
               <CardContent className="p-5">
                 <p className="text-xs text-muted-foreground font-medium mb-3">Media Sosial</p>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   {profile.facebook && (
-                    <a href={`https://facebook.com/${profile.facebook}`} target="_blank" rel="noreferrer" aria-label="Facebook" className="h-10 w-10 rounded-xl bg-teal-soft/60 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                    <a href={`https://facebook.com/${profile.facebook}`} target="_blank" rel="noreferrer" aria-label="Facebook" className="h-11 w-11 rounded-xl bg-teal-soft/60 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
                       <Facebook className="h-5 w-5" />
                     </a>
                   )}
                   {profile.instagram && (
-                    <a href={`https://instagram.com/${profile.instagram}`} target="_blank" rel="noreferrer" aria-label="Instagram" className="h-10 w-10 rounded-xl bg-teal-soft/60 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                    <a href={`https://instagram.com/${profile.instagram}`} target="_blank" rel="noreferrer" aria-label="Instagram" className="h-11 w-11 rounded-xl bg-teal-soft/60 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
                       <Instagram className="h-5 w-5" />
                     </a>
                   )}
                   {profile.youtube && (
-                    <a href={profile.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" className="h-10 w-10 rounded-xl bg-teal-soft/60 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                    <a href={profile.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" className="h-11 w-11 rounded-xl bg-teal-soft/60 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
                       <Youtube className="h-5 w-5" />
                     </a>
                   )}
                   {profile.whatsapp && (
-                    <a href={`https://wa.me/${profile.whatsapp}`} target="_blank" rel="noreferrer" aria-label="WhatsApp" className="h-10 w-10 rounded-xl bg-teal-soft/60 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                    <a href={`https://wa.me/${profile.whatsapp}`} target="_blank" rel="noreferrer" aria-label="WhatsApp" className="h-11 w-11 rounded-xl bg-teal-soft/60 text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
                       <MessageCircle className="h-5 w-5" />
                     </a>
                   )}

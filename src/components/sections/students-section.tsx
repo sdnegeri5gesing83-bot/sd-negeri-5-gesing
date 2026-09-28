@@ -207,18 +207,18 @@ export function StudentsSection() {
                 <Users className="h-5 w-5 text-primary" />
                 Daftar Siswa Aktif
               </h3>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <div className="relative">
+              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                <div className="relative flex-1 sm:flex-initial">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     placeholder="Cari nama siswa..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="pl-9 sm:w-56"
+                    className="pl-9 w-full sm:w-56"
                   />
                 </div>
                 <Select value={classFilter} onValueChange={setClassFilter}>
-                  <SelectTrigger className="sm:w-32">
+                  <SelectTrigger className="w-full sm:w-32">
                     <SelectValue placeholder="Kelas" />
                   </SelectTrigger>
                   <SelectContent>
@@ -243,7 +243,7 @@ export function StudentsSection() {
               <EmptyState title="Tidak ada siswa" description="Coba ubah filter pencarian." />
             ) : (
               <div className="rounded-lg border border-border overflow-hidden">
-                <div className="max-h-[480px] overflow-y-auto custom-scroll">
+                <div className="max-h-[480px] overflow-y-auto overflow-x-auto custom-scroll">
                   <Table>
                     <TableHeader className="sticky top-0 z-10 bg-muted/80 backdrop-blur-sm shadow-sm">
                       <TableRow className="border-b-2 border-border hover:bg-transparent">
@@ -260,7 +260,7 @@ export function StudentsSection() {
                       {filteredStudents.map((s, i) => (
                         <TableRow key={s.id} className={`border-b border-border/50 hover:bg-primary/5 transition-colors ${i % 2 === 1 ? 'bg-muted/40' : 'bg-background'}`}>
                           <TableCell className="text-muted-foreground text-xs py-3 tabular-nums">{i + 1}</TableCell>
-                          <TableCell className="font-medium text-sm py-3 whitespace-nowrap">{s.name}</TableCell>
+                          <TableCell className="font-medium text-sm py-3 whitespace-normal break-words max-w-[160px] sm:whitespace-nowrap sm:max-w-none">{s.name}</TableCell>
                           <TableCell className="text-center py-3">
                             <Badge
                               variant="outline"
@@ -274,11 +274,11 @@ export function StudentsSection() {
                             </Badge>
                           </TableCell>
                           <TableCell className="text-center text-sm py-3 font-medium">{s.className}</TableCell>
-                          <TableCell className="text-xs text-muted-foreground font-mono py-3">{s.nis || '-'}</TableCell>
-                          <TableCell className="text-xs text-muted-foreground font-mono py-3">
+                          <TableCell className="text-xs text-muted-foreground font-mono py-3 whitespace-nowrap">{s.nis || '-'}</TableCell>
+                          <TableCell className="text-xs text-muted-foreground font-mono py-3 whitespace-nowrap">
                             {s.nisn ? `••••${s.nisn.slice(-4)}` : '-'}
                           </TableCell>
-                          <TableCell className="text-xs text-muted-foreground py-3 hidden lg:table-cell">
+                          <TableCell className="text-xs text-muted-foreground py-3 hidden lg:table-cell whitespace-nowrap">
                             {s.birthDate || '-'}
                           </TableCell>
                         </TableRow>

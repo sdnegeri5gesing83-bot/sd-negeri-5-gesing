@@ -95,7 +95,7 @@ export function GallerySection() {
         ) : filtered.length === 0 ? (
           <EmptyState title="Belum ada foto" description="Belum ada dokumentasi pada kategori ini." />
         ) : (
-          <div className="masonry-grid sm:columns-2 lg:columns-3 xl:columns-4">
+          <div className="masonry-grid columns-2 sm:columns-3 lg:columns-3 xl:columns-4">
             {filtered.map((g, idx) => (
               <button
                 key={g.id}

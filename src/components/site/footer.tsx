@@ -66,14 +66,14 @@ export function Footer() {
             <p className="text-sm opacity-90 leading-relaxed">
               Pusat informasi resmi {name}. Membentuk Insan yang Bertaqwa, cerdas, serta peduli sesama.
             </p>
-            <div className="flex items-center gap-2 mt-5">
+            <div className="flex items-center gap-2 mt-5 flex-wrap">
               {profile?.facebook && (
                 <a
                   href={`https://facebook.com/${profile.facebook}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
-                  className="h-9 w-9 inline-flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                  className="h-10 w-10 inline-flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                 >
                   <Facebook className="h-4 w-4" />
                 </a>
@@ -84,7 +84,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
-                  className="h-9 w-9 inline-flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                  className="h-10 w-10 inline-flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                 >
                   <Instagram className="h-4 w-4" />
                 </a>
@@ -95,7 +95,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="YouTube"
-                  className="h-9 w-9 inline-flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                  className="h-10 w-10 inline-flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                 >
                   <Youtube className="h-4 w-4" />
                 </a>
@@ -106,7 +106,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="WhatsApp"
-                  className="h-9 w-9 inline-flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                  className="h-10 w-10 inline-flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                 >
                   <Send className="h-4 w-4" />
                 </a>
