@@ -1627,3 +1627,45 @@ Stage Summary:
   - SAMBUTAN label: brighter amber-200, bolder font, more visible background/border
 - VLM confirms: "highly readable, pleasant for visitors, meets/exceeds WCAG AA standards"
 - No design/colors changed drastically — only opacity and lightness adjustments for readability
+
+---
+Task ID: svg-accessibility-fix
+Agent: Z.ai Code (main)
+Task: User request "element svg dengan peran img tidak memiliki teks alternatif yang dapat diakses" — fix SVG elements with role img that don't have accessible alternative text.
+
+Work Log:
+- Audited all SVG elements on the page using Agent Browser DOM inspection:
+  - Total SVGs: 75
+  - Found 1 SVG (PPDB dropdown chevron in navbar) with NO accessibility attributes at all
+  - Found 7 SVGs (recharts chart surfaces) with EMPTY `<title>` elements (no actual text)
+- Fixed the PPDB chevron SVG in navbar.tsx:
+  - Added `aria-hidden="true"` (decorative — the "PPDB" text provides the accessible name)
+  - Added `focusable="false"` (prevents IE/Edge focus issue)
+- Fixed the 7 recharts chart SVGs by adding a `useEffect` in home-section.tsx:
+  - Removes empty `<title>` elements from `svg.recharts-surface` elements
+  - Adds `aria-hidden="true"` to the chart SVGs (they're decorative — chart headings provide context)
+  - Runs on mount + after 500ms delay to catch recharts' async render
+- Wrapped all 3 charts in `role="img"` + `aria-label` divs for proper accessible names:
+  1. Bar chart "Sebaran Siswa per Kelas": aria-label="Grafik batang sebaran siswa per kelas, menunjukkan jumlah siswa laki-laki dan perempuan di setiap kelas"
+  2. Donut chart "Sebaran Jenis Kelamin": aria-label="Grafik donut sebaran jenis kelamin siswa, menunjukkan proporsi laki-laki dan perempuan"
+  3. Bar chart "Kondisi Sarana & Prasarana": aria-label="Grafik batang kondisi sarana dan prasarana sekolah, menunjukkan jumlah fasilitas dengan kondisi baik, rusak ringan, dan rusak berat"
+- Verified via Agent Browser DOM re-audit:
+  - Total SVGs: 75
+  - With `aria-hidden`: 75 (100%) ✓
+  - With `role`: 0 (no SVGs with role=img missing accessible text) ✓
+  - With empty `<title>`: 0 ✓
+  - Issues: 0 ✓
+  - Chart wrapper divs with role="img" + aria-label: 3 ✓
+  - "All 75 SVGs pass accessibility check: true" ✓
+  - Lint clean ✓
+
+Stage Summary:
+- All SVG accessibility issues fixed:
+  - 1 decorative chevron SVG: added aria-hidden="true" + focusable="false"
+  - 7 recharts chart SVGs: removed empty <title> elements + added aria-hidden="true" via useEffect
+  - 3 chart containers: wrapped with role="img" + descriptive aria-label
+- Screen readers now:
+  - Skip decorative SVGs entirely (aria-hidden="true")
+  - Read chart descriptions from the wrapper div's aria-label (not the confusing empty titles)
+- 0 SVG accessibility issues remain (was 8: 1 missing aria + 7 empty titles)
+- WCAG 1.1.1 (Non-text Content) compliance improved

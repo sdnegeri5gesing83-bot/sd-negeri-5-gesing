@@ -190,7 +190,7 @@ export function Navbar() {
                 >
                   <GraduationCap className="h-4 w-4" />
                   PPDB
-                  <svg className="h-3 w-3 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path d="M5.293 7.293a1 1 0 010 1.414L10 13.414l4.707-4.707a1 1 0 01-1.414-1.414L10 10.586 6.707 7.293a1 1 0 00-1.414 0z"/></svg>
+                  <svg className="h-3 w-3 ml-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M5.293 7.293a1 1 0 010 1.414L10 13.414l4.707-4.707a1 1 0 01-1.414-1.414L10 10.586 6.707 7.293a1 1 0 00-1.414 0z"/></svg>
                   {page === 'ppdb' && (
                     <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-[2.5px] w-[70%] rounded-full bg-gradient-to-r from-cyan-400 to-blue-500" />
                   )}

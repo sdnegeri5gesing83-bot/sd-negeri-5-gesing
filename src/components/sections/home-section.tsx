@@ -187,6 +187,33 @@ export function HomeSection() {
     })).filter((d) => d.Jumlah > 0);
   })();
 
+  // Fix recharts SVG accessibility: remove empty <title> elements and mark chart SVGs as aria-hidden
+  // (chart headings + role="img" wrapper divs provide the accessible name; the SVGs are decorative visuals)
+  useEffect(() => {
+    const fixRechartsSvg = () => {
+      const rechartsSvgs = document.querySelectorAll('svg.recharts-surface');
+      rechartsSvgs.forEach((svg) => {
+        // Remove empty <title> elements that cause "SVG with role img has no accessible text" warnings
+        const titles = svg.querySelectorAll('title');
+        titles.forEach((t) => {
+          if (!t.textContent?.trim()) t.remove();
+        });
+        // Mark the chart SVG as hidden from AT — the visible chart heading + wrapper role="img" provides context
+        if (!svg.getAttribute('aria-hidden')) {
+          svg.setAttribute('aria-hidden', 'true');
+        }
+        // Ensure no role=img is set on the SVG itself (the wrapper div has role=img + aria-label)
+        if (svg.getAttribute('role') === 'img') {
+          svg.removeAttribute('role');
+        }
+      });
+    };
+    fixRechartsSvg();
+    // Re-run after a short delay to catch recharts' async render
+    const timer = setTimeout(fixRechartsSvg, 500);
+    return () => clearTimeout(timer);
+  });
+
   return (
     <div>
       {/* FULL-WIDTH MOVING PHOTO BANNER — visible to everyone immediately */}
@@ -426,6 +453,7 @@ export function HomeSection() {
                     Jumlah siswa laki-laki dan perempuan di setiap kelas
                   </p>
                   {classChartData.length > 0 ? (
+                    <div role="img" aria-label="Grafik batang sebaran siswa per kelas, menunjukkan jumlah siswa laki-laki dan perempuan di setiap kelas">
                     <ResponsiveContainer width="100%" height={260}>
                       <BarChart data={classChartData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.9 0.01 235)" />
@@ -443,6 +471,7 @@ export function HomeSection() {
                         <Bar dataKey="Perempuan" stackId="a" fill="#7DD3E0" radius={[6, 6, 0, 0]} />
                       </BarChart>
                     </ResponsiveContainer>
+                    </div>
                   ) : (
                     <div className="h-[260px] flex items-center justify-center text-sm text-muted-foreground">
                       Memuat data...
@@ -462,6 +491,7 @@ export function HomeSection() {
                     Proporsi siswa laki-laki & perempuan
                   </p>
                   {genderChartData.length > 0 ? (
+                    <div role="img" aria-label="Grafik donut sebaran jenis kelamin siswa, menunjukkan proporsi laki-laki dan perempuan">
                     <ResponsiveContainer width="100%" height={260}>
                       <PieChart>
                         <Pie
@@ -490,6 +520,7 @@ export function HomeSection() {
                         <Legend wrapperStyle={{ fontSize: 12 }} />
                       </PieChart>
                     </ResponsiveContainer>
+                    </div>
                   ) : (
                     <div className="h-[260px] flex items-center justify-center text-sm text-muted-foreground">
                       Memuat data...
@@ -509,6 +540,7 @@ export function HomeSection() {
                     Jumlah fasilitas berdasarkan kondisi (Baik / Rusak Ringan / Rusak Berat)
                   </p>
                   {facilityByCondition.length > 0 ? (
+                    <div role="img" aria-label="Grafik batang kondisi sarana dan prasarana sekolah, menunjukkan jumlah fasilitas dengan kondisi baik, rusak ringan, dan rusak berat">
                     <ResponsiveContainer width="100%" height={220}>
                       <BarChart data={facilityByCondition} layout="vertical" margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.9 0.01 235)" horizontal={false} />
@@ -528,6 +560,7 @@ export function HomeSection() {
                         </Bar>
                       </BarChart>
                     </ResponsiveContainer>
+                    </div>
                   ) : (
                     <div className="h-[220px] flex items-center justify-center text-sm text-muted-foreground">
                       Memuat data...
