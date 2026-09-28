@@ -20,6 +20,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://my-project-topaz-kappa.vercel.app'),
   title: "SD Negeri 5 Gesing | Website Resmi Sekolah",
   description:
     "Website resmi SD Negeri 5 Gesing, Dinas Banjar Waru, Desa Gesing, Kecamatan Banjar, Kabupaten Buleleng, Provinsi Bali. Pusat informasi resmi sekolah untuk siswa, orang tua, guru, dan masyarakat.",
@@ -34,8 +35,25 @@ export const metadata: Metadata = {
     "pendidikan Bali",
   ],
   authors: [{ name: "SD Negeri 5 Gesing" }],
+  creator: "SD Negeri 5 Gesing",
+  publisher: "SD Negeri 5 Gesing",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+  alternates: {
+    canonical: '/',
+  },
   icons: {
     icon: "/logo-school.png",
+    apple: "/logo-school.png",
   },
   openGraph: {
     title: "SD Negeri 5 Gesing | Website Resmi Sekolah",
@@ -44,11 +62,20 @@ export const metadata: Metadata = {
     siteName: "SD Negeri 5 Gesing",
     type: "website",
     locale: "id_ID",
+    images: [
+      {
+        url: "/uploads/hero-signboard.jpg",
+        width: 1200,
+        height: 630,
+        alt: "SD Negeri 5 Gesing - Papan Nama Sekolah",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "SD Negeri 5 Gesing",
+    title: "SD Negeri 5 Gesing | Website Resmi Sekolah",
     description: "Website resmi SD Negeri 5 Gesing, Buleleng, Bali.",
+    images: ["/uploads/hero-signboard.jpg"],
   },
 };
 
@@ -58,6 +85,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   // Structured data for Google (JSON-LD) - School schema
+  const SITE_URL = 'https://my-project-topaz-kappa.vercel.app';
   const schoolJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'EducationalOrganization',
@@ -65,9 +93,9 @@ export default function RootLayout({
     alternateName: 'SDN 5 Gesing',
     description:
       'Website resmi SD Negeri 5 Gesing, Dinas Banjar Waru, Desa Gesing, Kecamatan Banjar, Kabupaten Buleleng, Provinsi Bali.',
-    url: 'https://sdn5gesing.sch.id',
-    logo: 'https://sdn5gesing.sch.id/logo-school.png',
-    image: 'https://sdn5gesing.sch.id/uploads/hero-signboard.jpg',
+    url: SITE_URL,
+    logo: `${SITE_URL}/logo-school.png`,
+    image: `${SITE_URL}/uploads/hero-signboard.jpg`,
     telephone: '08873886384',
     email: 'sdnegeri5gesing83@gmail.com',
     address: {

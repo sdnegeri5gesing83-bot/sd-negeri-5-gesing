@@ -1701,3 +1701,40 @@ Stage Summary:
   - **All other external links** (Facebook, Instagram, WhatsApp, phone, email): Already correct with `https://`, `tel:`, `mailto:` prefixes.
   - **Login**: Already uses `redirect: false` (no change needed).
 - The fix works in ALL environments: local dev (localhost:3000), Preview Panel (gateway URL), and production (Vercel URL).
+
+---
+Task ID: seo-google-startup-guide
+Agent: Z.ai Code (main)
+Task: User request "gimana cara memulai di seo google" — how to start with Google SEO. Improve existing SEO + provide comprehensive guide.
+
+Work Log:
+- Audited existing SEO features — found the website already has:
+  1. Google site verification meta tag: `b57KGnpg47mRa814YSXNrLD3EpnZ7HN65aZlZetZtNY` (already in layout.tsx)
+  2. Sitemap.xml (dynamic, 9 URLs with priorities)
+  3. Robots.txt (allows all crawlers, references sitemap)
+  4. JSON-LD structured data (EducationalOrganization schema)
+  5. Metadata (title, description, keywords, openGraph, twitter)
+- Found inconsistency: JSON-LD used `https://sdn5gesing.sch.id` (custom domain not active) but sitemap/robots used `https://my-project-topaz-kappa.vercel.app` (Vercel URL, active). This inconsistency could confuse Google.
+- Fixed JSON-LD URL to use the active Vercel URL consistently
+- Enhanced metadata with additional SEO fields:
+  - `metadataBase`: new URL(Vercel) — resolves relative URLs in OG images
+  - `robots`: index=true, follow=true, googleBot with max-image-preview=large, max-snippet=-1, max-video-preview=-1
+  - `alternates.canonical`: '/' — tells Google the canonical URL
+  - `creator` and `publisher` fields
+  - `icons.apple`: apple touch icon
+  - `openGraph.images`: 1200x630 image with alt text (for social media sharing)
+  - `twitter.images`: same image for Twitter cards
+- Verified:
+  - Lint clean ✓
+  - Sitemap returns valid XML ✓
+  - Robots.txt correct ✓
+  - All URLs consistent (Vercel URL) ✓
+
+Stage Summary:
+- SEO improvements applied:
+  - Unified all URLs to use the active Vercel domain (was inconsistent with custom domain)
+  - Added metadataBase, canonical, robots directives, OG/Twitter images
+  - Enhanced structured data consistency
+- Website now has ALL essential on-page SEO features for Google indexing
+- Google site verification already done (meta tag present)
+- Next steps for user: submit sitemap in Google Search Console + request indexing
