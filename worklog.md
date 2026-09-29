@@ -1841,3 +1841,42 @@ Stage Summary:
   - Button labels: "Pilih file PDF" / "Ganti file PDF"
 - Max file size remains 5MB
 - Admin download unchanged (already works with any file type via `/api/file/[id]`)
+
+---
+Task ID: restore-real-data-after-seed-wipe
+Agent: Z.ai Code (main)
+Task: User reported "kok jumlah siswa dan sarpras berubah lagi" — student and facility counts changed again. Diagnose and fix.
+
+Work Log:
+- Diagnosed: During PPDB feature implementation, subagent ran `bun run db:push --accept-data-loss` (to sync new schema) which wiped the Admin row, then re-ran `bun run scripts/seed.ts` to restore admin — but seed.ts uses `deleteMany()` on ALL tables, wiping the real Excel-imported data and replacing with SAMPLE data
+- Found: Facilities was 12 (sample), not 14 (real); Students had uniform 20 per class (sample), not real distribution; PPDB Schedules was 0
+- Restored real data by re-running `bun run scripts/import-excel.ts`:
+  - Reads scripts/import-data.json (still had real data: 8 teachers, 40 students, 14 facilities, 8 organization)
+  - Clears and re-imports real data from Excel
+  - Updates headmaster info (Nyoman Astawa, NIP)
+  - Auto-calculates statistics
+- Re-seeded PPDB schedules (were 0, now 6) via new script `scripts/seed-ppdb-schedules.ts`
+- Verified final data state:
+  - Teachers: 8 ✓ (real from Excel)
+  - Students: 40 ✓ (real: 1:3, 2:2, 3:11, 4:10, 5:5, 6:9)
+  - Facilities: 14 ✓ (real from Excel)
+  - News: 5, Gallery: 10, Announcements: 4, Profile: 1
+  - PPDB Schedules: 6 ✓ (re-seeded)
+  - PPDB Requirements: 7 (6 original + 1 test)
+  - Statistics: 4 ✓ (auto-calculated)
+  - Organization: 8 ✓ (real)
+- Verified API returns correct counts:
+  - Stats API: 8 GTK, 40 Siswa, 6 Kelas, 14 Sarpras ✓
+  - Students Summary: 40 total, 18 male, 22 female ✓
+  - Facilities: 14 ✓
+
+Stage Summary:
+- Real data restored after accidental seed wipe:
+  - 8 teachers (real photos, positions, NIPs from Dapodik Excel)
+  - 40 students (real NISN, class distribution from Dapodik)
+  - 14 facilities (real names, conditions from facilities Excel)
+  - 6 PPDB schedules (re-seeded)
+  - 7 PPDB requirements (6 original + 1 test from admin panel)
+  - Profile data intact (NPSN, phone, email, WhatsApp, vision, headmaster)
+- Root cause: seed.ts script deletes ALL data before inserting samples — should NOT be re-run after real data is imported
+- Preventive measure: in future, use `scripts/seed-news-only.ts` or targeted scripts that don't wipe existing data
