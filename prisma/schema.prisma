@@ -196,6 +196,50 @@ model PpdbAnnouncement {
   updatedAt   DateTime @updatedAt
 }
 
+// ---- PPDB Requirements (editable by admin) ----
+model PpdbRequirement {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  required    Boolean  @default(true)
+  allowUpload Boolean  @default(true)
+  order       Int      @default(0)
+  documents  PpdbDocument[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ---- PPDB Registrations (visitor submissions) ----
+model PpdbRegistration {
+  id          String   @id @default(cuid())
+  childName   String
+  birthPlace  String?
+  birthDate   String?
+  parentName  String
+  parentPhone String
+  parentEmail String?
+  address     String?
+  notes       String?
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  documents   PpdbDocument[]
+}
+
+// ---- PPDB Documents (uploaded files per requirement) ----
+model PpdbDocument {
+  id            String   @id @default(cuid())
+  registrationId String
+  requirementId String
+  fileName      String
+  fileId        String
+  fileType      String
+  fileSize      Int
+  uploadedAt    DateTime @default(now())
+  registration  PpdbRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  requirement   PpdbRequirement @relation(fields: [requirementId], references: [id], onDelete: Cascade)
+}
+
 // ---- Homepage Statistics ----
 model Statistic {
   id          String   @id @default(cuid())

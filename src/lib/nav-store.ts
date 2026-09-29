@@ -17,8 +17,8 @@ interface NavState {
   page: PageKey;
   setPage: (p: PageKey) => void;
   // PPDB sub-tab
-  ppdbTab: 'jadwal' | 'pengumuman';
-  setPpdbTab: (t: 'jadwal' | 'pengumuman') => void;
+  ppdbTab: 'jadwal' | 'pengumuman' | 'daftar';
+  setPpdbTab: (t: 'jadwal' | 'pengumuman' | 'daftar') => void;
   // admin sub-state
   adminView: 'login' | 'dashboard';
   setAdminView: (v: 'login' | 'dashboard') => void;

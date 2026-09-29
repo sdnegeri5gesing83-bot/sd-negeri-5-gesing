@@ -21,6 +21,8 @@ import {
   Home,
   Shield,
   Calendar,
+  ListChecks,
+  Inbox,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -42,6 +44,8 @@ import { StatsPanel } from './panels/stats-panel';
 import { OrganizationPanel } from './panels/organization-panel';
 import { AccountPanel } from './panels/account-panel';
 import { PpdbPanel } from './panels/ppdb-panel';
+import { PpdbRequirementsPanel } from './panels/ppdb-requirements-panel';
+import { PpdbRegistrationsPanel } from './panels/ppdb-registrations-panel';
 import { PpdbAnnouncementsPanel } from './panels/ppdb-announcements-panel';
 
 type Panel =
@@ -54,6 +58,8 @@ type Panel =
   | 'news'
   | 'announcements'
   | 'ppdb'
+  | 'ppdb-req'
+  | 'ppdb-reg'
   | 'ppdb-ann'
   | 'messages'
   | 'stats'
@@ -70,6 +76,8 @@ const NAV: { key: Panel; label: string; icon: React.ComponentType<{ className?: 
   { key: 'news', label: 'Berita', icon: Newspaper },
   { key: 'announcements', label: 'Pengumuman', icon: Megaphone },
   { key: 'ppdb', label: 'Jadwal PPDB', icon: Calendar },
+  { key: 'ppdb-req', label: 'Syarat PPDB', icon: ListChecks },
+  { key: 'ppdb-reg', label: 'Pendaftar PPDB', icon: Inbox },
   { key: 'ppdb-ann', label: 'Pengumuman PPDB', icon: Megaphone },
   { key: 'messages', label: 'Pesan Masuk', icon: Mail },
   { key: 'stats', label: 'Statistik', icon: BarChart3 },
@@ -206,6 +214,8 @@ export function AdminDashboard() {
           {active === 'news' && <NewsPanel />}
           {active === 'announcements' && <AnnouncementsPanel />}
           {active === 'ppdb' && <PpdbPanel />}
+          {active === 'ppdb-req' && <PpdbRequirementsPanel />}
+          {active === 'ppdb-reg' && <PpdbRegistrationsPanel />}
           {active === 'ppdb-ann' && <PpdbAnnouncementsPanel />}
           {active === 'messages' && <MessagesPanel />}
           {active === 'stats' && <StatsPanel />}

@@ -1738,3 +1738,71 @@ Stage Summary:
 - Website now has ALL essential on-page SEO features for Google indexing
 - Google site verification already done (meta tag present)
 - Next steps for user: submit sitemap in Google Search Console + request indexing
+
+---
+Task ID: ppdb-requirements-file-upload
+Agent: full-stack-developer
+Task: Make PPDB requirements (syarat) editable by admin, allow visitors to upload requirement documents during online registration, and let admin download the uploaded files.
+
+Work Log:
+- Read existing context: prisma schema, api-guard, use-fetch hook, existing PPDB schedule API (admin/public), upload-file API, /api/file/[id] route, public ppdb-section.tsx (with hardcoded REQUIREMENTS), admin ppdb-panel.tsx, admin-dashboard.tsx, nav-store.ts
+- Added 3 new Prisma models in `prisma/schema.prisma` after PpdbAnnouncement:
+  - `PpdbRequirement` (id, title, description, required, allowUpload, order, documents[] relation)
+  - `PpdbRegistration` (id, childName, birthPlace, birthDate, parentName, parentPhone, parentEmail, address, notes, status, documents[] relation)
+  - `PpdbDocument` (id, registrationId, requirementId, fileName, fileId→FileUpload, fileType, fileSize, uploadedAt, with relation to registration + requirement + onDelete: Cascade)
+- Ran `bun run db:push` — schema synced, Prisma Client regenerated
+- Created `scripts/seed-ppdb-requirements.ts` that seeds 6 default requirements (KK, Akta, Rapor, Pas foto, KTP, Formulir). The "Formulir" item has `allowUpload=false` since it is filled out at the school. Ran successfully (6/6 inserted)
+- Modified `src/lib/db.ts` to add a `prismaSchemaHash` check that disconnects and recreates the singleton Prisma client when a new schema version is loaded (avoids stale client in dev after `db:push`)
+- Created Public API routes:
+  - `src/app/api/public/ppdb/requirements/route.ts` — GET list of requirements ordered by `order`
+  - `src/app/api/public/ppdb/register/route.ts` — POST multipart/form-data; validates required text fields (childName, parentName, parentPhone); validates required file uploads (per requirement with `allowUpload=true && required=true`); enforces 5MB max per file and accepted types (image/jpeg, image/png, image/webp, application/pdf); creates FileUpload (base64) + PpdbDocument records inside a transaction; returns `{ id }`
+- Created Admin API routes (all admin-guarded):
+  - `src/app/api/admin/ppdb/requirements/route.ts` — GET (with `_count.documents`) + POST (Zod validation)
+  - `src/app/api/admin/ppdb/requirements/[id]/route.ts` — PUT + DELETE (refuses delete if any PpdbDocument references the requirement)
+  - `src/app/api/admin/ppdb/registrations/route.ts` — GET list with documents included
+  - `src/app/api/admin/ppdb/registrations/[id]/route.ts` — GET (single) + PATCH (update status: pending|reviewing|accepted|rejected) + DELETE (also deletes underlying FileUpload records)
+- Updated `src/lib/nav-store.ts` to extend `ppdbTab` type with `'daftar'` value
+- Updated `src/components/sections/ppdb-section.tsx`:
+  - Removed hardcoded `REQUIREMENTS` array
+  - Added `useFetch<PpdbRequirement[]>('/api/public/ppdb/requirements')`
+  - Added third tab "Daftar Online" between Jadwal and Pengumuman
+  - "Jadwal PPDB" tab now renders dynamic requirements with Wajib/Opsional/Tanpa-Upload badges + description; CTA buttons include "Daftar Sekarang" (jumps to Daftar tab)
+  - Added new `PpdbRegistrationForm` component (rendered when `ppdbTab === 'daftar'`):
+    - 3 cards: Data Calon Siswa, Data Orang Tua/Wali, Unggah Berkas Persyaratan
+    - For each requirement with `allowUpload=false`, shows a note "Tidak perlu upload — diselesaikan di sekolah"
+    - For each requirement with `allowUpload=true`, shows a `<label>`-based file picker with accept filter, file size + name display, and a "Hapus" button
+    - Required file inputs validated client-side before submit
+    - Submits FormData to `/api/public/ppdb/register`; on success shows success card with registration ID and "Cetak Bukti"/"Daftar Lagi" buttons; resets form
+- Created new admin panels:
+  - `src/components/admin/panels/ppdb-requirements-panel.tsx` — List requirements with Wajib/Opsional/UploadAktif/TanpaUpload + berkas-count badges; Add/Edit dialog (title, description, order, required Switch, allowUpload Switch); Delete with AlertDialog (warns if documents exist)
+  - `src/components/admin/panels/ppdb-registrations-panel.tsx` — List registrations with status badge + berkas-count + date + ID; search + status filter; Detail dialog showing Data Calon Siswa + Data Orang Tua/Wali (with tel:/mailto: links) + Berkas Diunggah list with download links (`/api/file/[fileId]`) + status change dropdown (Select) + delete
+- Updated `src/components/admin/admin-dashboard.tsx`:
+  - Added `ListChecks` and `Inbox` icons to imports
+  - Added two new NAV entries: `ppdb-req` (Syarat PPDB) and `ppdb-reg` (Pendaftar PPDB)
+  - Added two new conditional renders in `<main>` content area
+- Verification:
+  - Lint clean (`bun run lint` — no errors)
+  - Restarted dev server (necessary to load new Prisma client singleton with the 3 new models)
+  - Tested GET `/api/public/ppdb/requirements` → returns 6 seeded requirements as JSON
+  - Tested POST `/api/public/ppdb/register` with FormData (text fields + 5 image/jpeg files) → 201 Created with registration ID
+  - Tested GET `/api/admin/ppdb/registrations` returns 401 without auth (adminGuard works)
+  - Tested GET `/api/file/[fileId]` returns 200 image/jpeg for uploaded files
+  - Used Agent Browser to:
+    1. Open http://localhost:3000/ → navigated to PPDB page → confirmed 3 tabs (Jadwal PPDB, Daftar Online, Pengumuman Penerimaan)
+    2. Confirmed "Syarat Pendaftaran" on Jadwal tab is rendered dynamically from API with Wajib/Opsional/Tanpa-Upload badges and descriptions
+    3. Switched to "Daftar Online" tab → confirmed registration form with Data Calon Siswa, Data Orang Tua/Wali, and Unggah Berkas Persyaratan cards; 5 file pickers + 1 note ("Tidak perlu upload")
+    4. Filled the form and uploaded 5 test files via JS-dispatched change events → clicked "Kirim Pendaftaran" → confirmed "Pendaftaran Berhasil!" success card with registration ID
+    5. Logged in as admin (admin@sdn5gesing.sch.id / admin123) — confirmed "Syarat PPDB" and "Pendaftar PPDB" menu items appear
+    6. Opened "Syarat PPDB" → 6 requirements listed with all badges (Wajib/Upload Aktif/berkas count)
+    7. Clicked "Tambah" → Add dialog appears with title, description, urutan, "Wajib diunggah" and "Boleh upload" Switches; filled & saved → new requirement appeared (7 syarat total, persisted to DB via POST 201)
+    8. Opened "Pendaftar PPDB" → 2 registrations visible (Anak Test from curl earlier + Made Anom Sesuari from browser) with status badge + berkas count + date + ID
+    9. Clicked "Detail" on the latest registration → modal shows full data (childName, parentName, phone, email, address) + 5 berkas list each with "Unduh" button linking to /api/file/[fileId]; "Ubah Status" Select dropdown for pending→reviewing→accepted/rejected; "Hapus" with AlertDialog confirmation
+  - Dev log shows no errors; all API calls return 200/201 except expected 401s on unauthenticated admin routes
+
+Stage Summary:
+- PPDB requirements are now fully editable by admin via the "Syarat PPDB" panel (add/edit/delete with title, description, urutan, required toggle, allowUpload toggle)
+- Visitors can submit online registrations via the new "Daftar Online" tab on the public PPDB page, including uploading required documents (image/PDF, max 5MB) which are stored as base64 in the FileUpload table
+- Admin can view all submissions in the "Pendaftar PPDB" panel, see full registration details, download each uploaded file via `/api/file/[fileId]`, change status (pending→reviewing→accepted/rejected), and delete registrations (also cleans up linked FileUpload entries)
+- All changes are database-backed via 3 new Prisma models (PpdbRequirement, PpdbRegistration, PpdbDocument) — no more hardcoded requirements array
+- Existing admin authentication via NextAuth.js protects all admin endpoints (adminGuard)
+- Lint clean, no console/runtime errors observed
