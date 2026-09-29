@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'application/pdf'];
+const ACCEPTED_TYPES = ['application/pdf'];
 
 export async function POST(req: Request) {
   try {
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
       if (file.type && !ACCEPTED_TYPES.includes(file.type)) {
         const req = requirements.find((r) => r.id === requirementId);
         return NextResponse.json(
-          { error: `Tipe file "${file.name}" tidak didukung (untuk: ${req?.title}). Hanya JPG, PNG, WebP, atau PDF.` },
+          { error: `Tipe file "${file.name}" tidak didukung (untuk: ${req?.title}). Hanya file PDF yang diperbolehkan.` },
           { status: 400 }
         );
       }

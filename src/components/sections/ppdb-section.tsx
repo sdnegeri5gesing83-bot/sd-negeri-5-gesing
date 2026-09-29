@@ -586,7 +586,7 @@ function PpdbRegistrationForm({ requirements }: PpdbRegistrationFormProps) {
             <div className="mb-4 flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-700 dark:text-amber-400 text-xs">
               <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
               <p>
-                Format file: JPG, PNG, WebP, atau PDF. Maksimal 5MB per file.
+                Format file: PDF saja. Maksimal 5MB per file.
                 Berkas bertanda <Badge className="bg-rose-500/10 text-rose-700 dark:text-rose-400 text-[10px] mx-1">Wajib</Badge>
                 harus diunggah untuk dapat mendaftar.
               </p>
@@ -630,11 +630,11 @@ function PpdbRegistrationForm({ requirements }: PpdbRegistrationFormProps) {
                   <label className="cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg bg-background border border-dashed border-primary/40 hover:bg-primary/5 transition-colors">
                     <Upload className="h-4 w-4 text-primary" />
                     <span className="text-xs text-primary font-medium">
-                      {file ? 'Ganti file' : 'Pilih file'}
+                      {file ? 'Ganti file PDF' : 'Pilih file PDF'}
                     </span>
                     <input
                       type="file"
-                      accept="image/jpeg,image/png,image/jpg,image/webp,application/pdf"
+                      accept="application/pdf"
                       className="sr-only"
                       onChange={(e) => {
                         const f = e.target.files?.[0] || null;

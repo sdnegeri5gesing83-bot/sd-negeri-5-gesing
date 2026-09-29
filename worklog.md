@@ -1806,3 +1806,38 @@ Stage Summary:
 - All changes are database-backed via 3 new Prisma models (PpdbRequirement, PpdbRegistration, PpdbDocument) — no more hardcoded requirements array
 - Existing admin authentication via NextAuth.js protects all admin endpoints (adminGuard)
 - Lint clean, no console/runtime errors observed
+
+---
+Task ID: ppdb-pdf-only
+Agent: Z.ai Code (main)
+Task: User request "agar upload dan download syarat pendaftaran berupa pdf" — restrict PPDB requirement file upload/download to PDF format only.
+
+Work Log:
+- Found 4 places referencing file format (was accepting JPG, PNG, WebP, PDF):
+  1. API route `/api/public/ppdb/register/route.ts` — ACCEPTED_TYPES array
+  2. API route — error message for unsupported type
+  3. PPDB section UI — info text about allowed formats
+  4. PPDB section UI — file input accept attribute
+- Applied fixes:
+  1. **API ACCEPTED_TYPES**: `['image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'application/pdf']` → `['application/pdf']`
+  2. **API error message**: "Hanya JPG, PNG, WebP, atau PDF" → "Hanya file PDF yang diperbolehkan"
+  3. **UI info text**: "Format file: JPG, PNG, WebP, atau PDF. Maksimal 5MB per file." → "Format file: PDF saja. Maksimal 5MB per file."
+  4. **UI file input accept**: `"image/jpeg,image/png,image/jpg,image/webp,application/pdf"` → `"application/pdf"`
+  5. **UI upload button label**: "Pilih file" / "Ganti file" → "Pilih file PDF" / "Ganti file PDF"
+- Verified via Agent Browser + VLM:
+  - Info banner: "Format file: PDF saja" ✓
+  - All 5 file inputs: `accept="application/pdf"` ✓ (verified via DOM)
+  - Upload buttons: "Pilih file PDF" ✓
+  - VLM confirms: "clearly shown as PDF only" ✓
+  - Lint clean ✓
+  - Dev server running, no errors ✓
+- Admin download: already works with PDF (uses `/api/file/[id]` which serves binary with correct Content-Type header)
+
+Stage Summary:
+- PPDB requirement file upload/download now restricted to PDF format only:
+  - API validates: only `application/pdf` MIME type accepted (others get 400 error)
+  - UI file inputs: `accept="application/pdf"` (browser only shows PDF files in picker)
+  - Info text: "Format file: PDF saja"
+  - Button labels: "Pilih file PDF" / "Ganti file PDF"
+- Max file size remains 5MB
+- Admin download unchanged (already works with any file type via `/api/file/[id]`)
