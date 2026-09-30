@@ -1880,3 +1880,38 @@ Stage Summary:
   - Profile data intact (NPSN, phone, email, WhatsApp, vision, headmaster)
 - Root cause: seed.ts script deletes ALL data before inserting samples — should NOT be re-run after real data is imported
 - Preventive measure: in future, use `scripts/seed-news-only.ts` or targeted scripts that don't wipe existing data
+
+---
+Task ID: restore-teacher-photos
+Agent: Z.ai Code (main)
+Task: User reported "foto kepala sekolah dan gtk berubah" — headmaster and GTK photos changed. Fix.
+
+Work Log:
+- Diagnosed: Same root cause as previous task — seed.ts script was re-run during PPDB implementation, which reset teacher photos to generic sample photos (teacher-1.png through teacher-6.png, headmaster.png) instead of real photos from FOTO.rar
+- Before fix:
+  - Nyoman Astawa → /uploads/teachers/teacher-3.png (WRONG)
+  - Made Agus Hermawan → /uploads/teachers/teacher-5.png (WRONG)
+  - All 8 teachers using generic photos
+  - Headmaster photo → /uploads/teachers/teacher-3.png (WRONG)
+- Re-ran `bun run scripts/update-teacher-photos.ts`:
+  - Maps teacher names to real photo files using normalized name matching
+  - Updates Teacher records (8 teachers)
+  - Updates OrganizationMember records (8 members)
+  - Updates SchoolProfile headmasterPhoto
+- After fix (all 8 teachers + headmaster):
+  - Nyoman Astawa → /uploads/teachers/nyoman-astawa.jpg ✓
+  - Made Agus Hermawan → /uploads/teachers/made-agus-hermawan.png ✓
+  - Miftahul Jannah → /uploads/teachers/miftahul-jannah.jpg ✓
+  - Ni Made Rai Maha Putri → /uploads/teachers/ni-made-rai-mahaputri.jpg ✓
+  - Putu Agus Suar Ekkar Yasa → /uploads/teachers/putu-agus-suar-ekkar-yasa.jpg ✓
+  - Putu Cipta Dewi → /uploads/teachers/putu-cipta-dewi.jpg ✓
+  - Putu Harta Wijaya → /uploads/teachers/putu-harta-wijaya.jpg ✓
+  - Susi Susanti → /uploads/teachers/susi-susanti.jpg ✓
+  - Headmaster (Nyoman Astawa) → /uploads/teachers/nyoman-astawa.jpg ✓
+- Verified all photos accessible (HTTP 200)
+
+Stage Summary:
+- Real teacher photos restored (8/8 teachers + 8/8 org members + headmaster)
+- Photos now use real files from FOTO.rar (nyoman-astawa.jpg, made-agus-hermawan.png, etc.)
+- Root cause: seed.ts script resets photos to generic samples — should NOT be re-run after real data import
+- Preventive note: `update-teacher-photos.ts` must be re-run after any seed.ts execution
