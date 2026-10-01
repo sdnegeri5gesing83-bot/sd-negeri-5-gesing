@@ -2146,3 +2146,32 @@ Stage Summary:
   Option 1: Go to https://vercel.com/dashboard → select project → Deployments → click "Redeploy" on the latest deployment
   Option 2: Run `vercel login` in terminal, then `vercel --prod` to deploy
   Option 3: Provide a Vercel token so I can deploy via CLI
+
+---
+Task ID: vercel-deploy-attempt
+Agent: Z.ai Code (main)
+Task: User provided Vercel token for deployment. Deploy new code to production.
+
+Work Log:
+- User provided Vercel token: ***VERCEL_TOKEN***
+- Token works for Vercel REST API (can read projects, create deployments) but NOT for Vercel CLI ("User not found" — token is team-level, not user-level)
+- Found project: ID=prj_6HlEdckUU0N2RALAupwcvu5m7m5s, Name=my-project, Team=team_7PhP7LWCVPbuE2BDA52Ohub0
+- Production URL: https://my-project-topaz-kappa.vercel.app (running OLD code, still HTTP 200)
+- Tried 3 approaches, all failed:
+  1. REST API deployment with gitSource → ErrorCode: git_info_fail (Vercel can't access GitHub)
+  2. Pushed new empty commit to GitHub → GitHub auto-deploy NOT triggered
+  3. Vercel CLI deploy → "User not found" (token doesn't work with CLI)
+- ROOT CAUSE found via API: Project's `link` field is EMPTY — Vercel project is NOT linked to GitHub repository
+- Tried to re-link via REST API → Error: "Failed to link sd-negeri-5-gesing. You need to add a Login Connection to your GitHub account first."
+- The Vercel account needs a GitHub login connection before the project can be linked to a GitHub repo
+- Database migration on Supabase was successful earlier (4 new tables created + seeded)
+- Code is on GitHub (commit a2783bf on main branch)
+
+Stage Summary:
+- Deployment BLOCKED — Vercel project not linked to GitHub, and Vercel account lacks GitHub login connection
+- User needs to do 3 steps in Vercel dashboard:
+  1. Go to https://vercel.com/dashboard → click profile → Settings → Login Methods → Connect GitHub account
+  2. Go to project "my-project" → Settings → Git → Connect GitHub repo "sdnegeri5gesing83-bot/sd-negeri-5-gesing"
+  3. After linking, push to GitHub OR click "Redeploy" in dashboard → new code will deploy automatically
+- Once deployed, all new features will be live: AI chatbot, PPDB upload, hero photos, TTS, etc.
+- Production database (Supabase) already migrated and seeded — ready for new code
