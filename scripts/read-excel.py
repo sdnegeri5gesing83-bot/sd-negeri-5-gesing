@@ -223,6 +223,9 @@ def read_facilities():
         "Peralatan Pembelajaran": "/uploads/facilities/facility-computer.jpg",
         "Ruang Pendukung": "/uploads/facilities/facility-computer.jpg",
         "Fasilitas Lainnya": "/uploads/facilities/facility-field.jpg",
+        "Gudang": "/uploads/facilities/facility-teacher-room.jpg",
+        "Padmasana": "/uploads/facilities/facility-field.jpg",
+        "Mes": "/uploads/facilities/facility-principal.jpg",
     }
     facilities = []
     order = 1

@@ -1940,3 +1940,37 @@ Stage Summary:
 - Root cause: case-sensitivity in condition mapping (Excel used "Rusak Berat" title case, script expected "RUSAK_BERAT" uppercase with underscore)
 - Fixed read-excel.py to handle both underscore and space-separated uppercase forms
 - Teacher photos preserved (only facility conditions were updated, not full re-import)
+
+---
+Task ID: fix-facility-photos
+Agent: Z.ai Code (main)
+Task: User reported "foto sarpras juga berubah" — facility photos also changed. Fix.
+
+Work Log:
+- Checked current facility photos — found 11/14 had photos, 3 had null:
+  - Gudang → null (no photo mapping for "Gudang" category)
+  - Padmasana → null (no photo mapping for "Padmasana" category)
+  - Mes Kepala Sekolah → null (no photo mapping for "Mes" category)
+- Root cause: read-excel.py's photo_map didn't include mappings for "Gudang", "Padmasana", and "Mes" categories (these are real facility types from the Excel that weren't in the original mapping)
+- Fixed by:
+  1. Updated database directly (targeted update, not full re-import — preserves teacher photos):
+     - Gudang → /uploads/facilities/facility-teacher-room.jpg (storage room → teacher room photo, closest match)
+     - Padmasana → /uploads/facilities/facility-field.jpg (outdoor shrine → field/outdoor photo)
+     - Mes Kepala Sekolah → /uploads/facilities/facility-principal.jpg (headmaster's residence → principal room photo)
+  2. Updated read-excel.py photo_map to include the 3 new categories for future imports
+- Verified:
+  - All 14 facilities now have photos (0 null) ✓
+  - Facilities API returns 14/14 with photos ✓
+  - Teacher photos still intact (not touched by this fix) ✓
+
+Stage Summary:
+- All 14 facility photos now assigned:
+  - Ruang Kelas 1-6 → facility-classroom.jpg ✓
+  - Perpustakaan → facility-library.jpg ✓
+  - Ruang Guru → facility-teacher-room.jpg ✓
+  - WC/Toilet (3) → facility-toilet.jpg ✓
+  - Gudang → facility-teacher-room.jpg ✓ (newly assigned)
+  - Padmasana → facility-field.jpg ✓ (newly assigned)
+  - Mes Kepala Sekolah → facility-principal.jpg ✓ (newly assigned)
+- read-excel.py updated with 3 new category mappings for future imports
+- Root cause: photo_map missing "Gudang", "Padmasana", "Mes" categories (real Excel facility types not in original mapping)
