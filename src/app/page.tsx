@@ -14,6 +14,7 @@ import { GallerySection } from '@/components/sections/gallery-section';
 import { PpdbSection } from '@/components/sections/ppdb-section';
 import { ContactSection } from '@/components/sections/contact-section';
 import { AdminWrapper } from '@/components/admin/admin-wrapper';
+import { ChatbotWidget } from '@/components/site/chatbot-widget';
 
 function PageContent() {
   const { page, setPage } = useNav();
@@ -63,6 +64,7 @@ function PageContent() {
         {page === 'admin' && <AdminWrapper />}
       </main>
       <Footer />
+      {page !== 'admin' && <ChatbotWidget />}
     </div>
   );
 }

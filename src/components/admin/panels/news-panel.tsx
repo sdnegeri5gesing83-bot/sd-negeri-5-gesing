@@ -14,14 +14,14 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Plus, Pencil, Trash2, Newspaper } from 'lucide-react';
+import { Plus, Pencil, Trash2, Newspaper, Sparkles, Loader2, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { id as idLocale } from 'date-fns/locale';
 import type { NewsItem } from '@/lib/types';
 import { ImageUpload } from '../image-upload';
 
-const empty = { title: '', excerpt: '', content: '', photo: '', category: 'Umum', published: true, publishedAt: format(new Date(), 'yyyy-MM-dd') };
+const empty = { title: '', excerpt: '', content: '', photo: '', photoAltText: '', category: 'Umum', published: true, publishedAt: format(new Date(), 'yyyy-MM-dd') };
 
 export function NewsPanel() {
   const { data, loading, error, refetch } = useFetch<NewsItem[]>('/api/admin/news');
@@ -29,9 +29,10 @@ export function NewsPanel() {
   const [editing, setEditing] = useState<NewsItem | null>(null);
   const [form, setForm] = useState<typeof empty>(empty);
   const [saving, setSaving] = useState(false);
+  const [generatingAlt, setGeneratingAlt] = useState(false);
 
   const openNew = () => { setEditing(null); setForm(empty); setOpen(true); };
-  const openEdit = (n: NewsItem) => { setEditing(n); setForm({ title: n.title, excerpt: n.excerpt || '', content: n.content, photo: n.photo || '', category: n.category, published: n.published, publishedAt: format(new Date(n.publishedAt), 'yyyy-MM-dd') }); setOpen(true); };
+  const openEdit = (n: NewsItem) => { setEditing(n); setForm({ title: n.title, excerpt: n.excerpt || '', content: n.content, photo: n.photo || '', photoAltText: n.photoAltText || '', category: n.category, published: n.published, publishedAt: format(new Date(n.publishedAt), 'yyyy-MM-dd') }); setOpen(true); };
   const set = (k: keyof typeof empty, v: string | boolean) => setForm((f) => ({ ...f, [k]: v }));
 
   const save = async (e: React.FormEvent) => {
@@ -53,6 +54,31 @@ export function NewsPanel() {
     try { const r = await fetch(`/api/admin/news/${id}`, { method: 'DELETE' }); if (!r.ok) { const j = await r.json(); throw new Error(j?.error); } toast.success('Berita dihapus'); refetch(); } catch (e: any) { toast.error(e?.message); }
   };
 
+  // Generate alt text for the news photo (auto-fills the form field)
+  const generateAltText = async () => {
+    if (!form.photo) {
+      toast.error('Tambahkan foto terlebih dahulu sebelum membuat alt text');
+      return;
+    }
+    setGeneratingAlt(true);
+    try {
+      const res = await fetch('/api/admin/generate-alt-text', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl: form.photo }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || 'Gagal membuat alt text');
+      const altText: string = data.altText || '';
+      set('photoAltText', altText);
+      toast.success('Alt text dihasilkan', { description: altText });
+    } catch (e: any) {
+      toast.error(e?.message || 'Gagal membuat alt text');
+    } finally {
+      setGeneratingAlt(false);
+    }
+  };
+
   if (loading) return <Loader label="Memuat berita..." />;
   if (error) return <EmptyState title="Gagal memuat" description={error} />;
 
@@ -71,12 +97,17 @@ export function NewsPanel() {
           <Card key={n.id} className="border-border shadow-sm">
             <CardContent className="p-4 flex items-start gap-4">
               <div className="h-16 w-24 rounded-lg overflow-hidden bg-muted shrink-0">
-                {n.photo ? <img src={n.photo} alt={n.title} className="h-full w-full object-cover" /> : <div className="h-full w-full flex items-center justify-center text-muted-foreground"><Newspaper className="h-5 w-5" /></div>}
+                {n.photo ? <img src={n.photo} alt={n.photoAltText || n.title} className="h-full w-full object-cover" /> : <div className="h-full w-full flex items-center justify-center text-muted-foreground"><Newspaper className="h-5 w-5" /></div>}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
                   <Badge variant="outline" className="text-[10px]">{n.category}</Badge>
                   <Badge variant="secondary" className={`text-[10px] ${n.published ? 'bg-emerald-500/15 text-emerald-700' : 'bg-muted'}`}>{n.published ? 'Terbit' : 'Draft'}</Badge>
+                  {n.photoAltText && (
+                    <Badge variant="outline" className="text-[10px] bg-emerald-500/10 text-emerald-700 border-emerald-500/30 gap-1">
+                      <Check className="h-3 w-3" /> Alt
+                    </Badge>
+                  )}
                   <span className="text-xs text-muted-foreground">{format(new Date(n.publishedAt), 'd MMM yyyy', { locale: idLocale })}</span>
                 </div>
                 <p className="font-semibold text-foreground line-clamp-1">{n.title}</p>
@@ -102,7 +133,41 @@ export function NewsPanel() {
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto custom-scroll">
           <DialogHeader><DialogTitle>{editing ? 'Edit Berita' : 'Tambah Berita'}</DialogTitle><DialogDescription>Isi konten berita sekolah.</DialogDescription></DialogHeader>
           <form onSubmit={save} className="space-y-4">
-            <ImageUpload label="Foto" value={form.photo} onChange={(v) => set('photo', v)} />
+            {/* Image upload + Generate Alt Text */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-foreground">Foto</span>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  onClick={generateAltText}
+                  disabled={generatingAlt || !form.photo}
+                  className="h-7 text-xs gap-1.5"
+                >
+                  {generatingAlt ? (
+                    <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Membuat Alt Text...</>
+                  ) : (
+                    <><Sparkles className="h-3.5 w-3.5" /> Generate Alt Text</>
+                  )}
+                </Button>
+              </div>
+              <ImageUpload label="Foto" value={form.photo} onChange={(v) => set('photo', v)} />
+            </div>
+
+            {/* Alt text field — auto-filled by the Generate button above */}
+            <div className="space-y-1.5">
+              <Label>Alt Text Foto <span className="text-xs text-muted-foreground">(deskripsi gambar untuk aksesibilitas)</span></Label>
+              <Textarea
+                value={form.photoAltText}
+                onChange={(e) => set('photoAltText', e.target.value)}
+                rows={2}
+                placeholder="Deskripsi singkat gambar berita, mis. 'Kepala sekolah memberikan sambutan saat pembukaan PPDB'"
+                maxLength={150}
+              />
+              <p className="text-[11px] text-muted-foreground">{form.photoAltText.length}/150 karakter</p>
+            </div>
+
             <Field label="Judul" value={form.title} onChange={(v) => set('title', v)} required />
             <div className="grid grid-cols-2 gap-3">
               <Field label="Kategori" value={form.category} onChange={(v) => set('category', v)} />

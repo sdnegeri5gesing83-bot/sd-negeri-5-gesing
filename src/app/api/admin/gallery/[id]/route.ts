@@ -6,6 +6,7 @@ import { z } from 'zod';
 const schema = z.object({
   title: z.string().min(2),
   photo: z.string().min(1),
+  altText: z.string().optional().nullable(),
   category: z.string().min(2),
   description: z.string().optional().nullable(),
   date: z.string().optional().nullable(),
@@ -23,6 +24,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     }
     const data: any = { ...parsed.data };
     if (data.description === '') data.description = null;
+    if (data.altText === '') data.altText = null;
     if (data.date) data.date = new Date(data.date);
     else delete data.date;
     const item = await db.galleryItem.update({ where: { id }, data });

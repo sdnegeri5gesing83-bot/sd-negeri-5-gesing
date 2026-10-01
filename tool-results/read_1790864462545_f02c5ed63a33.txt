@@ -1,0 +1,770 @@
+     1→'use client';
+     2→
+     3→import { useState, useEffect, useRef } from 'react';
+     4→import { useNav } from '@/lib/nav-store';
+     5→import { useFetch } from '@/hooks/use-fetch';
+     6→import { SectionHeader, Loader, EmptyState } from '@/components/site/ui';
+     7→import { SmartImage } from '@/components/smart-image';
+     8→import { HexPrism, GlowOrb } from '@/components/site/prism-decoration';
+     9→import { FullWidthHeroCarousel } from '@/components/site/full-width-hero-carousel';
+    10→import {
+    11→  ArrowRight,
+    12→  Phone,
+    13→  Users,
+    14→  GraduationCap,
+    15→  School,
+    16→  Building2,
+    17→  ChevronRight,
+    18→  Calendar,
+    19→  Megaphone,
+    20→  Quote,
+    21→  Sparkles,
+    22→} from 'lucide-react';
+    23→import type {
+    24→  SchoolProfile,
+    25→  Statistic,
+    26→  NewsItem,
+    27→  Announcement,
+    28→  GalleryItem,
+    29→  StudentByClass,
+    30→  Facility,
+    31→} from '@/lib/types';
+    32→import { format } from 'date-fns';
+    33→import { id as idLocale } from 'date-fns/locale';
+    34→import { Button } from '@/components/ui/button';
+    35→import { Card, CardContent } from '@/components/ui/card';
+    36→import { Badge } from '@/components/ui/badge';
+    37→import {
+    38→  Dialog,
+    39→  DialogContent,
+    40→  DialogHeader,
+    41→  DialogTitle,
+    42→  DialogDescription,
+    43→} from '@/components/ui/dialog';
+    44→import {
+    45→  Bar,
+    46→  BarChart,
+    47→  Cell,
+    48→  Pie,
+    49→  PieChart,
+    50→  ResponsiveContainer,
+    51→  Tooltip,
+    52→  XAxis,
+    53→  YAxis,
+    54→  CartesianGrid,
+    55→  Legend,
+    56→} from 'recharts';
+    57→
+    58→const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+    59→  Users,
+    60→  GraduationCap,
+    61→  School,
+    62→  Building2,
+    63→};
+    64→
+    65→export function HomeSection() {
+    66→  const { setPage } = useNav();
+    67→  const { data: profile } = useFetch<SchoolProfile>('/api/public/profile');
+    68→  const { data: stats, loading: statsLoading } = useFetch<Statistic[]>('/api/public/stats');
+    69→  const { data: news, loading: newsLoading } = useFetch<NewsItem[]>('/api/public/news?limit=4');
+    70→  const { data: announcements } = useFetch<Announcement[]>('/api/public/announcements');
+    71→  const { data: gallery } = useFetch<GalleryItem[]>('/api/public/gallery');
+    72→  const { data: studentSummary } = useFetch<{ total: number; male: number; female: number }>('/api/public/students/summary');
+    73→  const { data: studentsByClass } = useFetch<StudentByClass[]>('/api/public/students/by-class');
+    74→  const { data: facilities } = useFetch<Facility[]>('/api/public/facilities');
+    75→
+    76→  const [openNews, setOpenNews] = useState<NewsItem | null>(null);
+    77→  const galleryPreview = (gallery || []).slice(0, 6);
+    78→  const announcementsTop = (announcements || []).slice(0, 3);
+    79→  const studentCount = studentSummary?.total ?? 40;
+    80→
+    81→  // Inject NewsArticle JSON-LD structured data for SEO
+    82→  // When a news article is opened in the dialog, add structured data to document head
+    83→  useEffect(() => {
+    84→    const scriptId = 'news-jsonld';
+    85→    // Remove existing script
+    86→    document.getElementById(scriptId)?.remove();
+    87→
+    88→    if (openNews) {
+    89→      const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://my-project-topaz-kappa.vercel.app';
+    90→      const articleUrl = `${baseUrl}/?news=${openNews.id}`;
+    91→      const newsJsonLd: any = {
+    92→        '@context': 'https://schema.org',
+    93→        '@type': 'NewsArticle',
+    94→        headline: openNews.title,
+    95→        datePublished: new Date(openNews.publishedAt).toISOString(),
+    96→        dateModified: new Date(openNews.publishedAt).toISOString(),
+    97→        author: [{
+    98→          '@type': 'Organization',
+    99→          name: 'SD Negeri 5 Gesing',
+   100→          url: baseUrl,
+   101→        }],
+   102→        publisher: {
+   103→          '@type': 'Organization',
+   104→          name: 'SD Negeri 5 Gesing',
+   105→          url: baseUrl,
+   106→          logo: {
+   107→            '@type': 'ImageObject',
+   108→            url: `${baseUrl}/logo-school.png`,
+   109→          },
+   110→        },
+   111→      };
+   112→      if (openNews.photo) {
+   113→        newsJsonLd.image = [openNews.photo.startsWith('http') ? openNews.photo : `${baseUrl}${openNews.photo}`];
+   114→      }
+   115→      if (openNews.excerpt) {
+   116→        newsJsonLd.description = openNews.excerpt;
+   117→      }
+   118→
+   119→      const script = document.createElement('script');
+   120→      script.id = scriptId;
+   121→      script.type = 'application/ld+json';
+   122→      script.textContent = JSON.stringify(newsJsonLd);
+   123→      document.head.appendChild(script);
+   124→    }
+   125→
+   126→    return () => {
+   127→      document.getElementById(scriptId)?.remove();
+   128→    };
+   129→  }, [openNews]);
+   130→
+   131→  // Inject JSON-LD for all news articles on the page (for Google crawling)
+   132→  useEffect(() => {
+   133→    if (!news || news.length === 0) return;
+   134→    const scriptId = 'news-list-jsonld';
+   135→    document.getElementById(scriptId)?.remove();
+   136→
+   137→    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://my-project-topaz-kappa.vercel.app';
+   138→    const itemList = news.map((n) => ({
+   139→      '@type': 'NewsArticle',
+   140→      headline: n.title,
+   141→      datePublished: new Date(n.publishedAt).toISOString(),
+   142→      author: { '@type': 'Organization', name: 'SD Negeri 5 Gesing' },
+   143→      ...(n.photo ? { image: [n.photo.startsWith('http') ? n.photo : `${baseUrl}${n.photo}`] } : {}),
+   144→    }));
+   145→
+   146→    const script = document.createElement('script');
+   147→    script.id = scriptId;
+   148→    script.type = 'application/ld+json';
+   149→    script.textContent = JSON.stringify({
+   150→      '@context': 'https://schema.org',
+   151→      '@type': 'ItemList',
+   152→      itemListElement: itemList.map((item, i) => ({
+   153→        '@type': 'ListItem',
+   154→        position: i + 1,
+   155→        item,
+   156→      })),
+   157→    });
+   158→    document.head.appendChild(script);
+   159→
+   160→    return () => {
+   161→      document.getElementById(scriptId)?.remove();
+   162→    };
+   163→  }, [news]);
+   164→
+   165→  // Chart data: students by class
+   166→  const classChartData = (studentsByClass || []).map((c) => ({
+   167→    name: `Kelas ${c.className}`,
+   168→    Laki: c.male,
+   169→    Perempuan: c.female,
+   170→  }));
+   171→  // Chart data: gender distribution (donut)
+   172→  const genderChartData = studentSummary
+   173→    ? [
+   174→        { name: 'Laki-laki', value: studentSummary.male, color: '#3B82C4' },
+   175→        { name: 'Perempuan', value: studentSummary.female, color: '#7DD3E0' },
+   176→      ]
+   177→    : [];
+   178→  // Chart data: facilities by condition
+   179→  const facilityByCondition = (() => {
+   180→    const facs = facilities || [];
+   181→    const conditions = ['Baik', 'Rusak Ringan', 'Rusak Berat'];
+   182→    const colors = ['#16a34a', '#f59e0b', '#dc2626'];
+   183→    return conditions.map((cond, i) => ({
+   184→      name: cond,
+   185→      Jumlah: facs.filter((f) => f.condition === cond).length,
+   186→      color: colors[i],
+   187→    })).filter((d) => d.Jumlah > 0);
+   188→  })();
+   189→
+   190→  // Fix recharts SVG accessibility: remove empty <title> elements and mark chart SVGs as aria-hidden
+   191→  // (chart headings + role="img" wrapper divs provide the accessible name; the SVGs are decorative visuals)
+   192→  useEffect(() => {
+   193→    const fixRechartsSvg = () => {
+   194→      const rechartsSvgs = document.querySelectorAll('svg.recharts-surface');
+   195→      rechartsSvgs.forEach((svg) => {
+   196→        // Remove empty <title> elements that cause "SVG with role img has no accessible text" warnings
+   197→        const titles = svg.querySelectorAll('title');
+   198→        titles.forEach((t) => {
+   199→          if (!t.textContent?.trim()) t.remove();
+   200→        });
+   201→        // Mark the chart SVG as hidden from AT — the visible chart heading + wrapper role="img" provides context
+   202→        if (!svg.getAttribute('aria-hidden')) {
+   203→          svg.setAttribute('aria-hidden', 'true');
+   204→        }
+   205→        // Ensure no role=img is set on the SVG itself (the wrapper div has role=img + aria-label)
+   206→        if (svg.getAttribute('role') === 'img') {
+   207→          svg.removeAttribute('role');
+   208→        }
+   209→      });
+   210→    };
+   211→    fixRechartsSvg();
+   212→    // Re-run after a short delay to catch recharts' async render
+   213→    const timer = setTimeout(fixRechartsSvg, 500);
+   214→    return () => clearTimeout(timer);
+   215→  });
+   216→
+   217→  return (
+   218→    <div>
+   219→      {/* FULL-WIDTH MOVING PHOTO BANNER — visible to everyone immediately */}
+   220→      <FullWidthHeroCarousel />
+   221→
+   222→      {/* HERO */}
+   223→      <section className="relative overflow-hidden hero-gradient text-white">
+   224→        <div className="absolute inset-0 opacity-15">
+   225→          <img
+   226→            src="/uploads/hero-signboard.jpg"
+   227→            alt=""
+   228→            aria-hidden
+   229→            className="h-full w-full object-cover"
+   230→          />
+   231→        </div>
+   232→        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/80 to-primary/60" />
+   233→        {/* Decorative bulbs in hero */}
+   234→        <HexPrism className="top-8 right-[15%]" size={90} color="gold" rotate={15} opacity={0.5} pulse />
+   235→        <HexPrism className="top-20 right-[8%] hidden lg:block" size={70} color="gold" rotate={-10} opacity={0.4} />
+   236→        <HexPrism className="bottom-16 left-[5%] hidden lg:block" size={80} color="gold" rotate={30} opacity={0.4} pulse />
+   237→        <GlowOrb className="top-0 right-0" size={300} color="gold" />
+   238→        <GlowOrb className="bottom-0 left-1/4" size={250} color="blue" />
+   239→        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+   240→          <div className="text-center max-w-3xl mx-auto">
+   241→            <span className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 px-3.5 py-1.5 rounded-full text-xs font-medium mb-5">
+   242→              <Sparkles className="h-3.5 w-3.5 text-gold" />
+   243→              Selamat Datang
+   244→            </span>
+   245→            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+   246→              SD Negeri 5 Gesing
+   247→            </h1>
+   248→            <p className="mt-3 text-base sm:text-lg text-white/85">
+   249→              Buleleng, Bali &middot; Akreditasi {profile?.accreditation || 'B'}
+   250→            </p>
+   251→            <p className="mt-5 text-sm sm:text-base text-white/90 leading-relaxed">
+   252→              {profile?.vision || 'Terwujudnya Insan yang Bertaqwa, cerdas, serta peduli sesama.'}
+   253→            </p>
+   254→            <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+   255→              <Button
+   256→                size="lg"
+   257→                onClick={() => setPage('profil')}
+   258→                className="bg-gold text-[#0a0f1e] hover:bg-gold/90 shadow-lg"
+   259→              >
+   260→                Lihat Profil
+   261→                <ArrowRight className="h-4 w-4" />
+   262→              </Button>
+   263→              <Button
+   264→                size="lg"
+   265→                variant="outline"
+   266→                onClick={() => setPage('kontak')}
+   267→                className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
+   268→              >
+   269→                <Phone className="h-4 w-4" />
+   270→                Hubungi Kami
+   271→              </Button>
+   272→            </div>
+   273→            {/* Quick stat badge */}
+   274→            <div className="mt-8 inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-5 py-2.5">
+   275→              <GraduationCap className="h-5 w-5 text-gold" />
+   276→              <span className="text-2xl font-bold text-white">{studentCount}</span>
+   277→              <span className="text-sm text-white/80">Siswa Aktif</span>
+   278→            </div>
+   279→          </div>
+   280→        </div>
+   281→      </section>
+   282→
+   283→      {/* ANNOUNCEMENTS BANNER */}
+   284→      {announcementsTop.length > 0 && (
+   285→        <section className="bg-teal-soft/40 border-y border-border">
+   286→          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
+   287→            <div className="flex items-center gap-3">
+   288→              <div className="flex items-center gap-2 shrink-0 text-primary font-semibold text-sm">
+   289→                <Megaphone className="h-4 w-4" />
+   290→                <span className="hidden sm:inline">Pengumuman:</span>
+   291→              </div>
+   292→              <div className="flex-1 overflow-hidden">
+   293→                <div className="flex items-center gap-6 text-sm text-foreground/80 overflow-x-auto custom-scroll whitespace-nowrap">
+   294→                  {announcementsTop.map((a) => (
+   295→                    <span key={a.id} className="inline-flex items-center gap-1.5">
+   296→                      <Calendar className="h-3.5 w-3.5 text-gold" />
+   297→                      <span className="font-medium">{a.title}</span>
+   298→                      <span className="text-muted-foreground">— {format(new Date(a.date), 'd MMM yyyy', { locale: idLocale })}</span>
+   299→                    </span>
+   300→                  ))}
+   301→                </div>
+   302→              </div>
+   303→            </div>
+   304→          </div>
+   305→        </section>
+   306→      )}
+   307→
+   308→      {/* SAMBUTAN KEPALA SEKOLAH */}
+   309→      <section className="relative overflow-hidden py-16 lg:py-24 bg-gradient-to-br from-[#1e3a5f] via-[#1a3457] to-[#15293f]">
+   310→        {/* Decorative background elements */}
+   311→        <div className="absolute top-0 right-0 h-72 w-72 rounded-full bg-amber-400/8 blur-3xl" aria-hidden />
+   312→        <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-blue-400/8 blur-3xl" aria-hidden />
+   313→        <div className="absolute top-10 left-10 h-2 w-2 rounded-full bg-amber-300/40" aria-hidden />
+   314→        <div className="absolute top-20 left-20 h-1 w-1 rounded-full bg-amber-300/30" aria-hidden />
+   315→        <div className="absolute bottom-20 right-16 h-1.5 w-1.5 rounded-full bg-blue-300/40" aria-hidden />
+   316→
+   317→        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+   318→          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12 items-center">
+   319→            {/* Photo with elegant frame */}
+   320→            <div className="lg:col-span-1 flex justify-center">
+   321→              <div className="relative group">
+   322→                {/* Gradient glow ring */}
+   323→                <div className="absolute -inset-4 bg-gradient-to-br from-amber-400/30 to-blue-400/20 rounded-full blur-md group-hover:from-amber-400/40 transition-all" aria-hidden />
+   324→                {/* Decorative rotating ring */}
+   325→                <div className="absolute -inset-2 rounded-full border-2 border-dashed border-amber-300/30 group-hover:rotate-180 transition-transform duration-[3000ms]" aria-hidden />
+   326→                {/* Photo */}
+   327→                <div className="relative rounded-full overflow-hidden ring-4 ring-white/20 shadow-2xl">
+   328→                  <SmartImage
+   329→                    src={profile?.headmasterPhoto}
+   330→                    alt={profile?.headmasterName || 'Kepala Sekolah'}
+   331→                    className="h-44 w-44 sm:h-56 sm:w-56 lg:h-72 lg:w-72 object-cover"
+   332→                  />
+   333→                  {/* Gradient overlay at bottom */}
+   334→                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#1e3a5f]/80 to-transparent" aria-hidden />
+   335→                </div>
+   336→                {/* Gold badge */}
+   337→                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-amber-500 text-[#1e3a5f] text-xs font-bold px-5 py-1.5 rounded-full shadow-lg whitespace-nowrap ring-2 ring-white/20">
+   338→                  Kepala Sekolah
+   339→                </div>
+   340→              </div>
+   341→            </div>
+   342→
+   343→            {/* Welcome text card */}
+   344→            <div className="lg:col-span-2">
+   345→              {/* Section label */}
+   346→              <div className="flex items-center gap-3 mb-5">
+   347→                <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-amber-200 bg-amber-400/15 border border-amber-400/30 px-3.5 py-1.5 rounded-full">
+   348→                  Sambutan
+   349→                </span>
+   350→                <div className="h-px flex-1 bg-gradient-to-r from-amber-400/40 to-transparent" />
+   351→              </div>
+   352→              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight mb-6">
+   353→                Sambutan Kepala Sekolah
+   354→              </h2>
+   355→
+   356→              {/* Glassmorphism card */}
+   357→              <div className="relative bg-white/5 backdrop-blur-md border border-white/15 rounded-2xl p-6 lg:p-8 shadow-2xl overflow-hidden">
+   358→                {/* Decorative gradient line at top */}
+   359→                <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
+   360→
+   361→                {/* Large quote icon */}
+   362→                <Quote className="absolute -top-1 -left-1 h-12 w-12 text-amber-300/20" fill="currentColor" />
+   363→
+   364→                <p className="relative text-sm lg:text-base text-blue-50/95 leading-relaxed whitespace-pre-line italic">
+   365→                  {profile?.headmasterWelcome || 'Sambutan kepala sekolah sedang dimuat...'}
+   366→                </p>
+   367→
+   368→                {/* Signature */}
+   369→                <div className="relative mt-6 pt-5 border-t border-white/15">
+   370→                  <div className="flex items-center gap-3">
+   371→                    <div className="h-10 w-1 rounded-full bg-gradient-to-b from-amber-400 to-amber-600" />
+   372→                    <div>
+   373→                      <p className="font-bold text-white text-lg">
+   374→                        {profile?.headmasterName || 'Kepala Sekolah'}
+   375→                      </p>
+   376→                      <p className="text-sm text-blue-100/90">
+   377→                        Kepala SD Negeri 5 Gesing
+   378→                        {profile?.headmasterNip ? ` · NIP ${profile.headmasterNip}` : ''}
+   379→                      </p>
+   380→                    </div>
+   381→                  </div>
+   382→                </div>
+   383→              </div>
+   384→            </div>
+   385→          </div>
+   386→        </div>
+   387→      </section>
+   388→
+   389→      {/* STATISTIK */}
+   390→      <section className="relative overflow-hidden py-14 lg:py-20 bg-teal-soft/30 border-y border-border">
+   391→        {/* Decorative bulbs */}
+   392→        <HexPrism className="top-6 right-[8%] hidden lg:block" size={75} color="blue" rotate={20} opacity={0.4} />
+   393→        <HexPrism className="bottom-10 left-[6%] hidden lg:block" size={65} color="gold" rotate={-25} opacity={0.4} pulse />
+   394→        <GlowOrb className="top-1/3 right-0" size={200} color="blue" />
+   395→        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+   396→          <SectionHeader
+   397→            eyebrow="Data Sekolah"
+   398→            title="Sekilas tentang Sekolah"
+   399→            description="Profil singkat SD Negeri 5 Gesing berdasarkan data terkini."
+   400→          />
+   401→          {statsLoading ? (
+   402→            <Loader label="Memuat statistik..." />
+   403→          ) : stats && stats.length > 0 ? (
+   404→            <>
+   405→            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+   406→              {stats.map((s, idx) => {
+   407→                const Icon = (s.icon && ICON_MAP[s.icon]) || Users;
+   408→                return (
+   409→                  <Card
+   410→                    key={s.id}
+   411→                    className="relative overflow-hidden text-center border-border/60 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 group bg-gradient-to-b from-card via-card to-muted/40"
+   412→                  >
+   413→                    {/* Decorative gradient top accent */}
+   414→                    <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-primary via-primary/60 to-gold" />
+   415→                    {/* Decorative blurred glow */}
+   416→                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 h-24 w-24 rounded-full bg-primary/10 blur-2xl group-hover:bg-primary/20 transition-colors" aria-hidden />
+   417→                    {/* Decorative corner sparkles */}
+   418→                    <div className="absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-gold/60 group-hover:bg-gold transition-colors" aria-hidden />
+   419→                    <div className="absolute top-6 right-6 h-1 w-1 rounded-full bg-gold/40" aria-hidden />
+   420→
+   421→                    <CardContent className="relative pt-9 pb-6 px-4">
+   422→                      {/* Elegant circular gradient icon */}
+   423→                      <div className="relative mx-auto mb-4">
+   424→                        {/* Outer decorative ring */}
+   425→                        <div className="absolute inset-0 -m-1.5 rounded-full bg-gradient-to-br from-primary/20 to-gold/20 opacity-60 group-hover:opacity-100 transition-opacity" aria-hidden />
+   426→                        {/* Icon container */}
+   427→                        <div className="relative h-16 w-16 mx-auto rounded-full bg-gradient-to-br from-primary via-primary to-primary/70 flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/30 ring-2 ring-white/50 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+   428→                          <Icon className="h-8 w-8" strokeWidth={1.8} />
+   429→                        </div>
+   430→                      </div>
+   431→                      <p className="text-3xl lg:text-4xl font-bold text-foreground tracking-tight tabular-nums">
+   432→                        {s.value}
+   433→                      </p>
+   434→                      <p className="mt-1 text-xs lg:text-sm text-muted-foreground font-medium">
+   435→                        {s.label}
+   436→                      </p>
+   437→                    </CardContent>
+   438→                  </Card>
+   439→                );
+   440→              })}
+   441→            </div>
+   442→
+   443→            {/* CHARTS / DIAGRAMS */}
+   444→            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-8">
+   445→              {/* Bar chart: Students by class */}
+   446→              <Card className="border-border shadow-sm lg:col-span-2">
+   447→                <CardContent className="p-5 lg:p-6">
+   448→                  <h3 className="font-bold text-base mb-1 flex items-center gap-2">
+   449→                    <GraduationCap className="h-5 w-5 text-primary" />
+   450→                    Sebaran Siswa per Kelas
+   451→                  </h3>
+   452→                  <p className="text-xs text-muted-foreground mb-4">
+   453→                    Jumlah siswa laki-laki dan perempuan di setiap kelas
+   454→                  </p>
+   455→                  {classChartData.length > 0 ? (
+   456→                    <div role="img" aria-label="Grafik batang sebaran siswa per kelas, menunjukkan jumlah siswa laki-laki dan perempuan di setiap kelas">
+   457→                    <ResponsiveContainer width="100%" height={260}>
+   458→                      <BarChart data={classChartData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+   459→                        <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.9 0.01 235)" />
+   460→                        <XAxis dataKey="name" tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 235)" />
+   461→                        <YAxis tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 235)" allowDecimals={false} />
+   462→                        <Tooltip
+   463→                          contentStyle={{
+   464→                            borderRadius: 8,
+   465→                            border: '1px solid oklch(0.9 0.01 235)',
+   466→                            fontSize: 12,
+   467→                          }}
+   468→                        />
+   469→                        <Legend wrapperStyle={{ fontSize: 12 }} />
+   470→                        <Bar dataKey="Laki" stackId="a" fill="#3B82C4" radius={[0, 0, 0, 0]} />
+   471→                        <Bar dataKey="Perempuan" stackId="a" fill="#7DD3E0" radius={[6, 6, 0, 0]} />
+   472→                      </BarChart>
+   473→                    </ResponsiveContainer>
+   474→                    </div>
+   475→                  ) : (
+   476→                    <div className="h-[260px] flex items-center justify-center text-sm text-muted-foreground">
+   477→                      Memuat data...
+   478→                    </div>
+   479→                  )}
+   480→                </CardContent>
+   481→              </Card>
+   482→
+   483→              {/* Donut chart: Gender distribution */}
+   484→              <Card className="border-border shadow-sm">
+   485→                <CardContent className="p-5 lg:p-6">
+   486→                  <h3 className="font-bold text-base mb-1 flex items-center gap-2">
+   487→                    <Users className="h-5 w-5 text-primary" />
+   488→                    Sebaran Jenis Kelamin
+   489→                  </h3>
+   490→                  <p className="text-xs text-muted-foreground mb-4">
+   491→                    Proporsi siswa laki-laki & perempuan
+   492→                  </p>
+   493→                  {genderChartData.length > 0 ? (
+   494→                    <div role="img" aria-label="Grafik donut sebaran jenis kelamin siswa, menunjukkan proporsi laki-laki dan perempuan">
+   495→                    <ResponsiveContainer width="100%" height={260}>
+   496→                      <PieChart>
+   497→                        <Pie
+   498→                          data={genderChartData}
+   499→                          dataKey="value"
+   500→                          nameKey="name"
+   501→                          cx="50%"
+   502→                          cy="50%"
+   503→                          innerRadius={55}
+   504→                          outerRadius={85}
+   505→                          paddingAngle={3}
+   506→                          label={({ value }) => `${value}`}
+   507→                          labelLine={false}
+   508→                        >
+   509→                          {genderChartData.map((entry, i) => (
+   510→                            <Cell key={i} fill={entry.color} />
+   511→                          ))}
+   512→                        </Pie>
+   513→                        <Tooltip
+   514→                          contentStyle={{
+   515→                            borderRadius: 8,
+   516→                            border: '1px solid oklch(0.9 0.01 235)',
+   517→                            fontSize: 12,
+   518→                          }}
+   519→                        />
+   520→                        <Legend wrapperStyle={{ fontSize: 12 }} />
+   521→                      </PieChart>
+   522→                    </ResponsiveContainer>
+   523→                    </div>
+   524→                  ) : (
+   525→                    <div className="h-[260px] flex items-center justify-center text-sm text-muted-foreground">
+   526→                      Memuat data...
+   527→                    </div>
+   528→                  )}
+   529→                </CardContent>
+   530→              </Card>
+   531→
+   532→              {/* Bar chart: Facilities by condition */}
+   533→              <Card className="border-border shadow-sm lg:col-span-3">
+   534→                <CardContent className="p-5 lg:p-6">
+   535→                  <h3 className="font-bold text-base mb-1 flex items-center gap-2">
+   536→                    <Building2 className="h-5 w-5 text-primary" />
+   537→                    Kondisi Sarana & Prasarana
+   538→                  </h3>
+   539→                  <p className="text-xs text-muted-foreground mb-4">
+   540→                    Jumlah fasilitas berdasarkan kondisi (Baik / Rusak Ringan / Rusak Berat)
+   541→                  </p>
+   542→                  {facilityByCondition.length > 0 ? (
+   543→                    <div role="img" aria-label="Grafik batang kondisi sarana dan prasarana sekolah, menunjukkan jumlah fasilitas dengan kondisi baik, rusak ringan, dan rusak berat">
+   544→                    <ResponsiveContainer width="100%" height={220}>
+   545→                      <BarChart data={facilityByCondition} layout="vertical" margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
+   546→                        <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.9 0.01 235)" horizontal={false} />
+   547→                        <XAxis type="number" tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 235)" allowDecimals={false} />
+   548→                        <YAxis dataKey="name" type="category" tick={{ fontSize: 12 }} stroke="oklch(0.55 0.02 235)" width={110} />
+   549→                        <Tooltip
+   550→                          contentStyle={{
+   551→                            borderRadius: 8,
+   552→                            border: '1px solid oklch(0.9 0.01 235)',
+   553→                            fontSize: 12,
+   554→                          }}
+   555→                        />
+   556→                        <Bar dataKey="Jumlah" radius={[0, 6, 6, 0]}>
+   557→                          {facilityByCondition.map((entry, i) => (
+   558→                            <Cell key={i} fill={entry.color} />
+   559→                          ))}
+   560→                        </Bar>
+   561→                      </BarChart>
+   562→                    </ResponsiveContainer>
+   563→                    </div>
+   564→                  ) : (
+   565→                    <div className="h-[220px] flex items-center justify-center text-sm text-muted-foreground">
+   566→                      Memuat data...
+   567→                    </div>
+   568→                  )}
+   569→                </CardContent>
+   570→              </Card>
+   571→            </div>
+   572→            </>
+   573→          ) : (
+   574→            <EmptyState title="Belum ada statistik" description="Statistik akan ditampilkan di sini." />
+   575→          )}
+   576→        </div>
+   577→      </section>
+   578→
+   579→      {/* BERITA + PENGUMUMAN TERBARU */}
+   580→      <section className="relative overflow-hidden py-14 lg:py-20">
+   581→        {/* Decorative bulbs */}
+   582→        <HexPrism className="top-8 left-[3%] hidden lg:block" size={70} color="gold" rotate={10} opacity={0.4} />
+   583→        <GlowOrb className="bottom-0 right-0" size={180} color="gold" />
+   584→        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+   585→          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+   586→            <div>
+   587→              <span className="inline-block text-xs font-semibold uppercase tracking-[0.15em] text-primary bg-teal-soft/60 px-3 py-1 rounded-full mb-2">
+   588→                Kabar Terkini
+   589→              </span>
+   590→              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground tracking-tight">
+   591→                Berita & Pengumuman
+   592→              </h2>
+   593→            </div>
+   594→          </div>
+   595→
+   596→          {newsLoading ? (
+   597→            <Loader label="Memuat berita..." />
+   598→          ) : news && news.length > 0 ? (
+   599→            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+   600→              {news.map((n) => (
+   601→                <Card
+   602→                  key={n.id}
+   603→                  className="group overflow-hidden border-border shadow-sm hover:shadow-lg transition-all flex flex-col cursor-pointer"
+   604→                  onClick={() => setOpenNews(n)}
+   605→                >
+   606→                  <div className="relative aspect-video overflow-hidden bg-muted">
+   607→                    <SmartImage
+   608→                      src={n.photo}
+   609→                      alt={n.title}
+   610→                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+   611→                    />
+   612→                    <Badge className="absolute top-2 left-2 bg-primary/95 text-primary-foreground text-[10px]">
+   613→                      {n.category}
+   614→                    </Badge>
+   615→                  </div>
+   616→                  <div className="flex flex-col flex-1 p-4">
+   617→                    <p className="text-[11px] text-muted-foreground flex items-center gap-1 mb-1.5">
+   618→                      <Calendar className="h-3 w-3" />
+   619→                      {format(new Date(n.publishedAt), 'd MMMM yyyy', { locale: idLocale })}
+   620→                    </p>
+   621→                    <h3 className="font-semibold text-sm leading-snug line-clamp-2 mb-1.5 group-hover:text-primary transition-colors">
+   622→                      {n.title}
+   623→                    </h3>
+   624→                    <p className="text-xs text-muted-foreground line-clamp-2 flex-1">
+   625→                      {n.excerpt || n.content.slice(0, 100)}
+   626→                    </p>
+   627→                  </div>
+   628→                </Card>
+   629→              ))}
+   630→            </div>
+   631→          ) : (
+   632→            <EmptyState title="Belum ada berita" />
+   633→          )}
+   634→        </div>
+   635→      </section>
+   636→
+   637→      {/* GALERI PREVIEW */}
+   638→      <section className="relative overflow-hidden py-14 lg:py-20 bg-teal-soft/30 border-y border-border">
+   639→        {/* Decorative bulbs */}
+   640→        <HexPrism className="top-8 right-[5%] hidden lg:block" size={75} color="gold" rotate={-15} opacity={0.4} pulse />
+   641→        <HexPrism className="bottom-12 left-[4%] hidden lg:block" size={60} color="blue" rotate={25} opacity={0.4} />
+   642→        <GlowOrb className="top-0 left-0" size={200} color="gold" />
+   643→        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+   644→          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+   645→            <div>
+   646→              <span className="inline-block text-xs font-semibold uppercase tracking-[0.15em] text-primary bg-card px-3 py-1 rounded-full mb-2">
+   647→                Dokumentasi
+   648→              </span>
+   649→              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground tracking-tight">
+   650→                Galeri Kegiatan Sekolah
+   651→              </h2>
+   652→            </div>
+   653→            <Button variant="outline" onClick={() => setPage('galeri')} className="self-start sm:self-end">
+   654→              Lihat Semua
+   655→              <ChevronRight className="h-4 w-4" />
+   656→            </Button>
+   657→          </div>
+   658→          {galleryPreview.length > 0 ? (
+   659→            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+   660→              {galleryPreview.map((g) => (
+   661→                <div
+   662→                  key={g.id}
+   663→                  className="group relative aspect-square overflow-hidden rounded-xl shadow-sm cursor-pointer"
+   664→                  onClick={() => setPage('galeri')}
+   665→                >
+   666→                  <SmartImage
+   667→                    src={g.photo}
+   668→                    alt={g.title}
+   669→                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+   670→                  />
+   671→                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
+   672→                    <p className="text-white text-xs font-medium line-clamp-2">{g.title}</p>
+   673→                  </div>
+   674→                </div>
+   675→              ))}
+   676→            </div>
+   677→          ) : (
+   678→            <EmptyState title="Belum ada dokumentasi" />
+   679→          )}
+   680→        </div>
+   681→      </section>
+   682→
+   683→      {/* CTA */}
+   684→      <section className="relative overflow-hidden py-16 lg:py-24">
+   685→        {/* Decorative bulbs */}
+   686→        <HexPrism className="top-10 left-[8%] hidden lg:block" size={85} color="gold" rotate={12} opacity={0.45} pulse />
+   687→        <HexPrism className="top-16 left-[15%] hidden lg:block" size={65} color="gold" rotate={-20} opacity={0.4} />
+   688→        <HexPrism className="bottom-10 right-[8%] hidden lg:block" size={80} color="gold" rotate={18} opacity={0.4} pulse />
+   689→        <GlowOrb className="top-0 left-0" size={250} color="gold" />
+   690→        <GlowOrb className="bottom-0 right-0" size={200} color="blue" />
+   691→        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+   692→          <div className="relative overflow-hidden rounded-3xl hero-gradient text-white px-6 py-12 lg:px-14 lg:py-16 shadow-xl">
+   693→            <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold/20" aria-hidden />
+   694→            <div className="absolute -right-4 top-10 h-24 w-24 rounded-full bg-gold/30" aria-hidden />
+   695→            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+   696→              <div>
+   697→                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">
+   698→                  Bergabunglah dengan keluarga besar SD Negeri 5 Gesing
+   699→                </h2>
+   700→                <p className="mt-3 text-sm sm:text-base text-white/90 max-w-xl">
+   701→                  Jadilah bagian dari sekolah yang ramah anak, berbudaya, dan berkomitmen
+   702→                  membentuk Insan yang Bertaqwa, cerdas, serta peduli sesama.
+   703→                </p>
+   704→              </div>
+   705→              <div className="flex flex-col sm:flex-row gap-3 lg:justify-end">
+   706→                <Button
+   707→                  size="lg"
+   708→                  onClick={() => setPage('kontak')}
+   709→                  className="bg-gold text-[#0a0f1e] hover:bg-gold/90"
+   710→                >
+   711→                  <Phone className="h-4 w-4" />
+   712→                  Hubungi Kami
+   713→                </Button>
+   714→                <Button
+   715→                  size="lg"
+   716→                  variant="outline"
+   717→                  onClick={() => setPage('sarpras')}
+   718→                  className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+   719→                >
+   720→                  <Building2 className="h-4 w-4" />
+   721→                  Lihat Sarpras
+   722→                </Button>
+   723→              </div>
+   724→            </div>
+   725→          </div>
+   726→        </div>
+   727→      </section>
+   728→
+   729→      {/* NEWS DETAIL DIALOG */}
+   730→      <Dialog open={!!openNews} onOpenChange={(o) => !o && setOpenNews(null)}>
+   731→        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto custom-scroll">
+   732→          {openNews && (
+   733→            <>
+   734→              {openNews.photo && (
+   735→                <div className="relative aspect-video w-full overflow-hidden rounded-lg -mx-1">
+   736→                  <SmartImage
+   737→                    src={openNews.photo}
+   738→                    alt={openNews.title}
+   739→                    className="h-full w-full object-cover"
+   740→                  />
+   741→                  <Badge className="absolute top-2 left-2 bg-primary/95 text-primary-foreground text-[10px]">
+   742→                    {openNews.category}
+   743→                  </Badge>
+   744→                </div>
+   745→              )}
+   746→              <DialogHeader>
+   747→                <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+   748→                  <Calendar className="h-3.5 w-3.5" />
+   749→                  {format(new Date(openNews.publishedAt), 'd MMMM yyyy', { locale: idLocale })}
+   750→                </p>
+   751→                <DialogTitle className="text-xl sm:text-2xl leading-snug">
+   752→                  {openNews.title}
+   753→                </DialogTitle>
+   754→                {openNews.excerpt && (
+   755→                  <DialogDescription className="text-sm">
+   756→                    {openNews.excerpt}
+   757→                  </DialogDescription>
+   758→                )}
+   759→              </DialogHeader>
+   760→              <div className="prose prose-sm max-w-none text-sm text-foreground/90 leading-relaxed whitespace-pre-line">
+   761→                {openNews.content}
+   762→              </div>
+   763→            </>
+   764→          )}
+   765→        </DialogContent>
+   766→      </Dialog>
+   767→    </div>
+   768→  );
+   769→}
+   770→

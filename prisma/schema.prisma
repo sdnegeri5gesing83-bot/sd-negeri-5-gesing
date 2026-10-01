@@ -112,6 +112,7 @@ model GalleryItem {
   id          String   @id @default(cuid())
   title       String
   photo       String
+  altText     String?
   category    String   // Kegiatan Pembelajaran | Upacara | ...
   description String?
   date        DateTime @default(now())
@@ -126,6 +127,7 @@ model News {
   excerpt     String?
   content     String
   photo       String?
+  photoAltText String?
   category    String   @default("Umum")
   published   Boolean  @default(true)
   publishedAt DateTime @default(now())

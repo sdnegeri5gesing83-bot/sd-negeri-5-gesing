@@ -6,7 +6,7 @@ const globalForPrisma = globalThis as unknown as {
 }
 
 // Detect Prisma client schema version to allow hot-reload of new models in dev.
-const SCHEMA_HASH = 'ppdb-v1'
+const SCHEMA_HASH = 'alt-text-v2'
 
 // In dev, if the schema hash changed (e.g. new models added), recreate the client.
 if (process.env.NODE_ENV !== 'production') {

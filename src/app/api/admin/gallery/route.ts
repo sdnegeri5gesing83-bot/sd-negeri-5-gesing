@@ -6,6 +6,7 @@ import { z } from 'zod';
 const schema = z.object({
   title: z.string().min(2, 'Judul minimal 2 karakter'),
   photo: z.string().min(1, 'Foto wajib diisi'),
+  altText: z.string().optional().nullable(),
   category: z.string().min(2, 'Kategori wajib diisi'),
   description: z.string().optional().nullable(),
   date: z.string().optional().nullable(),
@@ -33,6 +34,7 @@ export async function POST(req: Request) {
     }
     const data: any = { ...parsed.data };
     if (data.description === '') data.description = null;
+    if (data.altText === '') data.altText = null;
     if (data.date) data.date = new Date(data.date);
     else delete data.date;
     const item = await db.galleryItem.create({ data });

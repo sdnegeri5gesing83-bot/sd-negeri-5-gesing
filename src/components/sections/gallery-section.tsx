@@ -104,7 +104,7 @@ export function GallerySection() {
               >
                 <SmartImage
                   src={g.photo}
-                  alt={g.title}
+                  alt={g.altText || g.title}
                   className="w-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
@@ -157,7 +157,7 @@ export function GallerySection() {
             <div className="relative w-full flex-1 flex items-center justify-center min-h-0">
               <img
                 src={current.photo}
-                alt={current.title}
+                alt={current.altText || current.title}
                 className="max-w-full max-h-[78vh] object-contain rounded-lg"
               />
             </div>

@@ -7,6 +7,7 @@ import { SectionHeader, Loader, EmptyState } from '@/components/site/ui';
 import { SmartImage } from '@/components/smart-image';
 import { HexPrism, GlowOrb } from '@/components/site/prism-decoration';
 import { FullWidthHeroCarousel } from '@/components/site/full-width-hero-carousel';
+import { TtsButton } from '@/components/site/tts-button';
 import {
   ArrowRight,
   Phone,
@@ -296,6 +297,13 @@ export function HomeSection() {
                       <Calendar className="h-3.5 w-3.5 text-gold" />
                       <span className="font-medium">{a.title}</span>
                       <span className="text-muted-foreground">— {format(new Date(a.date), 'd MMM yyyy', { locale: idLocale })}</span>
+                      <TtsButton
+                        text={`${a.title}. ${a.content || ''}`.slice(0, 1024)}
+                        size="icon"
+                        variant="ghost"
+                        label={`Dengarkan pengumuman: ${a.title}`}
+                        className="h-6 w-6 text-primary hover:bg-primary/10 ml-1"
+                      />
                     </span>
                   ))}
                 </div>
@@ -606,7 +614,7 @@ export function HomeSection() {
                   <div className="relative aspect-video overflow-hidden bg-muted">
                     <SmartImage
                       src={n.photo}
-                      alt={n.title}
+                      alt={n.photoAltText || n.title}
                       className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <Badge className="absolute top-2 left-2 bg-primary/95 text-primary-foreground text-[10px]">
@@ -618,9 +626,18 @@ export function HomeSection() {
                       <Calendar className="h-3 w-3" />
                       {format(new Date(n.publishedAt), 'd MMMM yyyy', { locale: idLocale })}
                     </p>
-                    <h3 className="font-semibold text-sm leading-snug line-clamp-2 mb-1.5 group-hover:text-primary transition-colors">
-                      {n.title}
-                    </h3>
+                    <div className="flex items-start gap-1.5 mb-1.5">
+                      <h3 className="font-semibold text-sm leading-snug line-clamp-2 flex-1 group-hover:text-primary transition-colors">
+                        {n.title}
+                      </h3>
+                      <TtsButton
+                        text={`${n.title}. ${n.excerpt || ''} ${n.content || ''}`.slice(0, 1024)}
+                        size="icon"
+                        variant="ghost"
+                        label={`Dengarkan berita: ${n.title}`}
+                        className="h-7 w-7 shrink-0 text-primary hover:bg-primary/10 -mr-1 -mt-0.5"
+                      />
+                    </div>
                     <p className="text-xs text-muted-foreground line-clamp-2 flex-1">
                       {n.excerpt || n.content.slice(0, 100)}
                     </p>
@@ -665,7 +682,7 @@ export function HomeSection() {
                 >
                   <SmartImage
                     src={g.photo}
-                    alt={g.title}
+                    alt={g.altText || g.title}
                     className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
@@ -735,7 +752,7 @@ export function HomeSection() {
                 <div className="relative aspect-video w-full overflow-hidden rounded-lg -mx-1">
                   <SmartImage
                     src={openNews.photo}
-                    alt={openNews.title}
+                    alt={openNews.photoAltText || openNews.title}
                     className="h-full w-full object-cover"
                   />
                   <Badge className="absolute top-2 left-2 bg-primary/95 text-primary-foreground text-[10px]">
@@ -748,8 +765,14 @@ export function HomeSection() {
                   <Calendar className="h-3.5 w-3.5" />
                   {format(new Date(openNews.publishedAt), 'd MMMM yyyy', { locale: idLocale })}
                 </p>
-                <DialogTitle className="text-xl sm:text-2xl leading-snug">
-                  {openNews.title}
+                <DialogTitle className="text-xl sm:text-2xl leading-snug flex items-start gap-2">
+                  <span className="flex-1">{openNews.title}</span>
+                  <TtsButton
+                    text={`${openNews.title}. ${openNews.excerpt || ''} ${openNews.content || ''}`.slice(0, 1024)}
+                    variant="outline"
+                    label={`Dengarkan berita: ${openNews.title}`}
+                    className="shrink-0 mt-1"
+                  />
                 </DialogTitle>
                 {openNews.excerpt && (
                   <DialogDescription className="text-sm">

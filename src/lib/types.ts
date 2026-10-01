@@ -77,6 +77,7 @@ export interface GalleryItem {
   id: string;
   title: string;
   photo: string;
+  altText?: string | null;
   category: string;
   description?: string | null;
   date: string;
@@ -88,6 +89,7 @@ export interface NewsItem {
   excerpt?: string | null;
   content: string;
   photo?: string | null;
+  photoAltText?: string | null;
   category: string;
   published: boolean;
   publishedAt: string;

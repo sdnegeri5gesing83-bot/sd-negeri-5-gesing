@@ -8,6 +8,7 @@ const schema = z.object({
   excerpt: z.string().optional().nullable(),
   content: z.string().min(5, 'Konten minimal 5 karakter'),
   photo: z.string().optional().nullable(),
+  photoAltText: z.string().optional().nullable(),
   category: z.string().default('Umum'),
   published: z.boolean().default(true),
   publishedAt: z.string().optional().nullable(),
@@ -34,7 +35,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: parsed.error.errors[0]?.message || 'Validasi gagal' }, { status: 400 });
     }
     const data: any = { ...parsed.data };
-    ['excerpt', 'photo', 'publishedAt'].forEach((k) => { if (data[k] === '') data[k] = null; });
+    ['excerpt', 'photo', 'photoAltText', 'publishedAt'].forEach((k) => { if (data[k] === '') data[k] = null; });
     if (data.publishedAt) data.publishedAt = new Date(data.publishedAt);
     else delete data.publishedAt;
     const item = await db.news.create({ data });
