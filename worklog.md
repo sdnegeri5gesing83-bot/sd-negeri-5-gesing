@@ -1915,3 +1915,28 @@ Stage Summary:
 - Photos now use real files from FOTO.rar (nyoman-astawa.jpg, made-agus-hermawan.png, etc.)
 - Root cause: seed.ts script resets photos to generic samples — should NOT be re-run after real data import
 - Preventive note: `update-teacher-photos.ts` must be re-run after any seed.ts execution
+
+---
+Task ID: fix-facility-conditions
+Agent: Z.ai Code (main)
+Task: User reported "kondisi sarpras berubah" — facilities condition changed. Fix.
+
+Work Log:
+- Diagnosed: Read the original Excel file (template-facilities.xlsx) and found "Mes Kepala Sekolah" has condition "Rusak Berat" (title case), but the database shows it as "Baik"
+- Root cause: read-excel.py script maps conditions using UPPERCASE keys ("BAIK", "RUSAK_RINGAN", "RUSAK_BERAT"), but the Excel file has "Rusak Berat" (title case). The .upper() conversion makes it "RUSAK BERAT" (with space), which didn't match "RUSAK_BERAT" (with underscore)
+- Fixed read-excel.py condition map: added "RUSAK BERAT" and "RUSAK RINGAN" (with space) alongside the underscore versions
+- Re-ran read-excel.py to regenerate import-data.json — now correctly shows "Mes Kepala Sekolah" → "Rusak Berat"
+- Created targeted script to update ONLY facility conditions (not teachers/students — to preserve real photos):
+  - Updated 14/14 facilities: 13 → "Baik", 1 (Mes Kepala Sekolah) → "Rusak Berat"
+- Verified:
+  - Facilities API: {"Baik": 13, "Rusak Berat": 1} ✓ (matches real Excel data)
+  - Teacher photos still intact: Nyoman Astawa → nyoman-astawa.jpg ✓
+  - The "Kondisi Sarana & Prasarana" chart will now show both "Baik" and "Rusak Berat" bars
+
+Stage Summary:
+- Facility conditions fixed to match real Excel data:
+  - 13 facilities: Baik
+  - 1 facility (Mes Kepala Sekolah): Rusak Berat
+- Root cause: case-sensitivity in condition mapping (Excel used "Rusak Berat" title case, script expected "RUSAK_BERAT" uppercase with underscore)
+- Fixed read-excel.py to handle both underscore and space-separated uppercase forms
+- Teacher photos preserved (only facility conditions were updated, not full re-import)

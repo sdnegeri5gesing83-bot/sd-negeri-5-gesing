@@ -208,6 +208,8 @@ def read_facilities():
         "BAIK": "Baik",
         "RUSAK_RINGAN": "Rusak Ringan",
         "RUSAK_BERAT": "Rusak Berat",
+        "RUSAK RINGAN": "Rusak Ringan",
+        "RUSAK BERAT": "Rusak Berat",
     }
     # Photo mapping by category
     photo_map = {
