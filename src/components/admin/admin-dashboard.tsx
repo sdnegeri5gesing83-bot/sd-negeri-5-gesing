@@ -23,6 +23,7 @@ import {
   Calendar,
   ListChecks,
   Inbox,
+  ImageIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -47,6 +48,7 @@ import { PpdbPanel } from './panels/ppdb-panel';
 import { PpdbRequirementsPanel } from './panels/ppdb-requirements-panel';
 import { PpdbRegistrationsPanel } from './panels/ppdb-registrations-panel';
 import { PpdbAnnouncementsPanel } from './panels/ppdb-announcements-panel';
+import { HeroPhotosPanel } from './panels/hero-photos-panel';
 
 type Panel =
   | 'overview'
@@ -64,6 +66,7 @@ type Panel =
   | 'messages'
   | 'stats'
   | 'organization'
+  | 'hero-photos'
   | 'account';
 
 const NAV: { key: Panel; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
@@ -82,6 +85,7 @@ const NAV: { key: Panel; label: string; icon: React.ComponentType<{ className?: 
   { key: 'messages', label: 'Pesan Masuk', icon: Mail },
   { key: 'stats', label: 'Statistik', icon: BarChart3 },
   { key: 'organization', label: 'Struktur Organisasi', icon: Network },
+  { key: 'hero-photos', label: 'Foto Beranda', icon: ImageIcon },
   { key: 'account', label: 'Pengaturan Akun', icon: Shield },
 ];
 
@@ -220,6 +224,7 @@ export function AdminDashboard() {
           {active === 'messages' && <MessagesPanel />}
           {active === 'stats' && <StatsPanel />}
           {active === 'organization' && <OrganizationPanel />}
+          {active === 'hero-photos' && <HeroPhotosPanel />}
           {active === 'account' && <AccountPanel />}
         </div>
       </main>

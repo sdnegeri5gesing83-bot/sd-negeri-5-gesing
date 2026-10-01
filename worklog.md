@@ -1974,3 +1974,52 @@ Stage Summary:
   - Mes Kepala Sekolah → facility-principal.jpg ✓ (newly assigned)
 - read-excel.py updated with 3 new category mappings for future imports
 - Root cause: photo_map missing "Gudang", "Padmasana", "Mes" categories (real Excel facility types not in original mapping)
+
+---
+Task ID: admin-editable-hero-photos
+Agent: Z.ai Code (main)
+Task: User request "foto bergerak di beranda agar bisa diubah oleh admin" — make the moving/carousel photos on Beranda editable by admin.
+
+Work Log:
+- Created new Prisma model `HeroPhoto` (id, src, alt, order, active, timestamps)
+- Ran `bun run db:push` to sync schema + regenerate Prisma client
+- Seeded 5 initial hero photos (the same 5 that were hardcoded in the component)
+- Created 3 API routes:
+  1. `GET /api/public/hero-photos` — public, returns active photos ordered by `order`
+  2. `GET/POST /api/admin/hero-photos` — admin CRUD (list + create)
+  3. `PUT/DELETE /api/admin/hero-photos/[id]` — admin update + delete
+- Updated `FullWidthHeroCarousel` component:
+  - Removed hardcoded `PHOTOS` array
+  - Added `useFetch<HeroPhoto[]>('/api/public/hero-photos')` to load photos dynamically
+  - Added `FALLBACK_PHOTOS` (same 5 photos) as fallback if API fails or returns empty
+  - Added `safeCurrent` clamp to handle index out-of-bounds when photos change
+  - All references updated from `PHOTOS` → `photos` (dynamic variable)
+- Created admin panel `src/components/admin/panels/hero-photos-panel.tsx`:
+  - Grid layout (3 columns) with photo cards
+  - Each card: thumbnail, order badge (#1, #2...), caption, src path
+  - Buttons: Edit (pencil), Toggle active (eye/eye-off), Reorder (up/down), Delete (trash with confirmation)
+  - "Tambah Foto" (Add Photo) button at top
+  - Add/Edit dialog with: ImageUpload component (upload or URL), caption input, active toggle (Switch), order number
+  - Full CRUD: create, edit, delete, toggle active, reorder (up/down)
+- Added to admin dashboard (`admin-dashboard.tsx`):
+  - New Panel type: `'hero-photos'`
+  - New NAV item: `{ key: 'hero-photos', label: 'Foto Beranda', icon: ImageIcon }`
+  - Import: `HeroPhotosPanel`
+  - Render: `{active === 'hero-photos' && <HeroPhotosPanel />}`
+- Verified via Agent Browser:
+  - Beranda carousel still works: fetches from API, shows 5 photos with auto-rotation ✓
+  - Admin login → Dashboard → "Foto Beranda" panel accessible ✓
+  - VLM confirms: "Foto Beranda (Carousel)" title, 5 photo cards with thumbnails, Edit/Toggle/Reorder/Delete buttons, "Tambah Foto" button ✓
+  - Lint clean ✓
+
+Stage Summary:
+- Admin can now manage the moving/carousel photos on Beranda through a dedicated admin panel:
+  - Add new photos (upload from computer or paste URL)
+  - Edit photo caption (alt text)
+  - Toggle active/inactive (inactive photos don't show in carousel)
+  - Reorder photos (up/down arrows)
+  - Delete photos
+- The carousel on Beranda fetches photos from API dynamically
+- Falls back to 5 hardcoded photos if API is unavailable
+- All changes are immediate — no rebuild needed, just refresh the page
+- Admin panel accessible at: Dashboard → "Foto Beranda" (in sidebar, between "Struktur Organisasi" and "Pengaturan Akun")

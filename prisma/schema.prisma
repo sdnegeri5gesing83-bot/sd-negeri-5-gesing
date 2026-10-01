@@ -251,6 +251,17 @@ model Statistic {
   updatedAt   DateTime @updatedAt
 }
 
+// ---- Hero Photos (moving carousel on Beranda) ----
+model HeroPhoto {
+  id        String   @id @default(cuid())
+  src       String   // photo URL or path (e.g. /uploads/hero-signboard.jpg)
+  alt       String   // caption shown on the carousel
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // ---- Organization Structure ----
 model OrganizationMember {
   id          String   @id @default(cuid())

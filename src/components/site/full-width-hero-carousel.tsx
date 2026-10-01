@@ -3,8 +3,18 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useFetch } from '@/hooks/use-fetch';
 
-const PHOTOS = [
+interface HeroPhoto {
+  id: string;
+  src: string;
+  alt: string;
+  order: number;
+  active: boolean;
+}
+
+// Fallback if API fails or returns empty
+const FALLBACK_PHOTOS = [
   { src: '/uploads/hero-signboard.jpg', alt: 'Papan Nama Resmi SD Negeri 5 Gesing' },
   { src: '/uploads/hero-school.jpg', alt: 'Aktivitas Siswa di Lingkungan Sekolah' },
   { src: '/uploads/hero-classroom.jpg', alt: 'Kegiatan Belajar Mengajar di Kelas' },
@@ -15,6 +25,11 @@ const PHOTOS = [
 const ROTATION_INTERVAL = 4000; // 4 seconds per photo
 
 export function FullWidthHeroCarousel() {
+  const { data: apiPhotos } = useFetch<HeroPhoto[]>('/api/public/hero-photos');
+  const photos = (apiPhotos && apiPhotos.length > 0)
+    ? apiPhotos.map(p => ({ src: p.src, alt: p.alt }))
+    : FALLBACK_PHOTOS;
+
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -22,19 +37,22 @@ export function FullWidthHeroCarousel() {
   const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const next = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % PHOTOS.length);
+    setCurrent((prev) => (prev + 1) % Math.max(photos.length, 1));
     setProgress(0);
-  }, []);
+  }, [photos.length]);
 
   const prev = useCallback(() => {
-    setCurrent((prev) => (prev - 1 + PHOTOS.length) % PHOTOS.length);
+    setCurrent((prev) => (prev - 1 + photos.length) % Math.max(photos.length, 1));
     setProgress(0);
-  }, []);
+  }, [photos.length]);
 
   const goTo = (idx: number) => {
     setCurrent(idx);
     setProgress(0);
   };
+
+  // Clamp current index to valid range when photos change
+  const safeCurrent = photos.length > 0 ? Math.min(current, photos.length - 1) : 0;
 
   useEffect(() => {
     if (isPaused) {
@@ -46,7 +64,7 @@ export function FullWidthHeroCarousel() {
       setProgress((p) => Math.min(p + (100 / (ROTATION_INTERVAL / 50)), 100));
     }, 50);
     timerRef.current = setInterval(() => {
-      setCurrent((p) => (p + 1) % PHOTOS.length);
+      setCurrent((p) => (p + 1) % photos.length);
       setProgress(0);
     }, ROTATION_INTERVAL);
     return () => {
@@ -63,17 +81,17 @@ export function FullWidthHeroCarousel() {
     >
       {/* Stacked photos with crossfade + Ken Burns */}
       <div className="absolute inset-0">
-        {PHOTOS.map((photo, idx) => (
+        {photos.map((photo, idx) => (
           <img
             key={idx}
             src={photo.src}
             alt={photo.alt}
             className={cn(
               'absolute inset-0 h-full w-full object-cover transition-all duration-1000 ease-in-out',
-              idx === current
+              idx === safeCurrent
                 ? 'opacity-100 scale-105'
                 : 'opacity-0 scale-100',
-              idx === current && !isPaused ? 'hero-ken-burns-full' : ''
+              idx === safeCurrent && !isPaused ? 'hero-ken-burns-full' : ''
             )}
             draggable={false}
           />
@@ -105,23 +123,23 @@ export function FullWidthHeroCarousel() {
       {/* Caption (bottom-left) */}
       <div className="absolute bottom-0 left-0 p-4 sm:p-6 lg:p-8 pointer-events-none">
         <span className="inline-flex items-center gap-2 bg-black/50 backdrop-blur-sm border border-white/30 px-3 py-1 rounded-full text-xs sm:text-sm font-medium text-white mb-2 text-shadow-soft">
-          {current + 1} / {PHOTOS.length}
+          {safeCurrent + 1} / {photos.length}
         </span>
         <p className="text-white text-base sm:text-lg lg:text-xl font-bold max-w-2xl text-shadow-strong">
-          {PHOTOS[current].alt}
+          {photos[safeCurrent].alt}
         </p>
       </div>
 
       {/* Dot indicators (bottom-right) */}
       <div className="absolute bottom-4 right-3 sm:right-6 flex items-center gap-2 bg-black/50 backdrop-blur-sm rounded-full px-3 py-2">
-        {PHOTOS.map((_, idx) => (
+        {photos.map((_, idx) => (
           <button
             key={idx}
             onClick={() => goTo(idx)}
             aria-label={`Foto ${idx + 1}`}
             className={cn(
               'rounded-full transition-all duration-300',
-              idx === current
+              idx === safeCurrent
                 ? 'w-6 h-2 bg-white'
                 : 'w-2 h-2 bg-white/60 hover:bg-white/90'
             )}
