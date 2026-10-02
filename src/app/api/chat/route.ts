@@ -101,7 +101,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         error:
-          'Maaf, asisten sedang mengalami gangguan. Silakan hubungi sekolah di 08873886384 atau WhatsApp +628873886384.',
+          `Maaf, asisten sedang mengalami gangguan. Error: ${e?.message || e}. Env ZAI_CONFIG exists: ${!!process.env.ZAI_CONFIG}`,
       },
       { status: 500 }
     );
