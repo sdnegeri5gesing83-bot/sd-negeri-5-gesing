@@ -2175,3 +2175,45 @@ Stage Summary:
   3. After linking, push to GitHub OR click "Redeploy" in dashboard → new code will deploy automatically
 - Once deployed, all new features will be live: AI chatbot, PPDB upload, hero photos, TTS, etc.
 - Production database (Supabase) already migrated and seeded — ready for new code
+
+---
+Task ID: vercel-deploy-final
+Agent: Z.ai Code (main)
+Task: Deploy website to Vercel production with all new features.
+
+Work Log:
+- User provided Vercel token (team-level, works for REST API but not CLI)
+- Fixed Prisma schema: sqlite → postgresql for production
+- Pushed code to GitHub (had to rewrite git history to mask database password + Vercel token that GitHub secret scanning detected)
+- Migrated Supabase production database: created 4 new tables (PpdbRequirement, PpdbRegistration, PpdbDocument, HeroPhoto)
+- Seeded production data: 5 hero photos + 6 PPDB requirements
+- Fixed Vercel project: re-linked GitHub repo (was unlinked)
+- Fixed build command: added `prisma generate` to build script
+- Set ZAI_CONFIG env var on Vercel for z-ai-web-dev-sdk
+- Final deployment: READY + PROMOTED to production ✓
+
+Production verification (https://my-project-topaz-kappa.vercel.app):
+- Homepage: HTTP 200 ✓
+- Hero Photos API: 5 photos ✓ (from Supabase)
+- PPDB Requirements API: 6 requirements ✓ (from Supabase)
+- Stats API: 8 GTK, 40 Siswa, 6 Kelas, 14 Sarpras ✓
+- Teachers API: 8 ✓
+- Facilities API: ✓
+- Chat API (AI): ✗ — Error "fetch failed" — z-ai-web-dev-sdk calls `internal-api.z.ai` which is an INTERNAL API only accessible from z.ai cloud, NOT from Vercel's external servers
+- TTS API (AI): ✗ — same limitation
+
+AI Features Limitation:
+- z-ai-web-dev-sdk uses `internal-api.z.ai/v1` as the API endpoint
+- This is an INTERNAL API only accessible from the z.ai cloud development environment
+- Vercel's serverless functions (running on AWS) CANNOT access this internal API
+- The AI features (chatbot, TTS, VLM alt-text) work LOCALLY (in Preview Panel) but NOT on Vercel production
+- The ZAI_CONFIG env var IS available at runtime on Vercel (verified), but the fetch to internal-api.z.ai fails
+
+Stage Summary:
+- Website successfully deployed to Vercel production ✓
+- All non-AI features work on production:
+  - Homepage, carousel, hero photos, PPDB (syarat + upload), responsive, accessibility, SEO
+  - Database (Supabase) migrated and seeded with real data
+  - Admin panel for hero photos, PPDB requirements, etc.
+- AI features (chatbot, TTS, alt-text) work LOCALLY but NOT on Vercel due to internal API limitation
+- The z-ai-web-dev-sdk is designed for the z.ai cloud environment only, not external hosting
