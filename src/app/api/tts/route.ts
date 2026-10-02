@@ -25,7 +25,12 @@ export async function POST(req: Request) {
       );
     }
 
-    const zai = process.env.ZAI_CONFIG ? new ZAI(JSON.parse(process.env.ZAI_CONFIG)) : await ZAI.create();
+    let zai;
+    try {
+      zai = process.env.ZAI_CONFIG ? new ZAI(JSON.parse(process.env.ZAI_CONFIG)) : await ZAI.create();
+    } catch {
+      zai = await ZAI.create();
+    }
     const response = await zai.audio.tts.create({
       input: text,
       voice: 'tongtong', // warm, friendly voice
