@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
 } from '@/components/ui/dialog';
@@ -170,7 +171,17 @@ export function NewsPanel() {
 
             <Field label="Judul" value={form.title} onChange={(v) => set('title', v)} required />
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Kategori" value={form.category} onChange={(v) => set('category', v)} />
+              <div className="space-y-1.5">
+                <Label>Kategori</Label>
+                <Select value={form.category} onValueChange={(v) => set('category', v)}>
+                  <SelectTrigger><SelectValue placeholder="Pilih kategori" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Umum">Umum</SelectItem>
+                    <SelectItem value="Khusus">Khusus</SelectItem>
+                    <SelectItem value="Istimewa">Istimewa</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="space-y-1.5"><Label>Tanggal Terbit</Label><Input type="date" value={form.publishedAt} onChange={(e) => set('publishedAt', e.target.value)} /></div>
             </div>
             <div className="space-y-1.5"><Label>Ringkasan</Label><Textarea value={form.excerpt} onChange={(e) => set('excerpt', e.target.value)} rows={2} /></div>
